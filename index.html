@@ -1,0 +1,592 @@
+<title>Reforma2027</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: livro-razão. Papel pautado, uma coluna de texto à esquerda e blocos de cor à direita; números sempre em mono, alinhados à direita. */
+:root {
+  --bg: #f6f3ea; --surface: #ffffff; --surface-sunken: #ece7d9;
+  --ink: #10201b; --ink-muted: #4d5c56; --line: #d6cfbd; --line-strong: #75827b;
+  --brand: #0b5d4a; --on-brand: #ffffff; --brand-soft: #c9e0d4;
+  --accent: #e0a526; --on-accent: #2b1d00; --accent-ink: #8a5200;
+  --positive: #1657a8; --negative: #b3261e;
+  --shadow-sm: 0 1px 2px rgba(16, 32, 27, 0.08); --shadow-lg: 0 16px 40px rgba(16, 32, 27, 0.14);
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s6: 24px; --s8: 32px; --s12: 48px; --s16: 64px;
+  --r-sm: 4px; --r-md: 10px; --r-lg: 20px; --r-pill: 999px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1a16; --surface: #15241f; --surface-sunken: #0a1411;
+    --ink: #f1ede2; --ink-muted: #a9b5ae; --line: #2a3b35; --line-strong: #6f8078;
+    --brand: #4fd1a5; --on-brand: #062a21; --brand-soft: #1f4a3d;
+    --accent: #f0b83a; --on-accent: #2b1d00; --accent-ink: #f0b83a;
+    --positive: #8fc0ff; --negative: #ff8a7a;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4); --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1a16; --surface: #15241f; --surface-sunken: #0a1411;
+  --ink: #f1ede2; --ink-muted: #a9b5ae; --line: #2a3b35; --line-strong: #6f8078;
+  --brand: #4fd1a5; --on-brand: #062a21; --brand-soft: #1f4a3d;
+  --accent: #f0b83a; --on-accent: #2b1d00; --accent-ink: #f0b83a;
+  --positive: #8fc0ff; --negative: #ff8a7a;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4); --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); font-size: 16px; line-height: 26px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { text-wrap: balance; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Barra superior */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+.top-in { display: flex; align-items: center; gap: var(--s6); padding-block: var(--s3); flex-wrap: wrap; }
+.mark { font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 28px; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
+.nav { display: flex; gap: var(--s1); overflow-x: auto; min-width: 0; margin-left: auto; scrollbar-width: none; }
+.nav::-webkit-scrollbar { display: none; }
+.nav a { flex: none; padding: 6px 14px; border-radius: var(--r-pill); font-size: 14px; line-height: 20px; font-weight: 500; color: var(--ink-muted); text-decoration: none; }
+.nav a:hover { background: var(--brand-soft); color: var(--ink); }
+.nav a[aria-current="page"] { background: var(--ink); color: var(--bg); }
+@media (max-width: 640px) { .nav { margin-left: 0; width: 100%; } .nav a { padding: 6px 10px; font-size: 13px; } .top-in { gap: var(--s2); } }
+
+/* Tipos */
+.overline { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+.display { font-family: var(--font-display); font-weight: 600; font-size: clamp(44px, 9vw, 88px); line-height: 0.95; letter-spacing: -0.02em; }
+.h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(30px, 5vw, 40px); line-height: 1.1; letter-spacing: -0.01em; }
+.h2 { font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 30px; }
+.h3 { font-size: 18px; line-height: 24px; font-weight: 600; }
+.small { font-size: 14px; line-height: 20px; }
+.muted { color: var(--ink-muted); }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.lead { font-size: 18px; line-height: 28px; color: var(--ink-muted); max-width: 46ch; }
+
+/* Controles */
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: var(--s3) var(--s6); border-radius: var(--r-md); border: 1px solid var(--line-strong); background: transparent; font-weight: 600; font-size: 16px; line-height: 24px; text-decoration: none; color: var(--ink); cursor: pointer; }
+.btn:hover { background: var(--brand-soft); }
+.btn-primary { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
+.btn-primary:hover { background: var(--brand); filter: brightness(1.08); }
+.tag { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: var(--r-pill); border: 1px solid var(--line-strong); font-size: 12px; line-height: 18px; font-weight: 600; color: var(--ink-muted); white-space: nowrap; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--r-pill); border: 1px solid currentColor; font-size: 12px; line-height: 18px; font-weight: 600; white-space: nowrap; }
+.pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.st-pronto { color: var(--brand); } .st-adequacao { color: var(--accent-ink); } .st-risco { color: var(--negative); }
+.st-adequacao.pill::before { border-radius: 2px; } .st-risco.pill::before { border-radius: 0; transform: rotate(45deg); }
+
+.view { padding-block: var(--s12) var(--s16); }
+.view-head { display: flex; flex-direction: column; gap: var(--s2); margin-bottom: var(--s8); }
+.view-head .row { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--s6); min-width: 0; }
+
+/* Introdução */
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: var(--s12); align-items: center; }
+.hero-text { display: flex; flex-direction: column; gap: var(--s6); align-items: flex-start; }
+.hero-cta { display: flex; gap: var(--s3); flex-wrap: wrap; }
+.art { position: relative; height: 440px; overflow: hidden; border-radius: var(--r-lg); }
+.blk { position: absolute; border-radius: var(--r-lg); padding: var(--s6); display: flex; flex-direction: column; justify-content: flex-end; gap: var(--s1); }
+.blk .overline { color: inherit; opacity: 0.85; }
+.blk-brand { left: 0; top: 0; width: 44%; height: 76%; background: var(--brand); color: var(--on-brand); }
+.blk-accent { left: 47%; top: 10%; width: 30%; height: 38%; background: var(--accent); color: var(--on-accent); }
+.blk-soft { left: 80%; top: 0; width: 20%; height: 48%; background: var(--brand-soft); }
+.blk-ink { left: 47%; top: 52%; width: 53%; height: 48%; background: var(--ink); color: var(--bg); }
+.blk .big { font-family: var(--font-display); font-weight: 600; font-size: 34px; line-height: 1; letter-spacing: -0.01em; }
+.blk-ink .big { font-family: var(--font-mono); font-weight: 500; font-size: clamp(30px, 4.2vw, 56px); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.blk > * { position: relative; z-index: 2; }
+.swap { display: flex; flex-direction: column; gap: var(--s3); }
+.swap s { text-decoration-thickness: 2px; opacity: 0.75; }
+.rule { position: absolute; left: 0; right: 0; height: 1px; background: var(--line); transform-origin: left center; opacity: 0.7; pointer-events: none; z-index: 1; }
+.clock { display: flex; gap: var(--s4); flex-wrap: wrap; }
+.clock div { display: flex; flex-direction: column; }
+.clock b { font-family: var(--font-mono); font-weight: 500; font-size: 22px; line-height: 28px; font-variant-numeric: tabular-nums; }
+.clock span { font-size: 12px; line-height: 16px; opacity: 0.8; }
+@media (prefers-reduced-motion: no-preference) {
+  .blk { animation: rise 700ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+  .blk-accent { animation-delay: 120ms; } .blk-soft { animation-delay: 220ms; } .blk-ink { animation-delay: 320ms; }
+  .rule { animation: draw 700ms cubic-bezier(0.2, 0.8, 0.2, 1) 450ms backwards; }
+  .hero-text > * { animation: fade 600ms ease-out backwards; }
+  .hero-text > *:nth-child(2) { animation-delay: 80ms; } .hero-text > *:nth-child(3) { animation-delay: 160ms; } .hero-text > *:nth-child(4) { animation-delay: 240ms; }
+  .bar-fill, .col-seg { transition: width 600ms cubic-bezier(0.2, 0.8, 0.2, 1), height 600ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+}
+@keyframes rise { from { transform: translateY(48px); opacity: 0; } }
+@keyframes draw { from { transform: scaleX(0); } }
+@keyframes fade { from { transform: translateY(12px); opacity: 0; } }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: var(--s12); border-top: 1px solid var(--ink); }
+.fact { padding: var(--s6) var(--s6) var(--s6) 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: var(--s2); }
+.fact + .fact { padding-left: var(--s6); border-left: 1px solid var(--line); }
+@media (max-width: 860px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: var(--s8); }
+  .art { height: 340px; }
+  .facts { grid-template-columns: minmax(0, 1fr); }
+  .fact + .fact { padding-left: 0; border-left: 0; }
+  .blk { padding: var(--s4); } .blk .big { font-size: 26px; }
+}
+
+/* Painel */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
+.kpi { padding: var(--s6) var(--s4) var(--s6) 0; display: flex; flex-direction: column; gap: var(--s2); }
+.kpi + .kpi { padding-left: var(--s6); border-left: 1px solid var(--line); }
+.kpi .fig { font-family: var(--font-mono); font-weight: 500; font-size: 40px; line-height: 44px; font-variant-numeric: tabular-nums; }
+@media (max-width: 720px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .kpi:nth-child(3) { padding-left: 0; border-left: 0; } .kpi:nth-child(n+3) { border-top: 1px solid var(--line); } }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s6); margin-top: var(--s8); }
+@media (max-width: 860px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.stack { display: flex; flex-direction: column; gap: var(--s4); }
+.bar-row { display: grid; grid-template-columns: 150px minmax(0, 1fr) 44px; gap: var(--s3); align-items: center; }
+.bar { display: flex; height: 14px; border-radius: var(--r-sm); overflow: hidden; background: var(--surface-sunken); }
+.bar-fill { height: 100%; }
+.f-pronto { background: var(--brand); } .f-adequacao { background: var(--accent); } .f-risco { background: var(--negative); }
+.legend { display: flex; gap: var(--s4); flex-wrap: wrap; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+.legend i { width: 10px; height: 10px; border-radius: 2px; }
+.todo { list-style: none; margin: 0; padding: 0; }
+.todo li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s3); padding: var(--s3) 0; border-top: 1px solid var(--line); align-items: baseline; }
+.todo li:first-child { border-top: 0; padding-top: 0; }
+@media (max-width: 480px) { .bar-row { grid-template-columns: 104px minmax(0, 1fr) 36px; } }
+
+/* Transição */
+.years { display: grid; grid-template-columns: repeat(8, minmax(64px, 1fr)); gap: var(--s2); align-items: end; min-width: 560px; }
+.scroll-x { overflow-x: auto; padding-bottom: var(--s2); }
+.year { display: flex; flex-direction: column; gap: var(--s2); padding: var(--s2); border: 1px solid transparent; border-radius: var(--r-md); background: transparent; cursor: pointer; text-align: left; }
+.year:hover { background: var(--brand-soft); }
+.year[aria-pressed="true"] { border-color: var(--ink); background: var(--surface); }
+.col { height: 160px; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; }
+.col-seg { border-radius: 3px; min-height: 0; }
+.seg-old { background: var(--line-strong); } .seg-new { background: var(--brand); }
+.year b { font-family: var(--font-mono); font-weight: 500; font-size: 16px; line-height: 20px; }
+.year span { font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+.detail { margin-top: var(--s6); display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: var(--s8); }
+.detail .yr { font-family: var(--font-display); font-weight: 600; font-size: 72px; line-height: 0.95; letter-spacing: -0.02em; }
+.detail ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: var(--s2); }
+@media (max-width: 720px) { .detail { grid-template-columns: minmax(0, 1fr); gap: var(--s4); } .detail .yr { font-size: 56px; } }
+
+/* Simulador */
+.sim { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: var(--s6); align-items: start; }
+@media (max-width: 860px) { .sim { grid-template-columns: minmax(0, 1fr); } }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 14px; line-height: 20px; font-weight: 600; }
+.field small { font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+.field input, .field select, .search { width: 100%; padding: 10px var(--s3); border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--surface); color: var(--ink); }
+.field input { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.ledger { width: 100%; border-collapse: collapse; }
+.ledger th, .ledger td { padding: var(--s3) 0; border-bottom: 1px solid var(--line); text-align: left; font-weight: 400; }
+.ledger td:last-child, .ledger th:last-child { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: var(--s3); }
+.ledger tr.total th, .ledger tr.total td { border-top: 1px solid var(--ink); border-bottom: 0; font-weight: 600; }
+.cmp { display: flex; flex-direction: column; gap: var(--s3); }
+.cmp-row { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--s3); align-items: center; }
+.cmp-bar { height: 28px; border-radius: var(--r-sm); min-width: 2px; }
+.cmp-val { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 14px; line-height: 20px; }
+.result { font-family: var(--font-mono); font-weight: 500; font-size: clamp(28px, 5vw, 40px); line-height: 1.1; font-variant-numeric: tabular-nums; }
+.pos { color: var(--positive); } .neg { color: var(--negative); }
+.note { font-size: 12px; line-height: 18px; color: var(--ink-muted); }
+
+/* Clientes */
+.tools { display: flex; gap: var(--s3); flex-wrap: wrap; align-items: center; margin-bottom: var(--s4); }
+.search { max-width: 280px; }
+.chips { display: flex; gap: var(--s1); flex-wrap: wrap; }
+.chip { padding: 6px 14px; border-radius: var(--r-pill); border: 1px solid var(--line-strong); background: transparent; font-size: 14px; line-height: 20px; font-weight: 500; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.cli { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--s6); align-items: start; }
+@media (max-width: 960px) { .cli { grid-template-columns: minmax(0, 1fr); } }
+.tbl-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); }
+.tbl { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 20px; }
+.tbl th { text-align: left; padding: var(--s3) var(--s4); background: var(--surface-sunken); font-size: 12px; line-height: 16px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); white-space: nowrap; }
+.tbl td { padding: var(--s3) var(--s4); border-top: 1px solid var(--line); vertical-align: middle; }
+.tbl tbody tr { cursor: pointer; }
+.tbl tbody tr:hover, .tbl tbody tr[aria-selected="true"] { background: var(--brand-soft); }
+.tbl .r { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.tbl button.name { background: none; border: 0; padding: 0; font-weight: 600; text-align: left; cursor: pointer; }
+.check { list-style: none; margin: 0; padding: 0; }
+.check li { border-top: 1px solid var(--line); }
+.check label { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: var(--s3); padding: var(--s3) 0; align-items: start; cursor: pointer; font-size: 14px; line-height: 20px; }
+.check input { width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--brand); }
+@media (max-width: 560px) { .hide-sm { display: none; } .tbl th, .tbl td { padding: var(--s3) 10px; } }
+
+footer { border-top: 1px solid var(--line); }
+footer .wrap { padding-block: var(--s6); }
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="mark" href="#inicio">Reforma2027</a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#inicio" data-nav="inicio">Início</a>
+      <a href="#painel" data-nav="painel">Painel</a>
+      <a href="#transicao" data-nav="transicao">Transição</a>
+      <a href="#simulador" data-nav="simulador">Simulador</a>
+      <a href="#clientes" data-nav="clientes">Clientes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- INÍCIO -->
+  <section class="view" id="v-inicio" data-view="inicio">
+    <div class="hero">
+      <div class="hero-text">
+        <p class="overline">Reforma tributária do consumo</p>
+        <h1 class="display">2027 começa agora.</h1>
+        <p class="lead">A CBS entra em vigor, PIS e Cofins saem de cena. Veja, cliente por cliente, o que muda na apuração e o que falta fazer antes da virada.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#painel">Abrir o painel</a>
+          <a class="btn" href="#transicao">Ver a transição</a>
+        </div>
+      </div>
+      <div class="art" aria-label="Resumo da virada de 2027">
+        <div class="blk blk-brand">
+          <div class="swap">
+            <div><p class="overline">Saem</p><p class="big"><s>PIS</s> <s>Cofins</s></p></div>
+            <div><p class="overline">Entra</p><p class="big">CBS</p></div>
+          </div>
+        </div>
+        <div class="blk blk-accent">
+          <p class="overline">IBS em teste</p>
+          <p class="big num">0,1%</p>
+        </div>
+        <div class="blk blk-soft"></div>
+        <div class="blk blk-ink">
+          <p class="overline" id="cd-label">Faltam</p>
+          <p class="big" id="cd-days">–</p>
+          <div class="clock" id="cd-clock">
+            <div><b id="cd-h">00</b><span>horas</span></div>
+            <div><b id="cd-m">00</b><span>min</span></div>
+            <div><b id="cd-s">00</b><span>seg</span></div>
+          </div>
+        </div>
+        <i class="rule" style="top:16.6%"></i><i class="rule" style="top:33.3%"></i><i class="rule" style="top:50%"></i><i class="rule" style="top:66.6%"></i><i class="rule" style="top:83.3%"></i>
+      </div>
+    </div>
+
+    <div class="facts">
+      <div class="fact"><p class="overline">1º de janeiro de 2027</p><h3 class="h3">CBS em vigor</h3><p class="small muted">A Contribuição sobre Bens e Serviços substitui PIS e Cofins, que são extintos.</p></div>
+      <div class="fact"><p class="overline">Novo tributo</p><h3 class="h3">Imposto Seletivo</h3><p class="small muted">Passa a incidir sobre bens e serviços prejudiciais à saúde ou ao meio ambiente.</p></div>
+      <div class="fact"><p class="overline">IPI</p><h3 class="h3">Alíquota zero</h3><p class="small muted">Exceto para produtos que também tenham industrialização incentivada na Zona Franca de Manaus.</p></div>
+      <div class="fact"><p class="overline">IBS</p><h3 class="h3">Segue em teste</h3><p class="small muted">Alíquota de 0,1% em 2027 e 2028. A substituição de ICMS e ISS começa em 2029.</p></div>
+    </div>
+  </section>
+
+  <!-- PAINEL -->
+  <section class="view" id="v-painel" data-view="painel" hidden>
+    <div class="view-head">
+      <div class="row"><p class="overline">Painel do escritório</p><span class="tag">Dados de exemplo</span></div>
+      <h1 class="h1">Como está a sua carteira para 2027</h1>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="two">
+      <div class="card stack">
+        <h2 class="h3">Prontidão por regime</h2>
+        <div class="stack" id="regimes"></div>
+        <div class="legend">
+          <span><i class="f-pronto"></i>Pronto</span><span><i class="f-adequacao"></i>Em adequação</span><span><i class="f-risco"></i>Em risco</span>
+        </div>
+      </div>
+      <div class="card stack">
+        <h2 class="h3">O que mais falta fazer</h2>
+        <ul class="todo" id="todo"></ul>
+        <a class="btn" href="#clientes">Ver clientes</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRANSIÇÃO -->
+  <section class="view" id="v-transicao" data-view="transicao" hidden>
+    <div class="view-head">
+      <p class="overline">Calendário de transição</p>
+      <h1 class="h1">De 2026 a 2033, ano a ano</h1>
+      <p class="lead">Toque em um ano para ver o que muda. As barras mostram quanto do ICMS e do ISS ainda vale e quanto do IBS já entrou.</p>
+    </div>
+    <div class="card">
+      <div class="scroll-x"><div class="years" id="years"></div></div>
+      <div class="legend" style="margin-top: var(--s3)">
+        <span><i class="seg-old"></i>ICMS e ISS</span><span><i class="seg-new"></i>IBS</span>
+      </div>
+      <div class="detail" id="year-detail"></div>
+    </div>
+    <p class="note" style="margin-top: var(--s4)">Resumo com base na Emenda Constitucional 132/2023 e na Lei Complementar 214/2025. Confirme sempre na legislação vigente.</p>
+  </section>
+
+  <!-- SIMULADOR -->
+  <section class="view" id="v-simulador" data-view="simulador" hidden>
+    <div class="view-head">
+      <div class="row"><p class="overline">Simulador</p><span class="tag">Simulação ilustrativa</span></div>
+      <h1 class="h1">Quanto muda no mês de um cliente</h1>
+    </div>
+    <div class="sim">
+      <form class="card stack" id="sim-form" autocomplete="off">
+        <div class="field"><label for="sim-receita">Receita mensal (R$)</label><input id="sim-receita" type="number" min="0" step="1000" value="250000" inputmode="decimal"></div>
+        <div class="field"><label for="sim-compras">Compras com direito a crédito (R$)</label><input id="sim-compras" type="number" min="0" step="1000" value="110000" inputmode="decimal"><small>Insumos, mercadorias e serviços tributados usados na atividade.</small></div>
+        <div class="field"><label for="sim-atividade">Atividade</label>
+          <select id="sim-atividade">
+            <option value="1">Alíquota padrão</option>
+            <option value="0.7">Redução de 30% (profissões regulamentadas, como contabilidade)</option>
+            <option value="0.4">Redução de 60% (saúde, educação e outros)</option>
+          </select>
+        </div>
+        <div class="field"><label for="sim-ref">Alíquota de referência CBS + IBS (%)</label><input id="sim-ref" type="number" min="0" max="100" step="0.1" value="26.5" inputmode="decimal"><small>Estimativa. A alíquota definitiva ainda será fixada.</small></div>
+        <div class="field"><label for="sim-atual">Carga atual sobre a receita (%)</label><input id="sim-atual" type="number" min="0" max="100" step="0.05" value="9.25" inputmode="decimal"><small>Exemplo: soma efetiva de PIS, Cofins, ICMS e ISS do cliente hoje.</small></div>
+      </form>
+      <div class="stack">
+        <div class="card stack">
+          <p class="overline">Diferença no mês</p>
+          <p class="result" id="sim-diff">–</p>
+          <p class="small muted" id="sim-diff-text"></p>
+          <div class="cmp">
+            <div class="cmp-row"><span class="small">Hoje</span><div><div class="cmp-bar seg-old" id="bar-hoje"></div><span class="cmp-val" id="val-hoje"></span></div></div>
+            <div class="cmp-row"><span class="small">Novo modelo</span><div><div class="cmp-bar seg-new" id="bar-novo"></div><span class="cmp-val" id="val-novo"></span></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2 class="h3" style="margin-bottom: var(--s3)">Memória de cálculo do novo modelo</h2>
+          <table class="ledger">
+            <tbody>
+              <tr><th scope="row">Alíquota aplicada à atividade</th><td id="l-aliq"></td></tr>
+              <tr><th scope="row">Débito sobre a receita</th><td id="l-deb"></td></tr>
+              <tr><th scope="row">Crédito sobre as compras</th><td id="l-cred"></td></tr>
+              <tr class="total"><th scope="row">A recolher</th><td id="l-total"></td></tr>
+              <tr><th scope="row">Parcela CBS (federal)</th><td id="l-cbs"></td></tr>
+              <tr><th scope="row">Parcela IBS (estados e municípios)</th><td id="l-ibs"></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Cálculo simplificado para apresentação: considera o modelo completo, como em 2033, divide CBS e IBS na proporção estimada de 8,8 e 17,7 pontos, e não trata regimes específicos, Simples Nacional nem cálculo "por fora". Não substitui a apuração.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTES -->
+  <section class="view" id="v-clientes" data-view="clientes" hidden>
+    <div class="view-head">
+      <div class="row"><p class="overline">Clientes</p><span class="tag">Empresas fictícias</span></div>
+      <h1 class="h1">Quem está pronto e quem precisa de atenção</h1>
+    </div>
+    <div class="tools">
+      <input class="search" id="cli-busca" type="search" placeholder="Buscar cliente" aria-label="Buscar cliente">
+      <div class="chips" id="cli-chips" role="group" aria-label="Filtrar por situação"></div>
+    </div>
+    <div class="cli">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Cliente</th><th class="hide-sm">Regime</th><th>Situação</th><th class="r">Prontidão</th></tr></thead>
+          <tbody id="cli-body"></tbody>
+        </table>
+      </div>
+      <div class="card stack" id="cli-detail"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><p class="note">Protótipo de apresentação. Clientes e valores são fictícios e não há dados reais conectados. Regras resumidas da EC 132/2023 e da LC 214/2025.</p></div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+  var pct = function (v, d) { return v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }) + '%'; };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  /* ---------- Dados de exemplo ---------- */
+  var ITENS = [
+    'Cadastro de produtos e serviços revisado (NCM e NBS)',
+    'Sistema emissor parametrizado para CBS e IBS',
+    'Fornecedores mapeados por regime e crédito',
+    'Preços e contratos de longo prazo revisados',
+    'Fluxo de caixa ajustado ao split payment',
+    'Equipe do cliente orientada'
+  ];
+  var CLIENTES = [
+    { nome: 'Padaria Bom Trigo', regime: 'Simples Nacional', setor: 'Alimentação', ok: [1, 1, 1, 1, 1, 1] },
+    { nome: 'Clínica Vida Plena', regime: 'Lucro Presumido', setor: 'Saúde', ok: [1, 1, 1, 1, 1, 0] },
+    { nome: 'Construtora Alvorada', regime: 'Lucro Real', setor: 'Construção', ok: [1, 1, 0, 0, 0, 1] },
+    { nome: 'Mercado São Jorge', regime: 'Lucro Real', setor: 'Varejo', ok: [1, 1, 1, 0, 1, 1] },
+    { nome: 'TransLog Cargas', regime: 'Lucro Presumido', setor: 'Transporte', ok: [0, 0, 1, 0, 0, 0] },
+    { nome: 'Escola Pequeno Saber', regime: 'Simples Nacional', setor: 'Educação', ok: [1, 0, 1, 1, 0, 1] },
+    { nome: 'Agro Serra Verde', regime: 'Lucro Real', setor: 'Agronegócio', ok: [1, 1, 1, 1, 0, 1] },
+    { nome: 'Studio Lume Arquitetura', regime: 'Simples Nacional', setor: 'Serviços', ok: [0, 1, 0, 0, 0, 1] },
+    { nome: 'Auto Peças Ferraz', regime: 'Lucro Presumido', setor: 'Comércio', ok: [1, 0, 1, 0, 0, 1] },
+    { nome: 'Farmácia Santa Clara', regime: 'Simples Nacional', setor: 'Varejo', ok: [1, 1, 1, 1, 1, 1] },
+    { nome: 'Tecno Byte Sistemas', regime: 'Lucro Presumido', setor: 'Tecnologia', ok: [1, 1, 0, 1, 0, 0] },
+    { nome: 'Restaurante Dona Lúcia', regime: 'Simples Nacional', setor: 'Alimentação', ok: [0, 0, 0, 1, 0, 0] }
+  ];
+  var SIT = { pronto: 'Pronto', adequacao: 'Em adequação', risco: 'Em risco' };
+  function feitos(c) { return c.ok.reduce(function (a, b) { return a + (b ? 1 : 0); }, 0); }
+  function situacao(c) { var n = feitos(c); return n >= 5 ? 'pronto' : n >= 3 ? 'adequacao' : 'risco'; }
+  function prontidao(c) { return Math.round(feitos(c) / ITENS.length * 100); }
+
+  /* ---------- Navegação ---------- */
+  var VIEWS = ['inicio', 'painel', 'transicao', 'simulador', 'clientes'];
+  function route() {
+    var h = (location.hash || '').replace('#', '');
+    if (VIEWS.indexOf(h) < 0) h = 'inicio';
+    document.querySelectorAll('[data-view]').forEach(function (el) { el.hidden = el.dataset.view !== h; });
+    document.querySelectorAll('[data-nav]').forEach(function (a) {
+      if (a.dataset.nav === h) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    if (h === 'painel') renderPainel();
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route);
+
+  /* ---------- Contagem regressiva ---------- */
+  var ALVO = new Date(2027, 0, 1, 0, 0, 0).getTime();
+  var p2 = function (n) { return String(n).padStart(2, '0'); };
+  function tick() {
+    var d = ALVO - Date.now();
+    if (d <= 0) {
+      $('cd-label').textContent = 'CBS em vigor há';
+      $('cd-days').textContent = Math.floor(-d / 864e5) + ' dias';
+      $('cd-clock').hidden = true;
+      return;
+    }
+    var s = Math.floor(d / 1000);
+    var dias = Math.floor(s / 86400);
+    $('cd-days').textContent = dias + (dias === 1 ? ' dia' : ' dias');
+    $('cd-h').textContent = p2(Math.floor(s % 86400 / 3600));
+    $('cd-m').textContent = p2(Math.floor(s % 3600 / 60));
+    $('cd-s').textContent = p2(s % 60);
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ---------- Painel ---------- */
+  function renderPainel() {
+    var cont = { pronto: 0, adequacao: 0, risco: 0 };
+    CLIENTES.forEach(function (c) { cont[situacao(c)]++; });
+    var media = Math.round(CLIENTES.reduce(function (a, c) { return a + prontidao(c); }, 0) / CLIENTES.length);
+    $('kpis').innerHTML =
+      kpi('Clientes na carteira', CLIENTES.length, 'Prontidão média de ' + media + '%', '') +
+      kpi('Prontos para 2027', cont.pronto, 'Cinco ou mais itens concluídos', 'st-pronto') +
+      kpi('Em adequação', cont.adequacao, 'Três ou quatro itens concluídos', 'st-adequacao') +
+      kpi('Em risco', cont.risco, 'Menos de três itens concluídos', 'st-risco');
+
+    var regs = ['Simples Nacional', 'Lucro Presumido', 'Lucro Real'];
+    $('regimes').innerHTML = regs.map(function (r) {
+      var l = CLIENTES.filter(function (c) { return c.regime === r; });
+      var n = { pronto: 0, adequacao: 0, risco: 0 };
+      l.forEach(function (c) { n[situacao(c)]++; });
+      var seg = function (k) { return '<div class="bar-fill f-' + k + '" style="width:' + (n[k] / l.length * 100) + '%" title="' + SIT[k] + ': ' + n[k] + '"></div>'; };
+      return '<div class="bar-row"><span class="small">' + r + '</span><div class="bar" role="img" aria-label="' + r + ': ' + n.pronto + ' prontos, ' + n.adequacao + ' em adequação, ' + n.risco + ' em risco">' + seg('pronto') + seg('adequacao') + seg('risco') + '</div><span class="num small" style="text-align:right">' + l.length + '</span></div>';
+    }).join('');
+
+    var pend = ITENS.map(function (t, i) { return { t: t, n: CLIENTES.filter(function (c) { return !c.ok[i]; }).length }; })
+      .sort(function (a, b) { return b.n - a.n; }).slice(0, 4);
+    $('todo').innerHTML = pend.map(function (p) {
+      return '<li><span class="small">' + esc(p.t) + '</span><span class="num small muted">' + p.n + (p.n === 1 ? ' cliente' : ' clientes') + '</span></li>';
+    }).join('');
+  }
+  function kpi(rot, val, sub, cls) {
+    return '<div class="kpi"><p class="overline">' + rot + '</p><p class="fig ' + cls + '">' + val + '</p><p class="small muted">' + sub + '</p></div>';
+  }
+
+  /* ---------- Transição ---------- */
+  var ANOS = [
+    { a: 2026, old: 100, ibs: 1, r: 'Ano de teste', t: 'O ano de teste', i: ['CBS a 0,9% e IBS a 0,1% passam a ser destacados nos documentos fiscais.', 'Os valores são compensáveis com PIS e Cofins.', 'PIS, Cofins, ICMS e ISS continuam valendo normalmente.'] },
+    { a: 2027, old: 100, ibs: 1, r: 'CBS em vigor', t: 'A virada federal', i: ['A CBS entra em vigor e PIS e Cofins são extintos.', 'O Imposto Seletivo começa a ser cobrado.', 'O IPI vai a zero, exceto para produtos com industrialização incentivada na Zona Franca de Manaus.', 'O IBS segue a 0,1%, dividido entre estados e municípios.'] },
+    { a: 2028, old: 100, ibs: 1, r: 'IBS a 0,1%', t: 'Último ano antes do IBS crescer', i: ['Mesmo desenho de 2027: CBS plena e IBS a 0,1%.', 'ICMS e ISS ainda com as alíquotas cheias.', 'Bom momento para concluir a revisão de preços e contratos.'] },
+    { a: 2029, old: 90, ibs: 10, r: 'ICMS e ISS a 90%', t: 'Começa a troca de ICMS e ISS pelo IBS', i: ['As alíquotas de ICMS e ISS caem para 90% do valor atual.', 'O IBS sobe na mesma proporção.', 'Benefícios fiscais de ICMS e ISS são reduzidos no mesmo ritmo.'] },
+    { a: 2030, old: 80, ibs: 20, r: 'ICMS e ISS a 80%', t: 'Segundo degrau', i: ['ICMS e ISS a 80% das alíquotas.', 'O IBS avança mais um degrau.'] },
+    { a: 2031, old: 70, ibs: 30, r: 'ICMS e ISS a 70%', t: 'Terceiro degrau', i: ['ICMS e ISS a 70% das alíquotas.', 'O IBS avança mais um degrau.'] },
+    { a: 2032, old: 60, ibs: 40, r: 'ICMS e ISS a 60%', t: 'Último ano com ICMS e ISS', i: ['ICMS e ISS a 60% das alíquotas.', 'Último ano de convivência entre os dois modelos.'] },
+    { a: 2033, old: 0, ibs: 100, r: 'Modelo completo', t: 'O novo modelo completo', i: ['ICMS e ISS são extintos.', 'CBS e IBS passam a valer integralmente, com cobrança no destino.', 'Crédito amplo e não cumulatividade plena em toda a cadeia.'] }
+  ];
+  var anoSel = 2027;
+  function renderAnos() {
+    $('years').innerHTML = ANOS.map(function (y) {
+      return '<button type="button" class="year" data-ano="' + y.a + '" aria-pressed="' + (y.a === anoSel) + '">' +
+        '<div class="col" aria-hidden="true"><div class="col-seg seg-new" style="height:' + y.ibs + '%"></div><div class="col-seg seg-old" style="height:' + y.old + '%"></div></div>' +
+        '<b>' + y.a + '</b><span>' + y.r + '</span></button>';
+    }).join('');
+    var y = ANOS.filter(function (x) { return x.a === anoSel; })[0];
+    $('year-detail').innerHTML = '<div><p class="yr">' + y.a + '</p><p class="overline" style="margin-top:8px">' + y.r + '</p></div>' +
+      '<div class="stack"><h2 class="h2">' + y.t + '</h2><ul>' + y.i.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul></div>';
+  }
+  $('years').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-ano]'); if (!b) return;
+    anoSel = +b.dataset.ano; renderAnos();
+    var nb = document.querySelector('[data-ano="' + anoSel + '"]'); if (nb) nb.focus();
+  });
+
+  /* ---------- Simulador ---------- */
+  function calc(receita, compras, fator, ref, atual) {
+    var aliq = ref * fator;
+    var deb = receita * aliq / 100;
+    var cred = compras * ref / 100;
+    var novo = Math.max(0, deb - cred);
+    return { aliq: aliq, deb: deb, cred: cred, novo: novo, hoje: receita * atual / 100, cbs: novo * 8.8 / 26.5, ibs: novo * 17.7 / 26.5 };
+  }
+  function num(id) { var v = parseFloat($(id).value); return isFinite(v) && v > 0 ? v : 0; }
+  function renderSim() {
+    var r = calc(num('sim-receita'), num('sim-compras'), parseFloat($('sim-atividade').value), num('sim-ref'), num('sim-atual'));
+    var max = Math.max(r.hoje, r.novo, 1);
+    $('bar-hoje').style.width = (r.hoje / max * 100) + '%';
+    $('bar-novo').style.width = (r.novo / max * 100) + '%';
+    $('val-hoje').textContent = brl.format(r.hoje);
+    $('val-novo').textContent = brl.format(r.novo);
+    var d = r.novo - r.hoje, el = $('sim-diff');
+    el.className = 'result ' + (d > 0.005 ? 'neg' : d < -0.005 ? 'pos' : '');
+    el.textContent = (d > 0.005 ? '+ ' : d < -0.005 ? '− ' : '') + brl.format(Math.abs(d));
+    $('sim-diff-text').textContent = d > 0.005 ? 'O cliente recolheria mais no novo modelo.' : d < -0.005 ? 'O cliente recolheria menos no novo modelo.' : 'Sem diferença entre os dois modelos.';
+    $('l-aliq').textContent = pct(r.aliq, 2);
+    $('l-deb').textContent = brl.format(r.deb);
+    $('l-cred').textContent = '− ' + brl.format(r.cred);
+    $('l-total').textContent = brl.format(r.novo);
+    $('l-cbs').textContent = brl.format(r.cbs);
+    $('l-ibs').textContent = brl.format(r.ibs);
+  }
+  $('sim-form').addEventListener('input', renderSim);
+  $('sim-form').addEventListener('submit', function (e) { e.preventDefault(); });
+
+  /* ---------- Clientes ---------- */
+  var filtro = 'todos', busca = '', sel = 0;
+  function renderChips() {
+    var ops = [['todos', 'Todos'], ['pronto', SIT.pronto], ['adequacao', SIT.adequacao], ['risco', SIT.risco]];
+    $('cli-chips').innerHTML = ops.map(function (o) { return '<button type="button" class="chip" data-f="' + o[0] + '" aria-pressed="' + (filtro === o[0]) + '">' + o[1] + '</button>'; }).join('');
+  }
+  function renderClientes() {
+    var linhas = CLIENTES.map(function (c, i) { return { c: c, i: i }; }).filter(function (x) {
+      return (filtro === 'todos' || situacao(x.c) === filtro) && x.c.nome.toLowerCase().indexOf(busca) >= 0;
+    });
+    $('cli-body').innerHTML = linhas.length ? linhas.map(function (x) {
+      var s = situacao(x.c);
+      return '<tr data-i="' + x.i + '" aria-selected="' + (x.i === sel) + '"><td><button type="button" class="name">' + esc(x.c.nome) + '</button><div class="muted" style="font-size:12px;line-height:16px">' + esc(x.c.setor) + '</div></td>' +
+        '<td class="hide-sm">' + x.c.regime + '</td><td><span class="pill st-' + s + '">' + SIT[s] + '</span></td><td class="r">' + prontidao(x.c) + '%</td></tr>';
+    }).join('') : '<tr><td colspan="4" class="muted">Nenhum cliente encontrado. Limpe a busca ou troque o filtro.</td></tr>';
+    renderDetalhe();
+  }
+  function renderDetalhe() {
+    var c = CLIENTES[sel], s = situacao(c);
+    $('cli-detail').innerHTML =
+      '<div><p class="overline">' + esc(c.setor) + ' · ' + c.regime + '</p><h2 class="h2">' + esc(c.nome) + '</h2></div>' +
+      '<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span class="pill st-' + s + '">' + SIT[s] + '</span><span class="num small">' + feitos(c) + ' de ' + ITENS.length + ' itens · ' + prontidao(c) + '%</span></div>' +
+      '<div class="bar"><div class="bar-fill f-' + s + '" style="width:' + prontidao(c) + '%"></div></div>' +
+      '<ul class="check">' + ITENS.map(function (t, i) {
+        return '<li><label for="ck-' + i + '"><input type="checkbox" id="ck-' + i + '" data-k="' + i + '"' + (c.ok[i] ? ' checked' : '') + '><span>' + esc(t) + '</span></label></li>';
+      }).join('') + '</ul>' +
+      '<p class="note">Marque um item para ver a prontidão mudar. Nada é salvo neste protótipo.</p>';
+  }
+  $('cli-chips').addEventListener('click', function (e) { var b = e.target.closest('[data-f]'); if (!b) return; filtro = b.dataset.f; renderChips(); renderClientes(); });
+  $('cli-busca').addEventListener('input', function (e) { busca = e.target.value.trim().toLowerCase(); renderClientes(); });
+  $('cli-body').addEventListener('click', function (e) {
+    var tr = e.target.closest('[data-i]'); if (!tr) return;
+    sel = +tr.dataset.i; renderClientes();
+    if (window.matchMedia('(max-width: 960px)').matches) $('cli-detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  $('cli-detail').addEventListener('change', function (e) {
+    var k = e.target.dataset.k; if (k === undefined) return;
+    CLIENTES[sel].ok[+k] = e.target.checked ? 1 : 0;
+    renderClientes();
+    var again = $('ck-' + k); if (again) again.focus();
+  });
+
+  renderAnos(); renderSim(); renderChips(); renderClientes(); renderPainel(); route();
+})();
+</script>
