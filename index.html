@@ -195,9 +195,95 @@ details.who-did summary { cursor: pointer; font-size: 14px; line-height: 20px; f
 @media (max-width: 720px) { .two { grid-template-columns: minmax(0, 1fr); } }
 .toggle { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s3); align-items: center; padding: var(--s3) 0; border-top: 1px solid var(--line); font-size: 14px; line-height: 20px; }
 .toggle input { width: 18px; height: 18px; accent-color: var(--brand); }
+
+/* Abertura */
+.ab { position: fixed; inset: 0; z-index: 50; background: var(--bg); display: flex; flex-direction: column; gap: var(--s4); padding: calc(env(safe-area-inset-top, 0px) + 16px) max(16px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 24px) max(16px, env(safe-area-inset-left, 0px)); transition: opacity 500ms ease; overflow: hidden; }
+.ab.sai { opacity: 0; pointer-events: none; }
+.ab-top { display: flex; align-items: center; gap: var(--s4); max-width: 1160px; width: 100%; margin: 0 auto; }
+.ab-bars { flex: 1; display: flex; gap: 6px; }
+.ab-bars i { flex: 1; height: 3px; border-radius: 2px; background: var(--line); position: relative; overflow: hidden; }
+.ab-bars i::after { content: ""; position: absolute; inset: 0; background: var(--ink); transform: scaleX(0); transform-origin: left center; }
+.ab-bars i.feito::after { transform: scaleX(1); }
+.ab-bars i.agora::after { animation: enche var(--dur, 3s) linear forwards; }
+.ab-palco { flex: 1; position: relative; max-width: 1000px; width: 100%; margin: 0 auto; cursor: pointer; }
+.cena { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: var(--s6); opacity: 0; visibility: hidden; transition: opacity 400ms ease, visibility 400ms; }
+.cena.on { opacity: 1; visibility: visible; }
+.cena .big { font-family: var(--font-display); font-weight: 600; font-size: clamp(42px, 9.5vw, 108px); line-height: 0.96; letter-spacing: -0.02em; text-wrap: balance; }
+.cena .mid { font-family: var(--font-display); font-weight: 600; font-size: clamp(32px, 6.4vw, 68px); line-height: 1.02; letter-spacing: -0.02em; text-wrap: balance; }
+.cena .sub { font-size: clamp(17px, 2.4vw, 22px); line-height: 1.45; color: var(--ink-muted); max-width: 40ch; }
+.cena .fig { font-family: var(--font-mono); font-weight: 500; font-variant-numeric: tabular-nums; }
+.velhos { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s6); font-family: var(--font-display); font-weight: 600; font-size: clamp(28px, 6vw, 60px); line-height: 1.1; color: var(--ink-muted); }
+.velhos span { position: relative; }
+.velhos span::after { content: ""; position: absolute; left: -4px; right: -4px; top: 54%; height: 3px; background: var(--negative); transform-origin: left center; }
+.novos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s3); max-width: 720px; }
+.novos div { border-radius: var(--r-lg); padding: var(--s4); min-height: 104px; display: flex; flex-direction: column; justify-content: flex-end; font-weight: 600; font-size: 14px; line-height: 18px; }
+.novos b { font-family: var(--font-display); font-size: clamp(24px, 4.4vw, 40px); line-height: 1; }
+.ab .cycle { max-width: 760px; }
+.ab-fim { display: flex; gap: var(--s3); flex-wrap: wrap; align-items: center; }
+.ab-dica { text-align: center; }
+@media (prefers-reduced-motion: no-preference) {
+  .cena.on .a1 { animation: fade 650ms ease-out backwards; }
+  .cena.on .a2 { animation: fade 650ms ease-out 350ms backwards; }
+  .cena.on .a3 { animation: fade 650ms ease-out 900ms backwards; }
+  .cena.on .a4 { animation: fade 650ms ease-out 1900ms backwards; }
+  .cena.on .velhos span::after { animation: draw 380ms ease-out backwards; }
+  .cena.on .velhos span:nth-child(1)::after { animation-delay: 700ms; } .cena.on .velhos span:nth-child(2)::after { animation-delay: 880ms; }
+  .cena.on .velhos span:nth-child(3)::after { animation-delay: 1060ms; } .cena.on .velhos span:nth-child(4)::after { animation-delay: 1240ms; }
+  .cena.on .velhos span:nth-child(5)::after { animation-delay: 1420ms; }
+  .cena.on .novos div { animation: rise 600ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+  .cena.on .novos div:nth-child(1) { animation-delay: 1900ms; } .cena.on .novos div:nth-child(2) { animation-delay: 2020ms; } .cena.on .novos div:nth-child(3) { animation-delay: 2140ms; }
+  .cena:not(.on) .step, .cena:not(.on) .cycle-rule { animation: none; }
+  .cena.on .step { animation-delay: 500ms; } .cena.on .st2 { animation-delay: 650ms; } .cena.on .st3 { animation-delay: 800ms; } .cena.on .st4 { animation-delay: 950ms; }
+  .cena.on .cycle-rule { animation-delay: 1200ms; }
+}
+@keyframes enche { to { transform: scaleX(1); } }
 footer { border-top: 1px solid var(--line); }
 footer .wrap { padding-block: var(--s6); }
 </style>
+
+<div class="ab" id="abertura" hidden role="dialog" aria-label="Abertura do Reforma 2027">
+  <div class="ab-top">
+    <div class="ab-bars" id="ab-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <button type="button" class="btn btn-sm" data-act="ab-pular">Pular intro</button>
+  </div>
+  <div class="ab-palco" id="ab-palco">
+    <section class="cena">
+      <p class="overline a1">1º de janeiro de 2027</p>
+      <p class="big a2">Faltam <span class="fig" id="ab-days">–</span> dias.</p>
+      <p class="sub a3">A reforma tributária do consumo começa a valer de verdade. E ela chega para toda empresa, da pequena à grande.</p>
+    </section>
+    <section class="cena">
+      <p class="overline a1">O que sai e o que entra</p>
+      <div class="velhos a2" aria-label="PIS, Cofins, IPI, ICMS e ISS dão lugar a novos tributos"><span>PIS</span><span>Cofins</span><span>IPI</span><span>ICMS</span><span>ISS</span></div>
+      <div class="novos">
+        <div class="st1"><b>CBS</b>federal</div><div class="st2"><b>IBS</b>estados e municípios</div><div class="st4"><b>IS</b>Imposto Seletivo</div>
+      </div>
+      <p class="sub a4">A troca é gradual, de 2026 a 2033.</p>
+    </section>
+    <section class="cena">
+      <p class="overline a1">Para quem tem empresa pequena</p>
+      <p class="mid a2">“E para mim, o que muda?”</p>
+      <p class="sub a3">Muita notícia, pouca certeza. Quem toca um pequeno negócio precisa da informação certa, na hora certa.</p>
+    </section>
+    <section class="cena">
+      <p class="overline a1">Como funciona aqui</p>
+      <p class="mid a1">Cada resposta passa por quatro etapas.</p>
+      <div class="cycle">
+        <div class="step st1"><b>1</b><span>Bots sondam as fontes oficiais</span></div>
+        <div class="step st2"><b>2</b><span>Estudantes revisam</span></div>
+        <div class="step st3"><b>3</b><span>IA aberta confere</span></div>
+        <div class="step st4"><b>4</b><span>Escritório dá o aval</span></div>
+        <i class="cycle-rule" style="top:33%"></i><i class="cycle-rule" style="top:66%"></i>
+      </div>
+    </section>
+    <section class="cena">
+      <p class="overline a1">Reforma 2027 · gratuito e imparcial</p>
+      <p class="big a2">Nada vai ao ar sem o aval de um contador.</p>
+      <div class="ab-fim a3"><button type="button" class="btn btn-primary" data-act="ab-pular">Entrar no aplicativo</button><span class="small muted">Feito no Espírito Santo, por quem faz a conta.</span></div>
+    </section>
+  </div>
+  <p class="note ab-dica">Toque na tela para avançar.</p>
+</div>
 
 <header class="top">
   <div class="wrap top-in">
@@ -246,7 +332,7 @@ footer .wrap { padding-block: var(--s6); }
         <p class="small muted">Sem banco de dados conectado. Escolha um perfil para ver o aplicativo por dentro.</p>
         <div class="demo" id="demo-btns"></div>
       </div>
-      <p class="note">Gratuito e imparcial. O aplicativo orienta, mas não substitui o contador. Seus dados seguem a LGPD.</p>
+      <p class="note">Gratuito e imparcial. O aplicativo orienta, mas não substitui o contador. Seus dados seguem a LGPD. <button class="link" type="button" data-act="ab-rever">Rever a abertura</button></p>
     </form>
   </div>
 
@@ -369,8 +455,8 @@ footer .wrap { padding-block: var(--s6); }
   var ALVO = new Date(2027, 0, 1).getTime();
   function tick() {
     var d = ALVO - Date.now();
-    if (d <= 0) { $('cd-label').textContent = 'Em vigor há'; $('cd-days').textContent = Math.floor(-d / 864e5) + ' dias'; return; }
-    var n = Math.ceil(d / 864e5); $('cd-days').textContent = n + (n === 1 ? ' dia' : ' dias');
+    if (d <= 0) { $('ab-days').textContent = '0'; $('cd-label').textContent = 'Em vigor há'; $('cd-days').textContent = Math.floor(-d / 864e5) + ' dias'; return; }
+    var n = Math.ceil(d / 864e5); $('cd-days').textContent = n + (n === 1 ? ' dia' : ' dias'); $('ab-days').textContent = n;
   }
   tick(); setInterval(tick, 60000);
 
@@ -565,6 +651,7 @@ footer .wrap { padding-block: var(--s6); }
         '<div class="two"><div class="card stack-sm"><h2 class="h3">Suas informações</h2><p class="small muted">Você pode atualizar regime, porte, endereço, equipe e região a qualquer momento. Toda alteração fica registrada com data.</p><div class="row"><button type="button" class="btn btn-sm" data-act="demo-msg" data-m="Na versão com banco de dados, este botão abre o formulário de edição.">Atualizar informações</button><button type="button" class="btn btn-sm" data-act="demo-msg" data-m="O envio de logotipo é opcional e entra na versão com banco de dados.">Enviar logotipo</button></div></div>' +
         '<div class="card"><h2 class="h3">O que os outros perfis veem</h2><p class="small muted" style="margin-bottom: var(--s2)">Você só pode restringir, nunca ampliar.</p>' +
         ['Nome', 'Telefone', 'E-mail de contato', esc2 ? 'Áreas de atuação' : 'Cidade'].map(function (t, i) { return '<label class="toggle" for="vis-' + i + '"><span>' + t + '</span><input type="checkbox" id="vis-' + i + '"' + (i !== 1 ? ' checked' : '') + '></label>'; }).join('') + '</div></div>' +
+        '<div class="card" style="margin-top: var(--s4)"><h2 class="h3">Abertura</h2><p class="small muted" style="margin-bottom: var(--s2)">A abertura aparece sempre que você abre o aplicativo. Se preferir ir direto ao ponto, desligue aqui.</p><label class="toggle" for="pref-ab"><span>Pular a abertura sempre</span><input type="checkbox" id="pref-ab"' + (pularAb() ? ' checked' : '') + '></label><div style="margin-top: var(--s2)"><button type="button" class="btn btn-sm" data-act="ab-rever">Rever a abertura</button></div></div>' +
         '<div class="card stack-sm" style="margin-top: var(--s4)"><h2 class="h3">Cancelar cadastro</h2><p class="small muted">Seus dados pessoais são apagados conforme a LGPD. O histórico de validações fica no log de forma anônima.</p><div><button type="button" class="btn btn-sm" data-act="demo-msg" data-m="Nada foi cancelado: esta é uma demonstração.">Cancelar meu cadastro</button></div></div>';
     }
   };
@@ -595,6 +682,8 @@ footer .wrap { padding-block: var(--s6); }
   document.addEventListener('click', function (e) {
     var b = e.target.closest('[data-act]'); if (!b) return;
     var act = b.dataset.act, a, P = PERFIS[S.perfil];
+    if (act === 'ab-pular') return abFim();
+    if (act === 'ab-rever') return abInicia();
     if (act === 'demo') return entrar(b.dataset.p);
     if (act === 'google') { $('lg-msg').textContent = 'A entrada com Google depende do banco de dados. Use um dos perfis de demonstração abaixo.'; $('lg-msg').hidden = false; return; }
     if (act === 'esqueci') { $('lg-msg').textContent = 'Na versão final, enviamos um link por e-mail, válido por 1 hora.'; $('lg-msg').hidden = false; return; }
@@ -640,6 +729,27 @@ footer .wrap { padding-block: var(--s6); }
     S.cad.passo = 3; renderCad(); window.scrollTo(0, 0);
   });
 
+  /* ================= Abertura ================= */
+  var AB = { i: 0, t: null, dur: [4200, 5200, 4400, 4600, 6000] };
+  function pularAb() { try { return localStorage.getItem('r27-pular-abertura') === '1'; } catch (e) { return false; } }
+  function gravaAb(v) { try { if (v) localStorage.setItem('r27-pular-abertura', '1'); else localStorage.removeItem('r27-pular-abertura'); } catch (e) {} }
+  function abCena(i) {
+    AB.i = i; clearTimeout(AB.t);
+    document.querySelectorAll('#ab-palco .cena').forEach(function (c, k) { c.classList.toggle('on', k === i); });
+    document.querySelectorAll('#ab-bars i').forEach(function (b, k) { b.className = k < i ? 'feito' : k === i ? 'agora' : ''; b.style.setProperty('--dur', AB.dur[i] + 'ms'); });
+    AB.t = setTimeout(function () { if (i + 1 < AB.dur.length) abCena(i + 1); else abFim(); }, AB.dur[i]);
+  }
+  function abFim() {
+    clearTimeout(AB.t); var el = $('abertura'); if (el.hidden) return;
+    el.classList.add('sai'); setTimeout(function () { el.hidden = true; el.classList.remove('sai'); }, 500);
+  }
+  function abInicia() { var el = $('abertura'); el.classList.remove('sai'); el.hidden = false; abCena(0); }
+  $('ab-palco').addEventListener('click', function (e) { if (e.target.closest('button')) return; if (AB.i + 1 < AB.dur.length) abCena(AB.i + 1); else abFim(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('abertura').hidden) abFim(); });
+  document.addEventListener('change', function (e) { if (e.target.id === 'pref-ab') gravaAb(e.target.checked); });
+
   route();
+  var hashIni = (location.hash || '').replace('#', '');
+  if ((hashIni === '' || hashIni === 'entrar') && !pularAb()) abInicia();
 })();
 </script>
