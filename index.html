@@ -107,7 +107,6 @@ button, input, select { font: inherit; color: inherit; }
 .step span { font-size: 14px; line-height: 19px; font-weight: 600; }
 .st1 { background: var(--brand); color: var(--on-brand); } .st2 { background: var(--accent); color: var(--on-accent); }
 .st3 { background: var(--brand-soft); color: var(--ink); } .st4 { background: var(--ink); color: var(--bg); }
-.cycle-rule { position: absolute; left: 0; right: 0; height: 1px; background: var(--line); transform-origin: left center; }
 .pub { display: flex; align-items: center; gap: var(--s3); padding-top: var(--s3); border-top: 1px solid var(--ink); }
 .login { box-shadow: var(--shadow-lg); }
 .or { display: flex; align-items: center; gap: var(--s3); color: var(--ink-muted); font-size: 12px; }
@@ -120,7 +119,6 @@ button, input, select { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: no-preference) {
   .step { animation: rise 650ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
   .st2 { animation-delay: 110ms; } .st3 { animation-delay: 220ms; } .st4 { animation-delay: 330ms; }
-  .cycle-rule { animation: draw 700ms cubic-bezier(0.2, 0.8, 0.2, 1) 420ms backwards; }
   .pub { animation: fade 500ms ease-out 700ms backwards; }
   .intro-text > .overline, .intro-text > h1, .intro-text > .lead { animation: fade 600ms ease-out backwards; }
   .login { animation: fade 600ms ease-out 200ms backwards; }
@@ -160,9 +158,9 @@ button, input, select { font: inherit; color: inherit; }
 .who { padding: var(--s3) 12px var(--s4); border-bottom: 1px solid var(--line); margin-bottom: var(--s2); }
 @media (max-width: 860px) {
   .shell { grid-template-columns: minmax(0, 1fr); gap: var(--s4); padding-block: var(--s4) var(--s12); }
-  .side { position: static; flex-direction: row; overflow-x: auto; scrollbar-width: none; padding-bottom: var(--s2); border-bottom: 1px solid var(--line); }
+  .side { position: static; flex-direction: row; flex-wrap: wrap; gap: 6px; padding-bottom: var(--s3); border-bottom: 1px solid var(--line); }
   .side::-webkit-scrollbar { display: none; }
-  .side a { flex: none; padding: 6px 12px; font-size: 14px; border-radius: var(--r-pill); }
+  .side a { flex: none; padding: 6px 12px; font-size: 14px; border-radius: var(--r-pill); border: 1px solid var(--line); }
   .who { display: none; }
 }
 .head { display: flex; flex-direction: column; gap: var(--s2); margin-bottom: var(--s6); }
@@ -226,7 +224,6 @@ footer .wrap { padding-block: var(--s6); }
           <div class="step st2"><b>2</b><span>Estudantes revisam</span></div>
           <div class="step st3"><b>3</b><span>IA aberta confere</span></div>
           <div class="step st4"><b>4</b><span>Escritório dá o aval</span></div>
-          <i class="cycle-rule" style="top:33%"></i><i class="cycle-rule" style="top:66%"></i>
         </div>
         <div class="pub" style="margin-top: var(--s3)"><span class="pill ok">Publicada</span><span class="small muted">com fonte oficial, data de vigência e o nome de quem validou.</span></div>
       </div>
