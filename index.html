@@ -1,0 +1,645 @@
+<title>Reforma2027</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: livro-razão. Papel pautado; entrada em duas colunas (tese à esquerda, acesso à direita); app interno com trilho lateral e folhas brancas. Números em mono. */
+:root {
+  --bg: #f6f3ea; --surface: #ffffff; --surface-sunken: #ece7d9;
+  --ink: #10201b; --ink-muted: #4d5c56; --line: #d6cfbd; --line-strong: #75827b;
+  --brand: #0b5d4a; --on-brand: #ffffff; --brand-soft: #c9e0d4;
+  --accent: #e0a526; --on-accent: #2b1d00; --accent-ink: #8a5200;
+  --positive: #1657a8; --negative: #b3261e;
+  --shadow-lg: 0 16px 40px rgba(16, 32, 27, 0.14);
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s6: 24px; --s8: 32px; --s12: 48px; --s16: 64px;
+  --r-sm: 4px; --r-md: 10px; --r-lg: 20px; --r-pill: 999px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1a16; --surface: #15241f; --surface-sunken: #0a1411;
+    --ink: #f1ede2; --ink-muted: #a9b5ae; --line: #2a3b35; --line-strong: #6f8078;
+    --brand: #4fd1a5; --on-brand: #062a21; --brand-soft: #1f4a3d;
+    --accent: #f0b83a; --on-accent: #2b1d00; --accent-ink: #f0b83a;
+    --positive: #8fc0ff; --negative: #ff8a7a;
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1a16; --surface: #15241f; --surface-sunken: #0a1411;
+  --ink: #f1ede2; --ink-muted: #a9b5ae; --line: #2a3b35; --line-strong: #6f8078;
+  --brand: #4fd1a5; --on-brand: #062a21; --brand-soft: #1f4a3d;
+  --accent: #f0b83a; --on-accent: #2b1d00; --accent-ink: #f0b83a;
+  --positive: #8fc0ff; --negative: #ff8a7a;
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); font-size: 16px; line-height: 26px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+h1, h2, h3, p, ul, ol { margin: 0; }
+h1, h2, h3 { text-wrap: balance; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.wrap { max-width: 1160px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Tipos */
+.overline { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+.display { font-family: var(--font-display); font-weight: 600; font-size: clamp(38px, 6.4vw, 68px); line-height: 1; letter-spacing: -0.02em; }
+.h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(28px, 4.4vw, 38px); line-height: 1.1; letter-spacing: -0.01em; }
+.h2 { font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 28px; }
+.h3 { font-size: 17px; line-height: 24px; font-weight: 600; }
+.small { font-size: 14px; line-height: 20px; }
+.note { font-size: 12px; line-height: 18px; color: var(--ink-muted); }
+.muted { color: var(--ink-muted); }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.lead { font-size: 18px; line-height: 28px; color: var(--ink-muted); max-width: 48ch; }
+.stack { display: flex; flex-direction: column; gap: var(--s4); }
+.stack-sm { display: flex; flex-direction: column; gap: var(--s2); }
+.row { display: flex; gap: var(--s3); flex-wrap: wrap; align-items: center; }
+.between { justify-content: space-between; }
+
+/* Controles */
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; border-radius: var(--r-md); border: 1px solid var(--line-strong); background: transparent; font-weight: 600; font-size: 15px; line-height: 22px; text-decoration: none; color: var(--ink); cursor: pointer; }
+.btn:hover { background: var(--brand-soft); }
+.btn-primary { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
+.btn-primary:hover { background: var(--brand); filter: brightness(1.08); }
+.btn-sm { padding: 6px 14px; font-size: 14px; line-height: 20px; }
+.btn-block { width: 100%; }
+.btn[disabled] { opacity: 0.55; cursor: default; }
+.link { background: none; border: 0; padding: 0; color: var(--brand); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-size: inherit; }
+.tag { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: var(--r-pill); border: 1px solid var(--line-strong); font-size: 12px; line-height: 18px; font-weight: 600; color: var(--ink-muted); white-space: nowrap; }
+.tag-solid { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--r-pill); border: 1px solid currentColor; font-size: 12px; line-height: 18px; font-weight: 600; white-space: nowrap; }
+.pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.ok { color: var(--brand); } .warn { color: var(--accent-ink); } .bad { color: var(--negative); }
+.warn.pill::before { border-radius: 2px; } .bad.pill::before { border-radius: 0; transform: rotate(45deg); }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field > label, .field > .lbl { font-size: 14px; line-height: 20px; font-weight: 600; }
+.field input, .field select, .inp { width: 100%; padding: 10px var(--s3); border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--surface); color: var(--ink); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { padding: 6px 14px; border-radius: var(--r-pill); border: 1px solid var(--line-strong); background: transparent; font-size: 14px; line-height: 20px; font-weight: 500; cursor: pointer; }
+.chip:hover { background: var(--brand-soft); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--s6); min-width: 0; }
+.msg { padding: var(--s3) var(--s4); border-radius: var(--r-md); background: var(--brand-soft); font-size: 14px; line-height: 20px; }
+.err { color: var(--negative); font-size: 14px; line-height: 20px; font-weight: 600; }
+
+/* Barra superior */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+.top-in { display: flex; align-items: center; gap: var(--s3); padding-block: var(--s3); flex-wrap: wrap; }
+.mark { font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 28px; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; margin-right: auto; }
+.as { display: flex; align-items: center; gap: var(--s2); min-width: 0; }
+.as select { padding: 6px 10px; border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--surface); font-size: 14px; max-width: 100%; }
+
+/* Entrada */
+.intro { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 420px); gap: var(--s12); align-items: start; padding-block: var(--s12); }
+.intro-text { display: flex; flex-direction: column; gap: var(--s6); }
+.cycle { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s3); margin-top: var(--s2); }
+.step { position: relative; z-index: 1; border-radius: var(--r-lg); padding: var(--s4); min-height: 148px; display: flex; flex-direction: column; justify-content: space-between; gap: var(--s3); }
+.step b { font-family: var(--font-mono); font-weight: 500; font-size: 28px; line-height: 1; }
+.step span { font-size: 14px; line-height: 19px; font-weight: 600; }
+.st1 { background: var(--brand); color: var(--on-brand); } .st2 { background: var(--accent); color: var(--on-accent); }
+.st3 { background: var(--brand-soft); color: var(--ink); } .st4 { background: var(--ink); color: var(--bg); }
+.cycle-rule { position: absolute; left: 0; right: 0; height: 1px; background: var(--line); transform-origin: left center; }
+.pub { display: flex; align-items: center; gap: var(--s3); padding-top: var(--s3); border-top: 1px solid var(--ink); }
+.login { box-shadow: var(--shadow-lg); }
+.or { display: flex; align-items: center; gap: var(--s3); color: var(--ink-muted); font-size: 12px; }
+.or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.demo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s2); }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); margin-bottom: var(--s12); }
+.fact { padding: var(--s6) var(--s6) var(--s6) 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: var(--s2); }
+.fact + .fact { padding-left: var(--s6); border-left: 1px solid var(--line); }
+.fact .fig { font-family: var(--font-mono); font-weight: 500; font-size: 30px; line-height: 36px; font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: no-preference) {
+  .step { animation: rise 650ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+  .st2 { animation-delay: 110ms; } .st3 { animation-delay: 220ms; } .st4 { animation-delay: 330ms; }
+  .cycle-rule { animation: draw 700ms cubic-bezier(0.2, 0.8, 0.2, 1) 420ms backwards; }
+  .pub { animation: fade 500ms ease-out 700ms backwards; }
+  .intro-text > .overline, .intro-text > h1, .intro-text > .lead { animation: fade 600ms ease-out backwards; }
+  .login { animation: fade 600ms ease-out 200ms backwards; }
+  .meter i { transition: width 500ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+}
+@keyframes rise { from { transform: translateY(40px); opacity: 0; } }
+@keyframes draw { from { transform: scaleX(0); } }
+@keyframes fade { from { transform: translateY(12px); opacity: 0; } }
+@media (max-width: 940px) {
+  .intro { grid-template-columns: minmax(0, 1fr); gap: var(--s8); padding-block: var(--s8); }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fact:nth-child(3) { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 560px) {
+  .cycle { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .step { min-height: 112px; }
+  .facts { grid-template-columns: minmax(0, 1fr); } .fact + .fact { padding-left: 0; border-left: 0; }
+}
+
+/* Cadastro */
+.cad { max-width: 760px; margin: 0 auto; padding-block: var(--s12); }
+.opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); }
+.opt { text-align: left; padding: var(--s4); border: 1px solid var(--line-strong); border-radius: var(--r-lg); background: var(--surface); cursor: pointer; display: flex; flex-direction: column; gap: var(--s1); }
+.opt:hover { background: var(--brand-soft); }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); }
+@media (max-width: 560px) { .opts, .grid2 { grid-template-columns: minmax(0, 1fr); } }
+.steps { display: flex; gap: var(--s2); }
+.steps i { flex: 1; height: 4px; border-radius: 2px; background: var(--line); }
+.steps i.on { background: var(--brand); }
+
+/* App */
+.shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--s8); padding-block: var(--s8) var(--s16); align-items: start; }
+.side { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 76px); display: flex; flex-direction: column; gap: var(--s1); }
+.side a { padding: 8px 12px; border-radius: var(--r-md); font-size: 15px; line-height: 22px; font-weight: 500; color: var(--ink-muted); text-decoration: none; }
+.side a:hover { background: var(--brand-soft); color: var(--ink); }
+.side a[aria-current="page"] { background: var(--ink); color: var(--bg); }
+.who { padding: var(--s3) 12px var(--s4); border-bottom: 1px solid var(--line); margin-bottom: var(--s2); }
+@media (max-width: 860px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: var(--s4); padding-block: var(--s4) var(--s12); }
+  .side { position: static; flex-direction: row; overflow-x: auto; scrollbar-width: none; padding-bottom: var(--s2); border-bottom: 1px solid var(--line); }
+  .side::-webkit-scrollbar { display: none; }
+  .side a { flex: none; padding: 6px 12px; font-size: 14px; border-radius: var(--r-pill); }
+  .who { display: none; }
+}
+.head { display: flex; flex-direction: column; gap: var(--s2); margin-bottom: var(--s6); }
+.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); margin-bottom: var(--s6); }
+.kpi { padding: var(--s4) var(--s4) var(--s4) 0; display: flex; flex-direction: column; gap: var(--s1); }
+.kpi + .kpi { padding-left: var(--s4); border-left: 1px solid var(--line); }
+.kpi .fig { font-family: var(--font-mono); font-weight: 500; font-size: 34px; line-height: 40px; font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) { .kpis { grid-template-columns: minmax(0, 1fr); } .kpi + .kpi { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); } }
+.list { display: flex; flex-direction: column; gap: var(--s4); }
+.item-meta { display: flex; gap: var(--s2) var(--s6); flex-wrap: wrap; font-size: 13px; line-height: 18px; color: var(--ink-muted); }
+.item-meta b { color: var(--ink); font-weight: 600; }
+.track { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.track div { display: flex; flex-direction: column; gap: 4px; font-size: 11px; line-height: 14px; color: var(--ink-muted); min-width: 0; }
+.track i { height: 6px; border-radius: 3px; background: var(--surface-sunken); border: 1px solid var(--line); }
+.track .done i { background: var(--brand); border-color: var(--brand); }
+.track .now i { background: var(--accent); border-color: var(--accent); }
+.track .now { color: var(--ink); font-weight: 600; }
+details.who-did { border-top: 1px solid var(--line); padding-top: var(--s3); }
+details.who-did summary { cursor: pointer; font-size: 14px; line-height: 20px; font-weight: 600; }
+.ledger { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 20px; }
+.ledger th, .ledger td { padding: 10px 0; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-weight: 400; }
+.ledger th { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); font-weight: 600; white-space: nowrap; }
+.ledger td + td, .ledger th + th { padding-left: var(--s4); }
+.ledger .r { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 560px) { .hide-sm { display: none; } .ledger td + td, .ledger th + th { padding-left: var(--s3); } .card { padding: var(--s4); } }
+.meter { height: 8px; border-radius: 4px; background: var(--surface-sunken); overflow: hidden; min-width: 80px; }
+.meter i { display: block; height: 100%; background: var(--brand); }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); }
+@media (max-width: 720px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.toggle { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s3); align-items: center; padding: var(--s3) 0; border-top: 1px solid var(--line); font-size: 14px; line-height: 20px; }
+.toggle input { width: 18px; height: 18px; accent-color: var(--brand); }
+footer { border-top: 1px solid var(--line); }
+footer .wrap { padding-block: var(--s6); }
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="mark" href="#entrar">Reforma 2027</a>
+    <div class="as" id="top-app" hidden>
+      <label class="note" for="perfil-sel">Vendo como</label>
+      <select id="perfil-sel" aria-label="Trocar de perfil na demonstração"></select>
+      <a class="btn btn-sm" href="#entrar">Sair</a>
+    </div>
+    <div class="row" id="top-out">
+      <a class="btn btn-sm" href="#cadastro">Criar conta</a>
+    </div>
+  </div>
+</header>
+
+<!-- ENTRADA -->
+<main class="wrap" id="scr-entrar">
+  <div class="intro">
+    <div class="intro-text">
+      <p class="overline">Ecossistema pro bono · Espírito Santo</p>
+      <h1 class="display">Nada vai ao ar sem o aval de um contador.</h1>
+      <p class="lead">O Reforma 2027 orienta empresários sobre CBS, IBS e Imposto Seletivo. Cada informação passa por quatro etapas antes de ser publicada, e você vê quem atuou em cada uma.</p>
+      <div>
+        <div class="cycle" aria-label="As quatro etapas de validação">
+          <div class="step st1"><b>1</b><span>Bots sondam as fontes oficiais</span></div>
+          <div class="step st2"><b>2</b><span>Estudantes revisam</span></div>
+          <div class="step st3"><b>3</b><span>IA aberta confere</span></div>
+          <div class="step st4"><b>4</b><span>Escritório dá o aval</span></div>
+          <i class="cycle-rule" style="top:33%"></i><i class="cycle-rule" style="top:66%"></i>
+        </div>
+        <div class="pub" style="margin-top: var(--s3)"><span class="pill ok">Publicada</span><span class="small muted">com fonte oficial, data de vigência e o nome de quem validou.</span></div>
+      </div>
+    </div>
+
+    <form class="card login stack" id="login-form" autocomplete="off" novalidate>
+      <div class="stack-sm"><h2 class="h2">Entrar</h2><p class="small muted">Uma única entrada para todos os perfis.</p></div>
+      <div class="field"><label for="lg-email">E-mail</label><input id="lg-email" type="email" placeholder="voce@exemplo.com.br"></div>
+      <div class="field"><label for="lg-senha">Senha</label><input id="lg-senha" type="password" maxlength="10" placeholder="8 a 10 caracteres"></div>
+      <p class="err" id="lg-err" hidden></p>
+      <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+      <button class="btn btn-block" type="button" data-act="google">Entrar com Google</button>
+      <div class="row between small"><button class="link" type="button" data-act="esqueci">Esqueci minha senha</button><a class="link" href="#cadastro">Criar conta</a></div>
+      <p class="msg" id="lg-msg" hidden></p>
+      <div class="or">demonstração</div>
+      <div class="stack-sm">
+        <p class="small muted">Sem banco de dados conectado. Escolha um perfil para ver o aplicativo por dentro.</p>
+        <div class="demo" id="demo-btns"></div>
+      </div>
+      <p class="note">Gratuito e imparcial. O aplicativo orienta, mas não substitui o contador. Seus dados seguem a LGPD.</p>
+    </form>
+  </div>
+
+  <div class="facts">
+    <div class="fact"><p class="overline" id="cd-label">Faltam</p><p class="fig" id="cd-days">–</p><p class="small muted">para a CBS entrar em vigor, em 1º de janeiro de 2027.</p></div>
+    <div class="fact"><p class="overline">Gratuito</p><h3 class="h3">Sem clientes pagantes</h3><p class="small muted">As metas são de impacto: empresas orientadas e contadores participando.</p></div>
+    <div class="fact"><p class="overline">Imparcial</p><h3 class="h3">Só fontes oficiais</h3><p class="small muted">Nenhuma marca, software ou serviço pago é recomendado.</p></div>
+    <div class="fact"><p class="overline">Transparente</p><h3 class="h3">Tudo auditável</h3><p class="small muted">Pontos, níveis e indicações seguem regra de sistema. Ninguém altera à mão.</p></div>
+  </div>
+</main>
+
+<!-- CADASTRO -->
+<main class="wrap" id="scr-cadastro" hidden><div class="cad" id="cad-body"></div></main>
+
+<!-- APP -->
+<main class="wrap" id="scr-app" hidden>
+  <div class="shell">
+    <nav class="side" id="side" aria-label="Seções do aplicativo"></nav>
+    <div id="view"></div>
+  </div>
+</main>
+
+<footer><div class="wrap"><p class="note">Protótipo de apresentação. Pessoas, escritórios, empresas e números são fictícios e não há dados reais conectados. O conteúdo tributário é exemplo e precisa ser conferido nas fontes oficiais (EC 132/2023 e LC 214/2025).</p></div></footer>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  /* ================= Dados de exemplo ================= */
+  var PERFIS = {
+    empresario: { nome: 'Empresário', quem: 'Helena Barcellos', org: 'Barcellos Móveis Ltda. · Simples Nacional', nav: ['inicio', 'conteudo', 'niveis', 'perfil'] },
+    escritorio: { nome: 'Escritório validador', quem: 'Rafael Pimentel', org: 'Canela Verde Contábil · Vitória', nav: ['inicio', 'validacao', 'conteudo', 'niveis', 'leads', 'perfil'] },
+    estudante: { nome: 'Estudante', quem: 'Camila Vieira', org: 'Ciências Contábeis · 5º período', nav: ['inicio', 'validacao', 'conteudo', 'horas', 'perfil'] },
+    instituicao: { nome: 'Instituição de ensino', quem: 'Coordenação do curso', org: 'Instituição parceira (exemplo)', nav: ['inicio', 'horas', 'conteudo', 'perfil'] },
+    supervisor: { nome: 'Supervisor CRC', quem: 'Supervisor (exemplo)', org: 'Conselho Regional de Contabilidade', nav: ['inicio', 'niveis', 'auditoria', 'conteudo', 'perfil'] },
+    admin: { nome: 'Administrador', quem: 'Administrador', org: 'Reforma 2027', nav: ['inicio', 'validacao', 'niveis', 'auditoria', 'conteudo', 'perfil'] }
+  };
+  var ROTULO = { inicio: 'Início', conteudo: 'Conteúdo', validacao: 'Validação', niveis: 'Pontos e níveis', leads: 'Resgate de leads', horas: 'Horas complementares', auditoria: 'Auditoria', perfil: 'Meu perfil' };
+  var ETAPAS = ['Bots', 'Estudantes', 'IA aberta', 'Escritório'];
+  var MEU_ESC = 'Canela Verde Contábil';
+
+  // etapa: 1 a 4 = em andamento; 5 = publicada
+  var ATU = [
+    { id: 'AT-0131', aba: 'Lucro Real', titulo: 'CBS substitui PIS e Cofins a partir de 2027', resumo: 'A Contribuição sobre Bens e Serviços entra em vigor e PIS e Cofins são extintos. Empresas do Lucro Real passam a apurar crédito amplo sobre as aquisições tributadas.', fonte: 'EC 132/2023; LC 214/2025', vig: '01/01/2027', etapa: 5, pub: '12/11/2026', est: 'Camila Vieira', esc: 'Canela Verde Contábil' },
+    { id: 'AT-0127', aba: 'Simples Nacional', titulo: 'Simples Nacional pode recolher IBS e CBS por fora', resumo: 'A empresa do Simples pode optar por apurar IBS e CBS pelo regime regular, permitindo que o cliente dela aproveite o crédito integral.', fonte: 'LC 214/2025', vig: '01/01/2027', etapa: 5, pub: '10/11/2026', est: 'João Pedro Lima', esc: 'Penedo Contabilidade' },
+    { id: 'AT-0125', aba: 'Risco', titulo: 'Split payment separa o tributo no momento do pagamento', resumo: 'No pagamento eletrônico, a parcela de IBS e CBS é destinada direto ao fisco. Quem conta com esse valor no caixa precisa rever o fluxo.', fonte: 'LC 214/2025', vig: 'Implantação gradual', etapa: 5, pub: '07/11/2026', est: 'Camila Vieira', esc: 'Serra Azul Contadores' },
+    { id: 'AT-0122', aba: 'Oportunidade', titulo: 'Profissões regulamentadas têm redução de 30% nas alíquotas', resumo: 'Serviços de profissões intelectuais regulamentadas, como a contabilidade, têm alíquotas de IBS e CBS reduzidas em 30%, cumpridos os requisitos da lei.', fonte: 'LC 214/2025', vig: '01/01/2027', etapa: 5, pub: '05/11/2026', est: 'Ana Luíza Rocha', esc: 'Canela Verde Contábil' },
+    { id: 'AT-0118', aba: 'MEI', titulo: 'MEI continua com recolhimento em valor fixo', resumo: 'O microempreendedor individual segue no regime simplificado. O valor mensal passa a incluir as parcelas de CBS e IBS.', fonte: 'LC 214/2025', vig: '01/01/2027', etapa: 5, pub: '03/11/2026', est: 'João Pedro Lima', esc: 'Rio Doce Contabilidade' },
+    { id: 'AT-0115', aba: 'Lucro Presumido', titulo: 'ICMS e ISS começam a ser reduzidos em 2029', resumo: 'De 2029 a 2032 as alíquotas de ICMS e ISS caem para 90%, 80%, 70% e 60%, enquanto o IBS sobe na mesma proporção. Em 2033 os dois são extintos.', fonte: 'EC 132/2023', vig: '01/01/2029', etapa: 5, pub: '30/10/2026', est: 'Ana Luíza Rocha', esc: 'Penedo Contabilidade' },
+    { id: 'AT-0142', aba: 'Oportunidade', titulo: 'Cesta básica nacional com alíquota zero', resumo: 'Os itens da cesta básica nacional de alimentos têm alíquota zero de IBS e CBS.', fonte: 'LC 214/2025', vig: '01/01/2027', etapa: 4, prazo: '2 dias úteis', rapido: true, est: 'Camila Vieira', esc: MEU_ESC },
+    { id: 'AT-0141', aba: 'Simples Nacional', titulo: 'Crédito nas compras de fornecedor do Simples', resumo: 'O adquirente aproveita crédito no valor do tributo efetivamente pago pelo fornecedor optante pelo Simples.', fonte: 'LC 214/2025', vig: '01/01/2027', etapa: 4, prazo: '4 dias úteis', est: 'João Pedro Lima', esc: MEU_ESC },
+    { id: 'AT-0144', aba: 'Risco', titulo: 'Imposto Seletivo: bens e serviços alcançados', resumo: 'Lista de bens e serviços prejudiciais à saúde ou ao meio ambiente sujeitos ao Imposto Seletivo.', fonte: 'LC 214/2025', vig: '01/01/2027', etapa: 3, est: 'Ana Luíza Rocha' },
+    { id: 'AT-0146', aba: 'Lucro Real', titulo: 'Transição dos benefícios fiscais de ICMS', resumo: 'Redução gradual dos benefícios de ICMS no mesmo ritmo da queda das alíquotas, de 2029 a 2032.', fonte: 'EC 132/2023', vig: '01/01/2029', etapa: 2 },
+    { id: 'AT-0147', aba: 'MEI', titulo: 'Devolução de tributos a famílias de baixa renda', resumo: 'Regras de devolução de parte da CBS e do IBS (cashback) a famílias inscritas no cadastro único.', fonte: 'LC 214/2025', vig: '01/01/2027', etapa: 2 },
+    { id: 'AT-0149', aba: 'Lucro Presumido', titulo: 'Destaque de CBS e IBS nos documentos fiscais', resumo: 'Campos novos nos documentos fiscais eletrônicos para destacar CBS e IBS.', fonte: 'Nota técnica (a anexar)', vig: '01/01/2026', etapa: 1 }
+  ];
+  var ESCRITORIOS = [
+    { nome: 'Penedo Contabilidade', cidade: 'Vila Velha', pts: 212, nivel: 'Ouro', acerto: 97 },
+    { nome: 'Canela Verde Contábil', cidade: 'Vitória', pts: 164, nivel: 'Ouro', acerto: 94 },
+    { nome: 'Serra Azul Contadores', cidade: 'Serra', pts: 121, nivel: 'Prata', acerto: 92 },
+    { nome: 'Rio Doce Contabilidade', cidade: 'Linhares', pts: 96, nivel: 'Prata', acerto: 95 },
+    { nome: 'Itapemirim Contábil', cidade: 'Cachoeiro de Itapemirim', pts: 58, nivel: 'Bronze', acerto: 90 },
+    { nome: 'Marina Lopes (contadora autônoma)', cidade: 'Guarapari', pts: 34, nivel: 'Bronze', acerto: 100 },
+    { nome: 'Convento Assessoria Contábil', cidade: 'Vila Velha', pts: 12, nivel: 'Starter', acerto: 100 }
+  ];
+  var NIVEIS = [['Starter', '0 a 29'], ['Bronze', '30 a 79'], ['Prata', '80 a 149'], ['Ouro', '150 a 249'], ['Black', 'a definir'], ['Platinum', 'a definir']];
+  var LEADS = [
+    { id: 'L-031', seg: 'Comércio', cidade: 'Vitória', regime: 'Simples Nacional', faixa: 'Até o sublimite do Simples', st: 'livre' },
+    { id: 'L-029', seg: 'Serviços', cidade: 'Vila Velha', regime: 'Lucro Presumido', faixa: 'Acima do sublimite do Simples', st: 'livre' },
+    { id: 'L-027', seg: 'Saúde', cidade: 'Serra', regime: 'Lucro Presumido', faixa: 'Acima do sublimite do Simples', st: 'livre' }
+  ];
+  var saldo = 18;
+  var RESGATES = [{ id: 'L-018', data: '04/11/2026', st: 'Aceito pelo empresário' }, { id: 'L-011', data: '21/10/2026', st: 'Empresário escolheu outro escritório' }];
+  var ALUNOS = [
+    { nome: 'Camila Vieira', mat: '2024-10332', rev: 14, baixa: 8, vinc: 'Confirmado' },
+    { nome: 'João Pedro Lima', mat: '2023-20871', rev: 22, baixa: 22, vinc: 'Confirmado' },
+    { nome: 'Ana Luíza Rocha', mat: '2024-11904', rev: 9, baixa: 0, vinc: 'Confirmado' },
+    { nome: 'Bruno Tavares', mat: '2025-30015', rev: 0, baixa: 0, vinc: 'Pendente' }
+  ];
+  var LOG = [
+    { d: '19/11/2026 10:42', p: 'Escritório', q: 'Penedo Contabilidade', a: 'Aprovou a atualização AT-0131 para publicação. +2 pontos.' },
+    { d: '19/11/2026 09:15', p: 'IA aberta', q: 'Conferência automática', a: 'Conferiu a revisão de AT-0142 e enviou para o aval do escritório.' },
+    { d: '18/11/2026 17:03', p: 'Estudante', q: 'Camila Vieira', a: 'Concluiu a revisão de AT-0142.' },
+    { d: '18/11/2026 14:20', p: 'Administrador', q: 'Administrador', a: 'Ativou o cadastro de Convento Assessoria Contábil após conferir o registro no CRC.' },
+    { d: '18/11/2026 08:00', p: 'Bot', q: 'Bot Lucro Presumido', a: 'Criou a atualização inicial AT-0149 com fonte anexada.' },
+    { d: '17/11/2026 16:48', p: 'Escritório', q: 'Canela Verde Contábil', a: 'Resgatou o lead L-018. −1 verificação.' }
+  ];
+  function agora() { var d = new Date(), p = function (n) { return String(n).padStart(2, '0'); }; return p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()); }
+  function log(p, q, a) { LOG.unshift({ d: agora(), p: p, q: q, a: a }); }
+
+  /* ================= Estado e navegação ================= */
+  var S = { perfil: 'empresario', aba: 'Todas', busca: '', aviso: '', cad: { passo: 1, perfil: null, sel: {} } };
+  var APP_VIEWS = Object.keys(ROTULO);
+  function ir(h) { if (location.hash === '#' + h) route(); else location.hash = h; }
+  function route() {
+    var h = (location.hash || '').replace('#', '') || 'entrar';
+    var isApp = APP_VIEWS.indexOf(h) >= 0;
+    if (!isApp && h !== 'cadastro') h = 'entrar';
+    if (isApp && PERFIS[S.perfil].nav.indexOf(h) < 0) h = 'inicio';
+    $('scr-entrar').hidden = h !== 'entrar';
+    $('scr-cadastro').hidden = h !== 'cadastro';
+    $('scr-app').hidden = !isApp;
+    $('top-app').hidden = !isApp; $('top-out').hidden = isApp;
+    if (h === 'cadastro') renderCad();
+    if (isApp) renderApp(h);
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route);
+  function atual() { var h = (location.hash || '').replace('#', ''); return APP_VIEWS.indexOf(h) >= 0 ? h : 'inicio'; }
+  function refresh() { renderApp(atual()); }
+
+  $('perfil-sel').innerHTML = Object.keys(PERFIS).map(function (k) { return '<option value="' + k + '">' + PERFIS[k].nome + '</option>'; }).join('');
+  $('perfil-sel').addEventListener('change', function (e) { S.perfil = e.target.value; S.aviso = ''; ir('inicio'); });
+  $('demo-btns').innerHTML = Object.keys(PERFIS).map(function (k) { return '<button type="button" class="btn btn-sm" data-act="demo" data-p="' + k + '">' + PERFIS[k].nome + '</button>'; }).join('');
+  function entrar(p) { S.perfil = p; $('perfil-sel').value = p; S.aviso = ''; ir('inicio'); }
+
+  /* ================= Entrada ================= */
+  var ALVO = new Date(2027, 0, 1).getTime();
+  function tick() {
+    var d = ALVO - Date.now();
+    if (d <= 0) { $('cd-label').textContent = 'Em vigor há'; $('cd-days').textContent = Math.floor(-d / 864e5) + ' dias'; return; }
+    var n = Math.ceil(d / 864e5); $('cd-days').textContent = n + (n === 1 ? ' dia' : ' dias');
+  }
+  tick(); setInterval(tick, 60000);
+
+  $('login-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var em = $('lg-email').value.trim(), se = $('lg-senha').value, er = $('lg-err');
+    $('lg-msg').hidden = true;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { er.textContent = 'Informe um e-mail válido.'; er.hidden = false; return; }
+    if (se.length < 8 || se.length > 10) { er.textContent = 'A senha tem de 8 a 10 caracteres.'; er.hidden = false; return; }
+    er.hidden = true; entrar('empresario');
+  });
+
+  /* ================= Cadastro ================= */
+  var CAD = {
+    escritorio: { nome: 'Escritório de contabilidade', desc: 'Valida as atualizações, ganha pontos e pode receber indicações.', campos: ['Razão social', 'Nome fantasia', 'CNPJ', 'Registro da organização contábil no CRC', 'Nome do usuário', 'Telefone', 'E-mail principal'], valida: true },
+    autonomo: { nome: 'Contador autônomo', desc: 'Mesma fila e mesmas regras do escritório, com registro profissional.', campos: ['Nome completo', 'Registro profissional no CRC', 'E-mail', 'Telefone', 'Endereço'], faixa: true, valida: true },
+    empresario: { nome: 'Empresário', desc: 'Consulta o conteúdo validado e pode receber indicação de escritório.', campos: ['Razão social', 'Nome fantasia', 'CNPJ', 'Natureza jurídica', 'Nome do responsável', 'Telefone', 'E-mail', 'Endereço'], emp: true },
+    estudante: { nome: 'Estudante', desc: 'Revisa atualizações e ganha horas complementares.', campos: ['Matrícula', 'Nome completo', 'E-mail', 'Telefone', 'Instituição de ensino', 'Data de início do curso', 'Período do curso'], curso: true },
+    instituicao: { nome: 'Instituição de ensino', desc: 'Confirma o vínculo dos alunos e dá baixa nas horas.', campos: ['CNPJ', 'Razão social', 'Nome fantasia', 'E-mail oficial', 'Nome do responsável', 'Cargo do responsável', 'Telefone'], valida: true },
+    supervisor: { nome: 'Supervisor CRC', desc: 'Membro do conselho que acompanha pontos, níveis e indicações.', campos: ['Nome completo', 'Número de registro no CRC', 'Cargo no conselho', 'E-mail institucional do CRC', 'Telefone'], valida: true }
+  };
+  var E2 = [
+    ['Quantidade de funcionários', ['Até 5', '6 a 20', '21 a 50', 'Mais de 50'], false],
+    ['Especialidades', ['Fiscal', 'Contábil', 'Departamento pessoal', 'Societário e abertura de empresas', 'Planejamento tributário'], true],
+    ['Segmentos que atende', ['Comércio', 'Indústria', 'Serviços', 'Agronegócio', 'Saúde', 'Construção', 'Tecnologia', 'Outros'], true],
+    ['Regimes que atende', ['MEI', 'Simples', 'Lucro Presumido', 'Lucro Real'], true],
+    ['Atendimento', ['Presencial', 'Remoto', 'Os dois'], false]
+  ];
+  function campo(lbl, i) { return '<div class="field"><label for="cf-' + i + '">' + lbl + '</label><input id="cf-' + i + '" type="text"></div>'; }
+  function sel(lbl, id, ops) { return '<div class="field"><label for="' + id + '">' + lbl + '</label><select id="' + id + '">' + ops.map(function (o) { return '<option>' + o + '</option>'; }).join('') + '</select></div>'; }
+  function passos(n, t) { var h = ''; for (var i = 1; i <= t; i++) h += '<i class="' + (i <= n ? 'on' : '') + '"></i>'; return '<div class="steps" aria-label="Passo ' + n + ' de ' + t + '">' + h + '</div>'; }
+  function renderCad() {
+    var c = S.cad, d = CAD[c.perfil], h = '';
+    var temE2 = c.perfil === 'escritorio' || c.perfil === 'autonomo', total = temE2 ? 4 : 3;
+    if (c.passo === 1) {
+      h = '<div class="stack">' + passos(1, 3) + '<div class="stack-sm"><p class="overline">Criar conta</p><h1 class="h1">Qual é o seu perfil?</h1><p class="muted">Cada conta tem um único perfil. Depois de ativada, a conta não troca de perfil.</p></div><div class="opts">' +
+        Object.keys(CAD).map(function (k) { return '<button type="button" class="opt" data-act="cad-perfil" data-p="' + k + '"><span class="h3">' + CAD[k].nome + '</span><span class="small muted">' + CAD[k].desc + '</span></button>'; }).join('') +
+        '</div><p class="small"><a class="link" href="#entrar">Já tenho conta</a></p></div>';
+    } else if (c.passo === 2) {
+      h = '<form class="stack" id="cad-form" novalidate>' + passos(2, total) + '<div class="stack-sm"><p class="overline">' + d.nome + '</p><h1 class="h1">Seus dados</h1><p class="muted">Pedimos só o necessário. Você escolhe depois o que fica visível para os outros perfis.</p></div><div class="card stack"><div class="grid2">' +
+        d.campos.map(campo).join('') +
+        (d.emp ? sel('Porte da empresa', 'cf-porte', ['MEI', 'Microempresa', 'Pequena', 'Média', 'Grande']) + sel('Regime tributário', 'cf-reg', ['MEI', 'Simples Nacional', 'Lucro Presumido', 'Lucro Real']) + sel('Faixa de faturamento anual', 'cf-fat', ['Até o limite do MEI', 'Até o sublimite do Simples', 'Acima do sublimite do Simples']) + sel('Preferência de atendimento', 'cf-at', ['Presencial', 'Online']) : '') +
+        (d.faixa ? sel('Faixa de faturamento mensal', 'cf-fat', ['Até R$ 10 mil', 'De R$ 10 mil a R$ 30 mil', 'Acima de R$ 30 mil']) : '') +
+        (d.curso ? sel('Curso', 'cf-curso', ['Ciências Contábeis', 'Administração', 'Ciências Sociais']) : '') +
+        '<div class="field"><label for="cf-uf">Estado</label><input id="cf-uf" type="text" value="Espírito Santo" readonly></div>' +
+        '<div class="field"><label for="cf-s1">Criar senha</label><input id="cf-s1" type="password" maxlength="10" placeholder="8 a 10 caracteres"></div>' +
+        '<div class="field"><label for="cf-s2">Repetir senha</label><input id="cf-s2" type="password" maxlength="10"></div>' +
+        '</div><p class="err" id="cad-err" hidden></p></div>' +
+        '<div class="row between"><button type="button" class="btn" data-act="cad-volta">Voltar</button><button type="submit" class="btn btn-primary">Continuar</button></div></form>';
+    } else if (c.passo === 3 && temE2) {
+      h = '<div class="stack">' + passos(3, total) + '<div class="stack-sm"><p class="overline">Última fase · tudo opcional</p><h1 class="h1">Nos ajude a direcionar melhor oportunidades para você</h1><p class="muted">Só região e nível definem quem recebe uma indicação. As respostas abaixo servem de desempate e nenhuma elimina você.</p></div><div class="card stack">' +
+        E2.map(function (g, gi) { return '<div class="field"><span class="lbl">' + g[0] + '</span><div class="chips">' + g[1].map(function (o) { var k = gi + ':' + o; return '<button type="button" class="chip" data-act="cad-chip" data-g="' + gi + '" data-o="' + esc(o) + '" aria-pressed="' + (!!c.sel[k]) + '">' + o + '</button>'; }).join('') + '</div></div>'; }).join('') +
+        '</div><div class="row between"><button type="button" class="btn" data-act="cad-volta">Voltar</button><button type="button" class="btn btn-primary" data-act="cad-prox">Continuar</button></div></div>';
+    } else {
+      h = '<div class="stack">' + passos(total, total) + '<div class="stack-sm"><p class="overline">Quase lá</p><h1 class="h1">Confirme seu e-mail</h1><p class="muted">Enviamos um código para o seu e-mail. Se preferir, receba por SMS.</p></div><div class="card stack">' +
+        '<div class="field"><label for="cad-cod">Código de confirmação</label><input id="cad-cod" class="num" type="text" inputmode="numeric" maxlength="6" placeholder="000000"></div>' +
+        '<p class="msg">' + (d.valida ? 'Depois da confirmação, a conta fica <b>aguardando validação</b>: conferimos o registro no CRC e o CNPJ antes de ativar. Você recebe um e-mail com o resultado.' : 'Depois da confirmação, a conta é ativada na hora.') + '</p>' +
+        '<div class="row between"><button type="button" class="link" data-act="cad-sms">Receber por SMS</button><button type="button" class="btn btn-primary" data-act="cad-fim">Confirmar e entrar</button></div>' +
+        '<p class="note">Na demonstração, qualquer código entra.</p></div></div>';
+    }
+    $('cad-body').innerHTML = h;
+  }
+
+  /* ================= App ================= */
+  function cabeca(over, titulo, sub, tag) {
+    return '<div class="head"><div class="row"><p class="overline">' + over + '</p>' + (tag ? '<span class="tag">' + tag + '</span>' : '') + '</div><h1 class="h1">' + titulo + '</h1>' + (sub ? '<p class="muted" style="max-width:62ch">' + sub + '</p>' : '') + '</div>' + (S.aviso ? '<p class="msg" role="status" style="margin-bottom: var(--s4)">' + S.aviso + '</p>' : '');
+  }
+  function kpis(arr) { return '<div class="kpis">' + arr.map(function (k) { return '<div class="kpi"><p class="overline">' + k[0] + '</p><p class="fig">' + k[1] + '</p><p class="small muted">' + k[2] + '</p></div>'; }).join('') + '</div>'; }
+  function trilha(e) {
+    return '<div class="track" aria-label="Etapa ' + Math.min(e, 4) + ' de 4">' + ETAPAS.map(function (n, i) { var c = e > i + 1 ? 'done' : e === i + 1 ? 'now' : ''; return '<div class="' + c + '"><i></i><span>' + (i + 1) + '. ' + n + '</span></div>'; }).join('') + '</div>';
+  }
+  function renderApp(v) {
+    var P = PERFIS[S.perfil];
+    $('side').innerHTML = '<div class="who"><p class="h3">' + esc(P.quem) + '</p><p class="note">' + esc(P.org) + '</p></div>' +
+      P.nav.map(function (k) { return '<a href="#' + k + '"' + (k === v ? ' aria-current="page"' : '') + '>' + (k === 'horas' && S.perfil === 'instituicao' ? 'Alunos e horas' : ROTULO[k]) + '</a>'; }).join('');
+    $('view').innerHTML = VIEWS[v]();
+    S.aviso = '';
+  }
+
+  function pendentes(et) { return ATU.filter(function (a) { return a.etapa === et; }); }
+  function meus4() { return ATU.filter(function (a) { return a.etapa === 4 && a.esc === MEU_ESC; }); }
+  function eu() { return ESCRITORIOS.filter(function (e) { return e.nome === MEU_ESC; })[0]; }
+
+  var VIEWS = {
+    inicio: function () {
+      var p = S.perfil, h = '';
+      if (p === 'empresario') {
+        var novos = ATU.filter(function (a) { return a.etapa === 5 && (a.aba === 'Simples Nacional' || a.aba === 'Oportunidade' || a.aba === 'Risco'); });
+        h = cabeca('Sua caixa de tarefas', 'Olá, Helena.', 'Conteúdo filtrado para uma empresa do Simples Nacional no Espírito Santo.', 'Dados de exemplo') +
+          kpis([['Para o seu regime', novos.length, 'informações publicadas e validadas'], ['Próximo marco', '01/01/2027', 'CBS em vigor; PIS e Cofins extintos'], ['Indicação', 'Disponível', 'um escritório pelo rodízio, se você quiser']]) +
+          '<div class="list">' + novos.slice(0, 3).map(cardPub).join('') + '</div><p style="margin-top: var(--s4)"><a class="btn" href="#conteudo">Ver todo o conteúdo</a></p>';
+      } else if (p === 'escritorio') {
+        var m = meus4(), e = eu();
+        h = cabeca('Sua caixa de tarefas', 'Olá, Rafael.', 'Você vê aqui só o que está esperando pelo seu escritório.', 'Dados de exemplo') +
+          kpis([['Aguardando seu aval', m.length, 'prazo de 5 dias úteis; em 48 horas vale mais'], ['Pontos', e.pts, 'nível ' + e.nivel + ', janela de 6 meses'], ['Verificações', saldo, 'saldo para resgatar leads']]) +
+          '<div class="list">' + (m.length ? m.map(cardFila).join('') : '<p class="msg">Nenhuma atualização aguardando o seu aval. Quando chegar uma, você recebe aviso por e-mail e aqui.</p>') + '</div>';
+      } else if (p === 'estudante') {
+        var r = pendentes(2);
+        h = cabeca('Sua caixa de tarefas', 'Olá, Camila.', 'Revise com cuidado: cada revisão conta para as suas horas complementares.', 'Dados de exemplo') +
+          kpis([['Para revisar', r.length, 'atualizações na etapa 2'], ['Revisões computadas', 14, '8 já baixadas pela instituição'], ['Vínculo', 'Confirmado', 'pela instituição de ensino']]) +
+          '<div class="list">' + (r.length ? r.map(cardFila).join('') : '<p class="msg">Nenhuma atualização para revisar agora.</p>') + '</div>';
+      } else if (p === 'instituicao') {
+        var pend = ALUNOS.filter(function (a) { return a.vinc === 'Pendente'; }).length, ab = ALUNOS.reduce(function (s, a) { return s + (a.rev - a.baixa); }, 0);
+        h = cabeca('Sua caixa de tarefas', 'Alunos da sua instituição', 'Você vê apenas os alunos com vínculo confirmado por você.', 'Dados de exemplo') +
+          kpis([['Vínculos a confirmar', pend, 'pedidos recebidos por e-mail'], ['Revisões sem baixa', ab, 'aguardando registro na matrícula'], ['Alunos ativos', ALUNOS.length - pend, 'com vínculo confirmado']]) +
+          '<p><a class="btn btn-primary" href="#horas">Abrir alunos e horas</a></p>';
+      } else if (p === 'supervisor') {
+        h = cabeca('Acompanhamento', 'Visão do conselho', 'Acesso somente de leitura. A bandeira amarela é a única marcação que o Supervisor faz, e ela fica no log.', 'Dados de exemplo') +
+          kpis([['Escritórios ativos', ESCRITORIOS.length, 'todos no Espírito Santo'], ['Publicadas no mês', ATU.filter(function (a) { return a.etapa === 5; }).length, 'com aval de escritório'], ['Bandeiras abertas', LOG.filter(function (l) { return l.flag; }).length, 'em revisão pelo Administrador']]) +
+          '<div class="row"><a class="btn btn-primary" href="#niveis">Ver pontos e níveis</a><a class="btn" href="#auditoria">Abrir o log de auditoria</a></div>';
+      } else {
+        h = cabeca('Operação', 'Saúde do sistema', 'O Administrador mantém o app no ar. Ele não aprova atualizações, não altera pontos e não escolhe quem recebe indicação.', 'Dados de exemplo') +
+          kpis([['Cadastros a conferir', 3, 'aguardando validação de CRC e CNPJ'], ['Prazos vencendo', meus4().filter(function (a) { return a.rapido; }).length, 'atualizações com menos de 2 dias úteis'], ['Em andamento', ATU.filter(function (a) { return a.etapa < 5; }).length, 'atualizações nas quatro etapas']]) +
+          '<div class="card"><h2 class="h3" style="margin-bottom: var(--s2)">Cadastros aguardando validação</h2><div class="scroll-x"><table class="ledger"><thead><tr><th>Nome</th><th>Perfil</th><th>Conferir</th></tr></thead><tbody>' +
+          '<tr><td>Jucutuquara Contábil</td><td>Escritório</td><td>Registro no CRC e CNPJ</td></tr><tr><td>Paulo Mendes</td><td>Contador autônomo</td><td>Registro profissional no CRC</td></tr><tr><td>Faculdade Capixaba (exemplo)</td><td>Instituição</td><td>CNPJ e e-mail oficial</td></tr>' +
+          '</tbody></table></div></div>';
+      }
+      return h;
+    },
+
+    conteudo: function () {
+      var abas = ['Todas', 'Oportunidade', 'Risco', 'Lucro Real', 'Lucro Presumido', 'Simples Nacional', 'MEI'];
+      var l = ATU.filter(function (a) { return a.etapa === 5 && (S.aba === 'Todas' || a.aba === S.aba) && (a.titulo + ' ' + a.resumo).toLowerCase().indexOf(S.busca) >= 0; });
+      return cabeca('Conteúdo da reforma', 'O que já foi validado e publicado', 'Cada informação mostra a fonte oficial, a data de vigência e quem atuou em cada etapa.', 'Conteúdo de exemplo') +
+        '<div class="stack" style="margin-bottom: var(--s4)"><input class="inp" id="busca" type="search" placeholder="Buscar no conteúdo" aria-label="Buscar no conteúdo" value="' + esc(S.busca) + '" style="max-width:360px">' +
+        '<div class="chips" role="group" aria-label="Filtrar por aba">' + abas.map(function (a) { return '<button type="button" class="chip" data-act="aba" data-a="' + a + '" aria-pressed="' + (a === S.aba) + '">' + a + '</button>'; }).join('') + '</div></div>' +
+        '<div class="list" id="pub-list">' + (l.length ? l.map(cardPub).join('') : '<p class="msg">Nada publicado com esse filtro. Troque a aba ou limpe a busca.</p>') + '</div>';
+    },
+
+    validacao: function () {
+      var l = ATU.filter(function (a) { return a.etapa < 5; }).sort(function (a, b) { return b.etapa - a.etapa; });
+      return cabeca('Ciclo de atualização', 'Atualizações em andamento', 'Nenhuma informação vai ao ar sem passar pelas quatro etapas, nesta ordem. Qualquer etapa pode devolver para a anterior, com justificativa.', 'Dados de exemplo') +
+        '<div class="list">' + (l.length ? l.map(cardFila).join('') : '<p class="msg">Nenhuma atualização em andamento.</p>') + '</div>';
+    },
+
+    niveis: function () {
+      var sup = S.perfil === 'supervisor', max = ESCRITORIOS[0].pts;
+      return cabeca('Transparência pública', 'Pontos e níveis dos escritórios', 'A pontuação é pública e calculada por regra de sistema. Ninguém altera pontos à mão, nem o Administrador.', 'Dados de exemplo') +
+        '<div class="card" style="margin-bottom: var(--s4)"><div class="scroll-x"><table class="ledger"><thead><tr><th>Escritório</th><th>Nível</th><th class="hide-sm">Sem erro</th><th class="r">Pontos</th>' + (sup ? '<th></th>' : '') + '</tr></thead><tbody>' +
+        ESCRITORIOS.map(function (e, i) {
+          return '<tr><td><b>' + esc(e.nome) + '</b><div class="note">' + e.cidade + '</div><div class="meter" style="margin-top:6px"><i style="width:' + (e.pts / max * 100) + '%"></i></div></td><td><span class="tag' + (e.nome === MEU_ESC && S.perfil === 'escritorio' ? ' tag-solid' : '') + '">' + e.nivel + '</span></td><td class="num hide-sm">' + e.acerto + '%</td><td class="r">' + e.pts + '</td>' +
+            (sup ? '<td><button type="button" class="btn btn-sm" data-act="flag" data-i="' + i + '"' + (e.flag ? ' disabled' : '') + '>' + (e.flag ? 'Bandeira marcada' : 'Bandeira amarela') + '</button></td>' : '') + '</tr>';
+        }).join('') + '</tbody></table></div></div>' +
+        '<div class="two"><div class="card"><h2 class="h3" style="margin-bottom: var(--s2)">Os seis níveis</h2><table class="ledger"><thead><tr><th>Nível</th><th class="r">Pontos</th></tr></thead><tbody>' +
+        NIVEIS.map(function (n) { return '<tr><td>' + n[0] + '</td><td class="r">' + n[1] + '</td></tr>'; }).join('') + '</tbody></table><p class="note" style="margin-top: var(--s3)">Faixas em proposta. Ouro e acima exigem 90% das validações sem erro confirmado.</p></div>' +
+        '<div class="card stack-sm"><h2 class="h3">Como os pontos funcionam</h2><p class="small">Validar dentro do prazo soma pontos; em 48 horas soma mais. Erro confirmado desconta, e erro grave desconta 10 pontos.</p><p class="small">Conta a janela móvel dos últimos 6 meses. Toda mudança de regra é publicada com 30 dias de aviso.</p><p class="small">Quem sobe de nível passa a receber indicações de empresas de faturamento maior.</p></div></div>';
+    },
+
+    leads: function () {
+      return cabeca('Resgate de leads', 'Resgate seus leads', 'O rodízio define qual lead cabe a quem. Você decide quando resgatar; cada resgate desconta uma verificação do seu saldo.', 'A confirmar com o CRC') +
+        kpis([['Saldo de verificações', saldo, 'disponíveis para resgate'], ['Leads disponíveis', LEADS.filter(function (l) { return l.st === 'livre'; }).length, 'pelo seu nível e pelo rodízio'], ['Resgatados', RESGATES.length, 'veja o histórico abaixo']]) +
+        '<div class="list">' + LEADS.map(function (l) {
+          return '<div class="card stack"><div class="row between"><h2 class="h3">Empresa de ' + l.seg.toLowerCase() + ' em ' + l.cidade + '</h2><span class="tag num">' + l.id + '</span></div>' +
+            '<div class="item-meta"><span>Regime <b>' + l.regime + '</b></span><span>Faturamento <b>' + l.faixa + '</b></span></div>' +
+            (l.st === 'livre' ? '<div class="row between"><p class="note">Os dados da empresa aparecem só depois que o empresário aceitar.</p><button type="button" class="btn btn-primary btn-sm" data-act="resgatar" data-id="' + l.id + '"' + (saldo < 1 ? ' disabled' : '') + '>Resgatar (−1 verificação)</button></div>' : '<span class="pill warn">Aguardando o aceite do empresário</span>') + '</div>';
+        }).join('') + '</div>' +
+        '<div class="card" style="margin-top: var(--s4)"><h2 class="h3" style="margin-bottom: var(--s2)">Histórico de resgates</h2><table class="ledger"><thead><tr><th>Lead</th><th>Data</th><th>Situação</th></tr></thead><tbody>' +
+        RESGATES.map(function (r) { return '<tr><td class="num">' + r.id + '</td><td class="num">' + r.data + '</td><td>' + r.st + '</td></tr>'; }).join('') + '</tbody></table></div>';
+    },
+
+    horas: function () {
+      if (S.perfil === 'instituicao') {
+        return cabeca('Alunos e horas', 'Horas complementares dos seus alunos', 'As horas contam por revisão feita, sem medir tempo. Quantas horas vale cada revisão é definido com a instituição.', 'Dados de exemplo') +
+          '<div class="card"><div class="scroll-x"><table class="ledger"><thead><tr><th>Aluno</th><th>Vínculo</th><th class="r">Revisões</th><th class="r">Com baixa</th><th></th></tr></thead><tbody>' +
+          ALUNOS.map(function (a, i) {
+            var ab = a.rev - a.baixa;
+            return '<tr><td><b>' + esc(a.nome) + '</b><div class="note num">Matrícula ' + a.mat + '</div></td><td><span class="pill ' + (a.vinc === 'Confirmado' ? 'ok' : 'warn') + '">' + a.vinc + '</span></td><td class="r">' + a.rev + '</td><td class="r">' + a.baixa + '</td><td>' +
+              (a.vinc === 'Pendente' ? '<button type="button" class="btn btn-sm" data-act="vinc" data-i="' + i + '">Confirmar vínculo</button>' : ab > 0 ? '<button type="button" class="btn btn-sm" data-act="baixa" data-i="' + i + '">Dar baixa em ' + ab + '</button>' : '<span class="note">Em dia</span>') + '</td></tr>';
+          }).join('') + '</tbody></table></div><p class="note" style="margin-top: var(--s3)">A baixa pode ser desfeita com justificativa. Você não vê alunos de outra instituição.</p></div>';
+      }
+      var eu = ALUNOS[0];
+      return cabeca('Horas complementares', 'Suas revisões e horas', 'Cada revisão concluída conta. Se uma informação que você revisou for confirmada como errada, o ponto daquela revisão pode ser perdido, e isso fica registrado.', 'Dados de exemplo') +
+        kpis([['Revisões computadas', eu.rev, 'desde o início do vínculo'], ['Com baixa', eu.baixa, 'já registradas na matrícula'], ['Aguardando baixa', eu.rev - eu.baixa, 'a instituição ainda vai registrar']]) +
+        '<div class="card"><h2 class="h3" style="margin-bottom: var(--s2)">Últimas atividades</h2><table class="ledger"><thead><tr><th>Atualização</th><th>Data</th><th>Situação</th></tr></thead><tbody>' +
+        '<tr><td>AT-0142 · Cesta básica nacional</td><td class="num">18/11/2026</td><td><span class="pill ok">Computada</span></td></tr>' +
+        '<tr><td>AT-0131 · CBS substitui PIS e Cofins</td><td class="num">11/11/2026</td><td><span class="pill ok">Computada</span></td></tr>' +
+        '<tr><td>AT-0125 · Split payment</td><td class="num">06/11/2026</td><td><span class="pill ok">Computada</span></td></tr>' +
+        '<tr><td>AT-0109 · Alíquota de teste</td><td class="num">22/10/2026</td><td><span class="pill bad">Ponto perdido</span></td></tr>' +
+        '</tbody></table><p class="note" style="margin-top: var(--s3)">A declaração de horas em PDF ainda não está disponível neste protótipo.</p></div>';
+    },
+
+    auditoria: function () {
+      return cabeca('Auditoria', 'Log de auditoria', 'O log só recebe inclusões. Nenhum registro pode ser editado ou apagado, e cada etapa de cada atualização gera o seu.', 'Dados de exemplo') +
+        '<div class="card"><div class="scroll-x"><table class="ledger"><thead><tr><th>Data e hora</th><th>Perfil</th><th>Quem</th><th>Ação</th></tr></thead><tbody>' +
+        LOG.map(function (l) { return '<tr><td class="num" style="white-space:nowrap">' + l.d + '</td><td>' + l.p + '</td><td>' + esc(l.q) + '</td><td>' + esc(l.a) + (l.flag ? ' <span class="pill warn">Bandeira amarela</span>' : '') + '</td></tr>'; }).join('') +
+        '</tbody></table></div></div>';
+    },
+
+    perfil: function () {
+      var P = PERFIS[S.perfil], esc2 = S.perfil === 'escritorio';
+      return cabeca('Meu perfil', esc(P.quem), esc(P.org), P.nome) +
+        '<div class="two"><div class="card stack-sm"><h2 class="h3">Suas informações</h2><p class="small muted">Você pode atualizar regime, porte, endereço, equipe e região a qualquer momento. Toda alteração fica registrada com data.</p><div class="row"><button type="button" class="btn btn-sm" data-act="demo-msg" data-m="Na versão com banco de dados, este botão abre o formulário de edição.">Atualizar informações</button><button type="button" class="btn btn-sm" data-act="demo-msg" data-m="O envio de logotipo é opcional e entra na versão com banco de dados.">Enviar logotipo</button></div></div>' +
+        '<div class="card"><h2 class="h3">O que os outros perfis veem</h2><p class="small muted" style="margin-bottom: var(--s2)">Você só pode restringir, nunca ampliar.</p>' +
+        ['Nome', 'Telefone', 'E-mail de contato', esc2 ? 'Áreas de atuação' : 'Cidade'].map(function (t, i) { return '<label class="toggle" for="vis-' + i + '"><span>' + t + '</span><input type="checkbox" id="vis-' + i + '"' + (i !== 1 ? ' checked' : '') + '></label>'; }).join('') + '</div></div>' +
+        '<div class="card stack-sm" style="margin-top: var(--s4)"><h2 class="h3">Cancelar cadastro</h2><p class="small muted">Seus dados pessoais são apagados conforme a LGPD. O histórico de validações fica no log de forma anônima.</p><div><button type="button" class="btn btn-sm" data-act="demo-msg" data-m="Nada foi cancelado: esta é uma demonstração.">Cancelar meu cadastro</button></div></div>';
+    }
+  };
+
+  function quem(a) {
+    return '<details class="who-did"><summary>Quem atuou em cada etapa</summary><table class="ledger" style="margin-top:6px"><tbody>' +
+      '<tr><td>1. Sondagem</td><td>Bot ' + a.aba + '</td></tr><tr><td>2. Revisão</td><td>' + esc(a.est) + ', estudante</td></tr><tr><td>3. Conferência</td><td>IA aberta</td></tr><tr><td>4. Aval</td><td>' + esc(a.esc) + '</td></tr></tbody></table></details>';
+  }
+  function cardPub(a) {
+    return '<article class="card stack"><div class="row between"><span class="tag">' + a.aba + '</span><span class="pill ok">Validada por ' + esc(a.esc) + '</span></div>' +
+      '<div class="stack-sm"><h2 class="h2">' + esc(a.titulo) + '</h2><p>' + esc(a.resumo) + '</p></div>' +
+      '<div class="item-meta"><span>Fonte <b>' + esc(a.fonte) + '</b></span><span>Vigência <b class="num">' + a.vig + '</b></span><span>Publicada em <b class="num">' + a.pub + '</b></span></div>' + quem(a) +
+      '<div><button type="button" class="link small" data-act="erro" data-id="' + a.id + '">Apontar erro nesta informação</button></div></article>';
+  }
+  function cardFila(a) {
+    var p = S.perfil, bt = '';
+    if (p === 'estudante' && a.etapa === 2) bt = '<button type="button" class="btn btn-primary btn-sm" data-act="avanca" data-id="' + a.id + '">Concluir revisão</button><button type="button" class="btn btn-sm" data-act="devolve" data-id="' + a.id + '">Devolver ao bot</button>';
+    if (p === 'escritorio' && a.etapa === 4 && a.esc === MEU_ESC) bt = '<button type="button" class="btn btn-primary btn-sm" data-act="avanca" data-id="' + a.id + '">Aprovar e publicar</button><button type="button" class="btn btn-sm" data-act="devolve" data-id="' + a.id + '">Devolver com justificativa</button>';
+    if (p === 'admin') bt = '<button type="button" class="btn btn-sm" data-act="exclui" data-id="' + a.id + '">Excluir da fila</button>';
+    return '<article class="card stack"><div class="row between"><div class="row"><span class="tag num">' + a.id + '</span><span class="tag">' + a.aba + '</span></div>' + (a.etapa === 4 && a.prazo ? '<span class="pill ' + (a.rapido ? 'bad' : 'warn') + '">Prazo: ' + a.prazo + '</span>' : '') + '</div>' +
+      '<div class="stack-sm"><h2 class="h3">' + esc(a.titulo) + '</h2><p class="small">' + esc(a.resumo) + '</p></div>' + trilha(a.etapa) +
+      '<div class="item-meta"><span>Fonte <b>' + esc(a.fonte) + '</b></span><span>Vigência <b class="num">' + a.vig + '</b></span>' + (a.etapa === 4 && a.esc ? '<span>Com <b>' + esc(a.esc) + '</b></span>' : '') + '</div>' +
+      (bt ? '<div class="row">' + bt + '</div>' : '') + '</article>';
+  }
+  function acha(id) { return ATU.filter(function (a) { return a.id === id; })[0]; }
+
+  /* ================= Ações ================= */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-act]'); if (!b) return;
+    var act = b.dataset.act, a, P = PERFIS[S.perfil];
+    if (act === 'demo') return entrar(b.dataset.p);
+    if (act === 'google') { $('lg-msg').textContent = 'A entrada com Google depende do banco de dados. Use um dos perfis de demonstração abaixo.'; $('lg-msg').hidden = false; return; }
+    if (act === 'esqueci') { $('lg-msg').textContent = 'Na versão final, enviamos um link por e-mail, válido por 1 hora.'; $('lg-msg').hidden = false; return; }
+    if (act === 'cad-perfil') { S.cad = { passo: 2, perfil: b.dataset.p, sel: {} }; return renderCad(); }
+    if (act === 'cad-volta') { S.cad.passo--; return renderCad(); }
+    if (act === 'cad-prox') { S.cad.passo++; return renderCad(); }
+    if (act === 'cad-chip') {
+      var g = +b.dataset.g, k = g + ':' + b.dataset.o;
+      if (!E2[g][2]) Object.keys(S.cad.sel).forEach(function (x) { if (x.indexOf(g + ':') === 0 && x !== k) delete S.cad.sel[x]; });
+      if (S.cad.sel[k]) delete S.cad.sel[k]; else S.cad.sel[k] = 1;
+      return renderCad();
+    }
+    if (act === 'cad-sms') { b.textContent = 'Código enviado por SMS'; return; }
+    if (act === 'cad-fim') { var pf = S.cad.perfil === 'autonomo' ? 'escritorio' : S.cad.perfil; S.cad = { passo: 1, perfil: null, sel: {} }; return entrar(pf); }
+    if (act === 'aba') { S.aba = b.dataset.a; return refresh(); }
+    if (act === 'erro') { b.outerHTML = '<span class="small muted">Apontamento registrado. O escritório que validou será avisado.</span>'; log(P.nome, P.quem, 'Apontou erro na informação ' + b.dataset.id + '.'); return; }
+    if (act === 'demo-msg') { S.aviso = b.dataset.m; return refresh(); }
+    if (act === 'avanca') {
+      a = acha(b.dataset.id);
+      if (a.etapa === 2) { a.etapa = 3; a.est = P.quem; log('Estudante', P.quem, 'Concluiu a revisão de ' + a.id + '.'); S.aviso = 'Revisão de ' + a.id + ' concluída. Ela segue para a conferência da IA aberta.'; }
+      else if (a.etapa === 4) { a.etapa = 5; a.pub = agora().slice(0, 10); var pts = a.rapido ? 2 : 1; eu().pts += pts; saldo++; log('Escritório', MEU_ESC, 'Aprovou a atualização ' + a.id + ' para publicação. +' + pts + (pts === 1 ? ' ponto.' : ' pontos.')); S.aviso = a.id + ' publicada. Seu escritório ganhou ' + pts + (pts === 1 ? ' ponto' : ' pontos') + ' e 1 verificação.'; }
+      return refresh();
+    }
+    if (act === 'devolve') { a = acha(b.dataset.id); a.etapa--; log(P.nome, P.quem, 'Devolveu ' + a.id + ' para a etapa anterior, com justificativa.'); S.aviso = a.id + ' devolvida para a etapa anterior. A justificativa fica registrada no log.'; return refresh(); }
+    if (act === 'exclui') { ATU = ATU.filter(function (x) { return x.id !== b.dataset.id; }); log('Administrador', 'Administrador', 'Excluiu ' + b.dataset.id + ' da fila.'); S.aviso = b.dataset.id + ' excluída da fila. A exclusão fica no log.'; return refresh(); }
+    if (act === 'resgatar') { var l = LEADS.filter(function (x) { return x.id === b.dataset.id; })[0]; if (saldo < 1) return; l.st = 'resgatado'; saldo--; RESGATES.unshift({ id: l.id, data: agora().slice(0, 10), st: 'Aguardando o aceite do empresário' }); log('Escritório', MEU_ESC, 'Resgatou o lead ' + l.id + '. −1 verificação.'); S.aviso = 'Lead ' + l.id + ' resgatado. Uma verificação foi descontada do seu saldo.'; return refresh(); }
+    if (act === 'flag') { var es = ESCRITORIOS[+b.dataset.i]; es.flag = true; LOG.unshift({ d: agora(), p: 'Supervisor CRC', q: P.quem, a: 'Marcou bandeira amarela na pontuação de ' + es.nome + '.', flag: true }); S.aviso = 'Bandeira amarela marcada. O Administrador vai revisar.'; return refresh(); }
+    if (act === 'vinc') { ALUNOS[+b.dataset.i].vinc = 'Confirmado'; log('Instituição', P.quem, 'Confirmou o vínculo de ' + ALUNOS[+b.dataset.i].nome + '.'); S.aviso = 'Vínculo confirmado.'; return refresh(); }
+    if (act === 'baixa') { var al = ALUNOS[+b.dataset.i]; al.baixa = al.rev; log('Instituição', P.quem, 'Deu baixa nas horas de ' + al.nome + '.'); S.aviso = 'Baixa registrada para ' + al.nome + '.'; return refresh(); }
+  });
+  document.addEventListener('input', function (e) {
+    if (e.target.id !== 'busca') return;
+    S.busca = e.target.value.trim().toLowerCase();
+    var l = ATU.filter(function (a) { return a.etapa === 5 && (S.aba === 'Todas' || a.aba === S.aba) && (a.titulo + ' ' + a.resumo).toLowerCase().indexOf(S.busca) >= 0; });
+    $('pub-list').innerHTML = l.length ? l.map(cardPub).join('') : '<p class="msg">Nada publicado com esse filtro. Troque a aba ou limpe a busca.</p>';
+  });
+  document.addEventListener('submit', function (e) {
+    if (e.target.id !== 'cad-form') return;
+    e.preventDefault();
+    var a = $('cf-s1').value, b = $('cf-s2').value, er = $('cad-err');
+    if (a.length < 8 || a.length > 10) { er.textContent = 'A senha tem de 8 a 10 caracteres.'; er.hidden = false; return; }
+    if (a !== b) { er.textContent = 'As duas senhas precisam ser iguais.'; er.hidden = false; return; }
+    S.cad.passo = 3; renderCad(); window.scrollTo(0, 0);
+  });
+
+  route();
+})();
+</script>
