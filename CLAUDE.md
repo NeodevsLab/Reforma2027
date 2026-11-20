@@ -26,7 +26,7 @@ Administrador (Luis), Supervisor CRC, Escritório validador (inclui contador aut
 
 ## Como trabalhar com o usuário
 - Trabalhe como membro da equipe: decida e execute sem pedir permissão a cada passo. Só pergunte o que só o usuário tem (arquivos, decisões de negócio). Nada de excesso de cautela.
-- O usuário (Guilherme/Luis no briefing) fala por áudio transcrito: as frases chegam cortadas ou com palavras trocadas. Interprete pelo contexto.
+- O usuário fala por áudio transcrito: as frases chegam cortadas ou com palavras trocadas. Interprete pelo contexto.
 - O usuário usa principalmente o celular. Respostas curtas, em português, dizendo: o que foi feito, o link para ver, e o próximo passo.
 - Sempre fazer commit **e push** ao terminar; o container é apagado.
 - Toda decisão nova que o usuário der no chat: registrar em `docs/DECISOES.md` (com data) no mesmo commit. É isso que impede que as anotações se percam.

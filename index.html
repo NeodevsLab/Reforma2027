@@ -416,12 +416,13 @@ footer .wrap { padding-block: var(--s6); }
 
   /* ================= Abertura (vídeo) ================= */
   // Vídeo único de até 9 s (prédios -> fade 0,8 s -> empresário). Nos 4 últimos segundos o fundo escurece e o login aparece.
-  var stage = $('stage'), vid = $('intro-video'), KEY = 'r27-abertura-vista', revelado = false, guarda;
+  var stage = $('stage'), vid = $('intro-video'), KEY = 'r27-pular-abertura', revelado = false, guarda;
+  function pularAb() { try { return localStorage.getItem(KEY) === '1'; } catch (x) { return false; } }
+  function gravaAb(v) { try { if (v) localStorage.setItem(KEY, '1'); else localStorage.removeItem(KEY); } catch (x) {} }
   function revelar(ja) {
     if (revelado) return; revelado = true; clearTimeout(guarda);
     if (ja) stage.classList.add('instant');
     stage.classList.add('revealed');
-    try { localStorage.setItem(KEY, '1'); } catch (x) {}
   }
   function irAoFim() { try { if (vid.duration) { vid.pause(); vid.currentTime = Math.max(0, vid.duration - 0.05); } } catch (x) {} }
   function tocar() {
@@ -434,11 +435,13 @@ footer .wrap { padding-block: var(--s6); }
   vid.addEventListener('ended', function () { revelar(false); });
   vid.addEventListener('error', function () { stage.classList.add('sem-video'); setTimeout(function () { revelar(false); }, 500); });
   $('skip-intro').addEventListener('click', function () { irAoFim(); revelar(true); });
-  $('replay-intro').addEventListener('click', function () { if (stage.classList.contains('sem-video')) return; tocar(); });
+  function rever() { if ((location.hash || '').replace('#', '') !== 'entrar') ir('entrar'); if (stage.classList.contains('sem-video')) return; tocar(); }
+  $('replay-intro').addEventListener('click', rever);
+  document.addEventListener('change', function (e) { if (e.target.id === 'pref-ab') gravaAb(e.target.checked); });
   $('reopen-login').addEventListener('click', function () { $('login-form').hidden = false; $('reopen-login').hidden = true; $('lg-email').focus(); });
   vid.src = 'assets/abertura.mp4';
   (function () {
-    var vista = false; try { vista = localStorage.getItem(KEY) === '1'; } catch (x) {}
+    var vista = pularAb() || ['', 'entrar'].indexOf((location.hash || '').replace('#', '')) < 0;
     var calma = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (vista || calma) { vid.addEventListener('loadedmetadata', irAoFim); revelar(true); } else tocar();
   })();
@@ -643,6 +646,7 @@ footer .wrap { padding-block: var(--s6); }
         '<div class="two"><div class="card stack-sm"><h2 class="h3">Suas informações</h2><p class="small muted">Você pode atualizar regime, porte, endereço, equipe e região a qualquer momento. Toda alteração fica registrada com data.</p><div class="row"><button type="button" class="btn btn-sm" data-act="demo-msg" data-m="Na versão com banco de dados, este botão abre o formulário de edição.">Atualizar informações</button><button type="button" class="btn btn-sm" data-act="demo-msg" data-m="O envio de logotipo é opcional e entra na versão com banco de dados.">Enviar logotipo</button></div></div>' +
         '<div class="card"><h2 class="h3">O que os outros perfis veem</h2><p class="small muted" style="margin-bottom: var(--s2)">Você só pode restringir, nunca ampliar.</p>' +
         ['Nome', 'Telefone', 'E-mail de contato', esc2 ? 'Áreas de atuação' : 'Cidade'].map(function (t, i) { return '<label class="toggle" for="vis-' + i + '"><span>' + t + '</span><input type="checkbox" id="vis-' + i + '"' + (i !== 1 ? ' checked' : '') + '></label>'; }).join('') + '</div></div>' +
+        '<div class="card" style="margin-top: var(--s4)"><h2 class="h3">Abertura</h2><p class="small muted" style="margin-bottom: var(--s2)">O vídeo de abertura aparece sempre que você abre o aplicativo. Se preferir ir direto ao login, desligue aqui.</p><label class="toggle" for="pref-ab"><span>Pular a abertura sempre</span><input type="checkbox" id="pref-ab"' + (pularAb() ? ' checked' : '') + '></label><div style="margin-top: var(--s2)"><button type="button" class="btn btn-sm" data-act="ab-rever">Rever a abertura</button></div></div>' +
         '<div class="card stack-sm" style="margin-top: var(--s4)"><h2 class="h3">Cancelar cadastro</h2><p class="small muted">Seus dados pessoais são apagados conforme a LGPD. O histórico de validações fica no log de forma anônima.</p><div><button type="button" class="btn btn-sm" data-act="demo-msg" data-m="Nada foi cancelado: esta é uma demonstração.">Cancelar meu cadastro</button></div></div>';
     }
   };
@@ -678,6 +682,7 @@ footer .wrap { padding-block: var(--s6); }
     if (act === 'esqueci') { $('lg-msg').textContent = 'Na versão final, enviamos um link por e-mail, válido por 1 hora.'; $('lg-msg').hidden = false; return; }
     if (act === 'cad-perfil') { S.cad = { passo: 2, perfil: b.dataset.p, sel: {} }; return renderCad(); }
     if (act === 'cad-volta') { S.cad.passo--; return renderCad(); }
+    if (act === 'ab-rever') return rever();
     if (act === 'cad-cancelar') { e.preventDefault(); S.cad = { passo: 1, perfil: null, sel: {} }; return ir('entrar'); }
     if (act === 'login-fechar') { $('login-form').reset(); $('lg-err').hidden = true; $('lg-msg').hidden = true; $('login-form').hidden = true; $('reopen-login').hidden = false; return; }
     if (act === 'cad-prox') { S.cad.passo++; return renderCad(); }
