@@ -2,6 +2,7 @@
 
 Registre aqui toda decisão dada no chat que ainda não está em `BRIEFING.md`. Formato: data — decisão.
 
+- 22/11/2026 — Página pública "Transparência" (sem login, link no topo da tela de entrada): pontuação de cada escritório, os seis níveis, como os pontos funcionam, mudanças de regra agendadas (aviso de 30 dias) e relatório do trimestre. Valores de pontos em proposta.
 - 22/11/2026 — Abertura final montada: vídeo 1 (prédios ao pôr do sol, original em `assets/video/abertura-1-original.mp4` no branch `claude/prototipo-reforma2027`) de 0 a 4,4 s, fade de 0,8 s, vídeo 2 (empresário) até 9 s. 720×1280, sem áudio, 3,1 MB, em `assets/abertura.mp4`. Com 9 s, as três frases cabem antes do login.
 - 22/11/2026 — Frases surgem e somem sobre o vídeo antes do login (cada uma fica no mínimo 1,5 s; se não couberem todas, entram as últimas). Frases PROVISÓRIAS até o usuário mandar as dele (estão no site antigo do Netlify): "1º de janeiro de 2027." / "A reforma tributária começa a valer." / "Você vai estar preparado?". Ficam em `#legendas` no `index.html`.
 - 22/11/2026 — Recebido o vídeo 2 (empresário de costas olhando os prédios ao pôr do sol, 6 s, vertical 400×736). Está em `assets/abertura.mp4`, sem áudio. Em tela larga fica inteiro no centro sobre um fundo desfocado do próprio vídeo (`assets/abertura-fundo.jpg`); no celular ocupa a primeira tela. Quando o vídeo 1 (prédios) chegar, os dois viram um só com fade de 0,8 s, até 9 s no total. Ainda faltam: vídeo 1, logo, ícone e mascote.

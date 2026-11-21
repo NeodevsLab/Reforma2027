@@ -276,6 +276,7 @@ footer .wrap { padding-block: var(--s6); }
       <a class="btn btn-sm" href="#entrar">Sair</a>
     </div>
     <div class="row" id="top-out">
+      <a class="link small" href="#transparencia">Transparência</a>
       <a class="btn btn-sm" href="#cadastro">Criar conta</a>
     </div>
   </div>
@@ -342,6 +343,9 @@ footer .wrap { padding-block: var(--s6); }
   </div>
   </div>
 </main>
+
+<!-- TRANSPARÊNCIA PÚBLICA (sem login) -->
+<main class="wrap" id="scr-transp" hidden><div id="transp-body" style="padding-block: var(--s8) var(--s12)"></div></main>
 
 <!-- CADASTRO -->
 <main class="wrap" id="scr-cadastro" hidden><div class="cad" id="cad-body"></div></main>
@@ -458,10 +462,12 @@ footer .wrap { padding-block: var(--s6); }
   function route() {
     var h = (location.hash || '').replace('#', '') || 'entrar';
     var isApp = APP_VIEWS.indexOf(h) >= 0;
-    if (!isApp && h !== 'cadastro') h = 'entrar';
+    if (!isApp && h !== 'cadastro' && h !== 'transparencia') h = 'entrar';
     if (isApp && PERFIS[S.perfil].nav.indexOf(h) < 0) h = 'inicio';
     $('scr-entrar').hidden = h !== 'entrar';
     $('scr-cadastro').hidden = h !== 'cadastro';
+    $('scr-transp').hidden = h !== 'transparencia';
+    if (h === 'transparencia') renderTransp();
     $('scr-app').hidden = !isApp;
     $('top-app').hidden = !isApp; $('top-out').hidden = isApp;
     if (h === 'cadastro') renderCad();
@@ -469,6 +475,25 @@ footer .wrap { padding-block: var(--s6); }
     window.scrollTo(0, 0);
   }
   window.addEventListener('hashchange', route);
+  function renderTransp() {
+    var pub = ATU.filter(function (a) { return a.etapa === 5; }), max = ESCRITORIOS[0].pts;
+    var REGRAS = [['Validar dentro do prazo', '+1'], ['Validar em até 48 horas', '+2'], ['Apontar erro que se confirma', '+3'], ['Erro confirmado numa validação sua', '−3'], ['Erro grave confirmado', '−10'], ['Perder o prazo de 5 dias úteis', '−2']];
+    $('transp-body').innerHTML =
+      '<div class="head"><div class="row"><p class="overline">Transparência pública · sem login</p><span class="tag">Dados de exemplo</span></div><h1 class="h1">Tudo à vista, para qualquer pessoa</h1><p class="muted" style="max-width:62ch">Aqui ficam as regras, a pontuação de cada escritório, os níveis e o relatório do trimestre. Ninguém altera pontos à mão, nem o Administrador. Toda mudança de regra é anunciada com 30 dias de antecedência.</p></div>' +
+      kpis([['Publicadas no trimestre', pub.length, 'todas com aval de escritório'], ['Escritórios participando', ESCRITORIOS.length, 'no Espírito Santo'], ['Correções públicas', 1, 'com histórico visível']]) +
+      '<div class="card" style="margin-bottom: var(--s4)"><div class="row between" style="margin-bottom: var(--s2)"><h2 class="h2">Pontuação dos escritórios</h2><span class="note">Janela móvel de 6 meses</span></div><div class="scroll-x"><table class="ledger"><thead><tr><th>Escritório</th><th>Nível</th><th class="hide-sm">Sem erro</th><th class="r">Pontos</th></tr></thead><tbody>' +
+      ESCRITORIOS.map(function (e) { return '<tr><td><b>' + esc(e.nome) + '</b><div class="note">' + e.cidade + '</div><div class="meter" style="margin-top:6px"><i style="width:' + (e.pts / max * 100) + '%"></i></div></td><td><span class="tag">' + e.nivel + '</span></td><td class="num hide-sm">' + e.acerto + '%</td><td class="r">' + e.pts + '</td></tr>'; }).join('') +
+      '</tbody></table></div></div>' +
+      '<div class="two" style="margin-bottom: var(--s4)"><div class="card"><h2 class="h3" style="margin-bottom: var(--s2)">Os seis níveis</h2><table class="ledger"><thead><tr><th>Nível</th><th class="r">Pontos</th></tr></thead><tbody>' +
+      NIVEIS.map(function (n) { return '<tr><td>' + n[0] + '</td><td class="r">' + n[1] + '</td></tr>'; }).join('') +
+      '</tbody></table><p class="note" style="margin-top: var(--s3)">Quem sobe de nível passa a receber indicações de empresas de faturamento maior. Faixas em proposta.</p></div>' +
+      '<div class="card"><h2 class="h3" style="margin-bottom: var(--s2)">Como os pontos funcionam</h2><table class="ledger"><tbody>' +
+      REGRAS.map(function (r) { return '<tr><td>' + r[0] + '</td><td class="r">' + r[1] + '</td></tr>'; }).join('') +
+      '</tbody></table><p class="note" style="margin-top: var(--s3)">Teto de 30 pontos por mês em validações simples. Valores em proposta.</p></div></div>' +
+      '<div class="two"><div class="card stack-sm"><h2 class="h3">Mudanças de regra agendadas</h2><p class="small"><b class="num">01/01/2027</b> · Faixas do nível Black passam a valer.</p><p class="note">Anunciada em 01/12/2026, com 30 dias de aviso.</p></div>' +
+      '<div class="card stack-sm"><h2 class="h3">Relatório do trimestre</h2><p class="small">' + pub.length + ' informações publicadas, ' + ESCRITORIOS.length + ' escritórios ativos, tempo médio de aval de 2,4 dias úteis, 1 correção pública.</p><p class="note">Relatório completo enviado ao Supervisor do CRC a cada trimestre.</p></div></div>' +
+      '<p style="margin-top: var(--s6)"><a class="btn btn-primary" href="#cadastro">Criar conta</a> <a class="btn" href="#entrar">Voltar ao início</a></p>';
+  }
   function atual() { var h = (location.hash || '').replace('#', ''); return APP_VIEWS.indexOf(h) >= 0 ? h : 'inicio'; }
   function refresh() { renderApp(atual()); }
 
