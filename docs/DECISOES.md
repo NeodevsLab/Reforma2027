@@ -2,6 +2,7 @@
 
 Registre aqui toda decisão dada no chat que ainda não está em `BRIEFING.md`. Formato: data — decisão.
 
+- 22/11/2026 — Acesso: para a apresentação, o protótipo mantém o seletor "Vendo como" (troca livre de perfil). Na versão real: uma conta = um perfil fixo, login (e-mail/senha ou Google), permissões travadas no banco de dados (sugestão: Supabase com regras por perfil), ativação só depois de conferir CRC/CNPJ, e verificação em duas etapas para o Administrador.
 - 22/11/2026 — Escritório: tela "Meu aval" com abas "Aguardando seu aval" (prazo em cada item; em 48 h vale 2 pontos), "Publicadas por você" (pontos ganhos) e "Devolvidas" (motivo). Aprovar exige o link da fonte oficial; devolver exige motivo e volta para a revisão do estudante.
 - 21/11/2026 — Cada perfil tem painel próprio. Estudante: abas "Disponíveis para análise", "Aguardando resultado" e "Concluídas". A análise tem checklist (fonte oficial, texto confere, vigência) e resultado (confere ou devolver ao bot com motivo). Concluída mostra Aprovada ou Recusada; recusada mostra motivo e quem recusou; aprovada vai para a instituição computar a hora ("aguardando baixa" ou "computada").
 - 21/11/2026 — O painel "O ciclo agora" (quantas atualizações em cada etapa) é visão administrativa: só Administrador e Supervisor CRC veem. Escritório e estudante veem apenas a própria fila.
