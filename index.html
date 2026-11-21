@@ -626,7 +626,7 @@ footer .wrap { padding-block: var(--s6); }
 
     validacao: function () {
       var l = ATU.filter(function (a) { return a.etapa < 5; }).sort(function (a, b) { return b.etapa - a.etapa; });
-      return cabeca('Ciclo de atualização', 'Atualizações em andamento', 'Nenhuma informação vai ao ar sem passar pelas quatro etapas, nesta ordem. Qualquer etapa pode devolver para a anterior, com justificativa.', 'Dados de exemplo') + funil() +
+      return cabeca('Ciclo de atualização', 'Atualizações em andamento', 'Nenhuma informação vai ao ar sem passar pelas quatro etapas, nesta ordem. Qualquer etapa pode devolver para a anterior, com justificativa.', 'Dados de exemplo') + (S.perfil === 'admin' ? funil() : '') +
         '<div class="list">' + (l.length ? l.map(cardFila).join('') : '<p class="msg">Nenhuma atualização em andamento.</p>') + '</div>';
     },
 
