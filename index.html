@@ -349,13 +349,13 @@ footer .wrap { padding-block: var(--s6); }
   /* ================= Dados de exemplo ================= */
   var PERFIS = {
     empresario: { nome: 'Empresário', quem: 'Helena Barcellos', org: 'Barcellos Móveis Ltda. · Simples Nacional', nav: ['inicio', 'conteudo', 'niveis', 'perfil'] },
-    escritorio: { nome: 'Escritório validador', quem: 'Rafael Pimentel', org: 'Canela Verde Contábil · Vitória', nav: ['inicio', 'validacao', 'conteudo', 'niveis', 'leads', 'perfil'] },
+    escritorio: { nome: 'Escritório validador', quem: 'Rafael Pimentel', org: 'Canela Verde Contábil · Vitória', nav: ['inicio', 'aval', 'conteudo', 'niveis', 'leads', 'perfil'] },
     estudante: { nome: 'Estudante', quem: 'Camila Vieira', org: 'Ciências Contábeis · 5º período', nav: ['inicio', 'analises', 'conteudo', 'horas', 'perfil'] },
     instituicao: { nome: 'Instituição de ensino', quem: 'Coordenação do curso', org: 'Instituição parceira (exemplo)', nav: ['inicio', 'horas', 'conteudo', 'perfil'] },
     supervisor: { nome: 'Supervisor CRC', quem: 'Supervisor (exemplo)', org: 'Conselho Regional de Contabilidade', nav: ['inicio', 'niveis', 'auditoria', 'conteudo', 'perfil'] },
     admin: { nome: 'Administrador', quem: 'Administrador', org: 'Reforma 2027', nav: ['inicio', 'validacao', 'niveis', 'auditoria', 'conteudo', 'perfil'] }
   };
-  var ROTULO = { inicio: 'Início', analises: 'Minhas análises', conteudo: 'Conteúdo', validacao: 'Validação', niveis: 'Pontos e níveis', leads: 'Resgate de leads', horas: 'Horas complementares', auditoria: 'Auditoria', perfil: 'Meu perfil' };
+  var ROTULO = { inicio: 'Início', analises: 'Minhas análises', aval: 'Meu aval', conteudo: 'Conteúdo', validacao: 'Validação', niveis: 'Pontos e níveis', leads: 'Resgate de leads', horas: 'Horas complementares', auditoria: 'Auditoria', perfil: 'Meu perfil' };
   var ETAPAS = ['Bots', 'Estudantes', 'IA aberta', 'Escritório'];
   var MEU_ESC = 'Canela Verde Contábil';
 
@@ -416,12 +416,18 @@ footer .wrap { padding-block: var(--s6); }
     { id: 'AT-0125', aba: 'Risco', titulo: 'Split payment separa o tributo no momento do pagamento', fonte: 'LC 214/2025', st: 'apr', data: '06/11/2026', por: 'Serra Azul Contadores', horas: 'Aguardando baixa da instituição' },
     { id: 'AT-0109', aba: 'Lucro Presumido', titulo: 'Alíquota de referência em fase de teste', fonte: 'Notícia de portal', st: 'rec', data: '22/10/2026', por: 'IA aberta', motivo: 'Fonte não oficial', detalhe: 'A revisão aceitou uma notícia de portal como fonte. A informação precisa citar a lei, a norma ou o ato oficial.' }
   ];
+  // Histórico do escritório (o que já passou pelo aval dele)
+  var ESC_HIST = [
+    { id: 'AT-0131', aba: 'Lucro Real', titulo: 'CBS substitui PIS e Cofins a partir de 2027', st: 'pub', data: '12/11/2026', pts: 2, tempo: 'em 31 horas' },
+    { id: 'AT-0122', aba: 'Oportunidade', titulo: 'Profissões regulamentadas têm redução de 30% nas alíquotas', st: 'pub', data: '05/11/2026', pts: 1, tempo: 'em 3 dias úteis' },
+    { id: 'AT-0112', aba: 'MEI', titulo: 'Limite de faturamento do MEI em 2027', st: 'dev', data: '28/10/2026', motivo: 'Informação desatualizada', obs: 'O limite citado era o de 2025. Devolvida para a revisão do estudante.' }
+  ];
   var MOTIVOS = ['Contradição com a fonte oficial', 'Informação desatualizada', 'Interpretação incorreta', 'Fonte não oficial', 'Erro de digitação'];
   function agora() { var d = new Date(), p = function (n) { return String(n).padStart(2, '0'); }; return p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()); }
   function log(p, q, a) { LOG.unshift({ d: agora(), p: p, q: q, a: a }); }
 
   /* ================= Estado e navegação ================= */
-  var S = { perfil: 'empresario', tabEst: 'disp', abrir: null, aba: 'Todas', busca: '', aviso: '', cad: { passo: 1, perfil: null, sel: {} } };
+  var S = { perfil: 'empresario', tabEst: 'disp', tabEsc: 'agu', abrir: null, aba: 'Todas', busca: '', aviso: '', cad: { passo: 1, perfil: null, sel: {} } };
   var APP_VIEWS = Object.keys(ROTULO);
   function ir(h) { if (location.hash === '#' + h) route(); else location.hash = h; }
   function route() {
@@ -602,7 +608,7 @@ footer .wrap { padding-block: var(--s6); }
         var m = meus4(), e = eu();
         h = cabeca('Sua caixa de tarefas', 'Olá, Rafael.', 'Você vê aqui só o que está esperando pelo seu escritório.', 'Dados de exemplo') +
           kpis([['Aguardando seu aval', m.length, 'prazo de 5 dias úteis; em 48 horas vale mais'], ['Pontos', e.pts, 'nível ' + e.nivel + ', janela de 6 meses'], ['Verificações', saldo, 'saldo para resgatar leads']]) +
-          '<div class="list">' + (m.length ? m.map(cardFila).join('') : '<p class="msg">Nenhuma atualização aguardando o seu aval. Quando chegar uma, você recebe aviso por e-mail e aqui.</p>') + '</div>';
+          '<p><a class="btn btn-primary" href="#aval">Abrir meu aval</a></p>';
       } else if (p === 'estudante') {
         var q = function (st) { return EST.filter(function (x) { return x.st === st; }).length; };
         h = cabeca('Sua caixa de tarefas', 'Olá, Camila.', 'Revise com cuidado: cada análise aprovada vira hora complementar na sua instituição.', 'Dados de exemplo') +
@@ -634,6 +640,14 @@ footer .wrap { padding-block: var(--s6); }
         '<div class="stack" style="margin-bottom: var(--s4)"><input class="inp" id="busca" type="search" placeholder="Buscar no conteúdo" aria-label="Buscar no conteúdo" value="' + esc(S.busca) + '" style="max-width:360px">' +
         '<div class="chips" role="group" aria-label="Filtrar por aba">' + abas.map(function (a) { return '<button type="button" class="chip" data-act="aba" data-a="' + a + '" aria-pressed="' + (a === S.aba) + '">' + a + '</button>'; }).join('') + '</div></div>' +
         '<div class="list" id="pub-list">' + (l.length ? l.map(cardPub).join('') : '<p class="msg">Nada publicado com esse filtro. Troque a aba ou limpe a busca.</p>') + '</div>';
+    },
+
+    aval: function () {
+      var ag = meus4(), T = [['agu', 'Aguardando seu aval', ag.length], ['pub', 'Publicadas por você', ESC_HIST.filter(function (x) { return x.st === 'pub'; }).length], ['dev', 'Devolvidas', ESC_HIST.filter(function (x) { return x.st === 'dev'; }).length]];
+      var l = S.tabEsc === 'agu' ? ag : ESC_HIST.filter(function (x) { return x.st === S.tabEsc; });
+      return cabeca('Etapa 4 · Aval do escritório', 'Meu aval', 'Só você publica. Confira a revisão, anexe a fonte oficial e aprove. Prazo de 5 dias úteis; em até 48 horas vale o dobro de pontos.', 'Dados de exemplo') +
+        '<div class="chips" role="tablist" aria-label="Situação do aval" style="margin-bottom: var(--s4)">' + T.map(function (t) { return '<button type="button" class="chip" role="tab" data-act="tab-esc" data-t="' + t[0] + '" aria-pressed="' + (S.tabEsc === t[0]) + '">' + t[1] + ' · ' + t[2] + '</button>'; }).join('') + '</div>' +
+        '<div class="list">' + (l.length ? l.map(S.tabEsc === 'agu' ? cardAval : cardHist).join('') : '<p class="msg">' + (S.tabEsc === 'agu' ? 'Nada aguardando o seu aval. Quando chegar, você recebe aviso por e-mail e aqui.' : 'Nada por aqui ainda.') + '</p>') + '</div>';
     },
 
     analises: function () {
@@ -735,6 +749,24 @@ footer .wrap { padding-block: var(--s6); }
       '<div class="item-meta"><span>Fonte <b>' + esc(a.fonte) + '</b></span><span>Vigência <b class="num">' + a.vig + '</b></span>' + (a.etapa === 4 && a.esc ? '<span>Com <b>' + esc(a.esc) + '</b></span>' : '') + '</div>' +
       (bt ? '<div class="row">' + bt + '</div>' : '') + '</article>';
   }
+  function cardAval(a) {
+    var aberto = S.abrir === a.id;
+    return '<article class="card stack"><div class="row between"><div class="row"><span class="tag num">' + a.id + '</span><span class="tag">' + a.aba + '</span></div><span class="pill ' + (a.rapido ? 'bad' : 'warn') + '">Prazo: ' + a.prazo + (a.rapido ? ' · vale 2 pontos' : '') + '</span></div>' +
+      '<div class="stack-sm"><h2 class="h3">' + esc(a.titulo) + '</h2><p class="small">' + esc(a.resumo) + '</p></div>' + trilha(a.etapa) +
+      '<div class="item-meta"><span>Revisado por <b>' + esc(a.est) + '</b>, estudante</span><span>Conferido pela <b>IA aberta</b></span><span>Fonte do bot <b>' + esc(a.fonte) + '</b></span></div>' +
+      (aberto ? '<form class="stack" data-aval="' + a.id + '" novalidate style="border-top: 1px solid var(--line); padding-top: var(--s4)">' +
+        '<div class="grid2"><div class="field"><label for="dec-' + a.id + '">Sua decisão</label><select id="dec-' + a.id + '"><option value="ok">Aprovar e publicar</option><option value="dev">Devolver com justificativa</option></select></div>' +
+        '<div class="field"><label for="fon-' + a.id + '">Link da fonte oficial</label><input id="fon-' + a.id + '" type="url" placeholder="https://www.planalto.gov.br/..."></div></div>' +
+        '<div class="grid2"><div class="field"><label for="dmot-' + a.id + '">Motivo, se devolver</label><select id="dmot-' + a.id + '"><option value="">Escolha um motivo</option>' + MOTIVOS.map(function (m) { return '<option>' + m + '</option>'; }).join('') + '</select></div>' +
+        '<div class="field"><label for="dobs-' + a.id + '">Observação (opcional)</label><input id="dobs-' + a.id + '" type="text"></div></div>' +
+        '<p class="err" id="derr-' + a.id + '" hidden></p><div class="row"><button type="submit" class="btn btn-primary btn-sm">Confirmar</button><button type="button" class="btn btn-sm" data-act="est-cancelar">Cancelar</button></div></form>'
+      : '<div class="row"><button type="button" class="btn btn-primary btn-sm" data-act="esc-abrir" data-id="' + a.id + '">Dar meu aval</button></div>') + '</article>';
+  }
+  function cardHist(x) {
+    var topo = '<div class="row between"><div class="row"><span class="tag num">' + x.id + '</span><span class="tag">' + x.aba + '</span></div>';
+    if (x.st === 'pub') return '<article class="card stack">' + topo + '<span class="pill ok">Publicada · +' + x.pts + (x.pts === 1 ? ' ponto' : ' pontos') + '</span></div><h2 class="h3">' + esc(x.titulo) + '</h2><div class="item-meta"><span>Publicada em <b class="num">' + x.data + '</b></span><span>Aval dado <b>' + x.tempo + '</b></span></div></article>';
+    return '<article class="card stack">' + topo + '<span class="pill warn">Devolvida</span></div><h2 class="h3">' + esc(x.titulo) + '</h2><div class="item-meta"><span>Devolvida em <b class="num">' + x.data + '</b></span><span>Motivo <b>' + x.motivo + '</b></span></div>' + (x.obs ? '<p class="small muted">' + esc(x.obs) + '</p>' : '') + '</article>';
+  }
   function cardEst(x) {
     var topo = '<div class="row between"><div class="row"><span class="tag num">' + x.id + '</span><span class="tag">' + x.aba + '</span></div>';
     if (x.st === 'disp') {
@@ -776,6 +808,8 @@ footer .wrap { padding-block: var(--s6); }
     if (act === 'cad-volta') { S.cad.passo--; return renderCad(); }
     if (act === 'ab-rever') return rever();
     if (act === 'tab-est') { S.tabEst = b.dataset.t; S.abrir = null; return refresh(); }
+    if (act === 'tab-esc') { S.tabEsc = b.dataset.t; S.abrir = null; return refresh(); }
+    if (act === 'esc-abrir') { S.abrir = b.dataset.id; return refresh(); }
     if (act === 'est-analisar') { S.abrir = b.dataset.id; return refresh(); }
     if (act === 'est-cancelar') { S.abrir = null; return refresh(); }
     if (act === 'est-simular') {
@@ -818,6 +852,22 @@ footer .wrap { padding-block: var(--s6); }
     $('pub-list').innerHTML = l.length ? l.map(cardPub).join('') : '<p class="msg">Nada publicado com esse filtro. Troque a aba ou limpe a busca.</p>';
   });
   document.addEventListener('submit', function (e) {
+    if (e.target.dataset && e.target.dataset.aval) {
+      e.preventDefault();
+      var aid = e.target.dataset.aval, at = acha(aid), dec = $('dec-' + aid).value, fon = $('fon-' + aid).value.trim(), dm = $('dmot-' + aid).value, der = $('derr-' + aid);
+      if (dec === 'ok' && !/^https?:\/\/\S+\.\S+/.test(fon)) { der.textContent = 'Para aprovar, cole o link da fonte oficial (lei, norma ou ato publicado).'; der.hidden = false; return; }
+      if (dec === 'dev' && !dm) { der.textContent = 'Escolha o motivo da devolução.'; der.hidden = false; return; }
+      if (dec === 'ok') {
+        var pts = at.rapido ? 2 : 1; at.etapa = 5; at.pub = agora().slice(0, 10); eu().pts += pts; saldo++;
+        ESC_HIST.unshift({ id: at.id, aba: at.aba, titulo: at.titulo, st: 'pub', data: at.pub, pts: pts, tempo: at.rapido ? 'em menos de 48 horas' : 'dentro do prazo' });
+        log('Escritório', MEU_ESC, 'Aprovou ' + at.id + ' com fonte oficial anexada. +' + pts + (pts === 1 ? ' ponto.' : ' pontos.'));
+        S.aviso = at.id + ' publicada. Seu escritório ganhou ' + pts + (pts === 1 ? ' ponto' : ' pontos') + ' e 1 verificação para resgatar leads.'; S.tabEsc = 'pub';
+      } else {
+        at.etapa = 2; ESC_HIST.unshift({ id: at.id, aba: at.aba, titulo: at.titulo, st: 'dev', data: agora().slice(0, 10), motivo: dm, obs: $('dobs-' + aid).value.trim() });
+        log('Escritório', MEU_ESC, 'Devolveu ' + at.id + ' para a revisão. Motivo: ' + dm + '.'); S.aviso = at.id + ' devolvida para a revisão. O motivo fica no log.'; S.tabEsc = 'dev';
+      }
+      S.abrir = null; return refresh();
+    }
     if (e.target.dataset && e.target.dataset.est) {
       e.preventDefault();
       var id = e.target.dataset.est, x = EST.filter(function (z) { return z.id === id; })[0], res = $('res-' + id).value, mot = $('mot-' + id).value, er = $('err-' + id);
