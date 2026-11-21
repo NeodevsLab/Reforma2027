@@ -350,12 +350,12 @@ footer .wrap { padding-block: var(--s6); }
   var PERFIS = {
     empresario: { nome: 'Empresário', quem: 'Helena Barcellos', org: 'Barcellos Móveis Ltda. · Simples Nacional', nav: ['inicio', 'conteudo', 'niveis', 'perfil'] },
     escritorio: { nome: 'Escritório validador', quem: 'Rafael Pimentel', org: 'Canela Verde Contábil · Vitória', nav: ['inicio', 'validacao', 'conteudo', 'niveis', 'leads', 'perfil'] },
-    estudante: { nome: 'Estudante', quem: 'Camila Vieira', org: 'Ciências Contábeis · 5º período', nav: ['inicio', 'validacao', 'conteudo', 'horas', 'perfil'] },
+    estudante: { nome: 'Estudante', quem: 'Camila Vieira', org: 'Ciências Contábeis · 5º período', nav: ['inicio', 'analises', 'conteudo', 'horas', 'perfil'] },
     instituicao: { nome: 'Instituição de ensino', quem: 'Coordenação do curso', org: 'Instituição parceira (exemplo)', nav: ['inicio', 'horas', 'conteudo', 'perfil'] },
     supervisor: { nome: 'Supervisor CRC', quem: 'Supervisor (exemplo)', org: 'Conselho Regional de Contabilidade', nav: ['inicio', 'niveis', 'auditoria', 'conteudo', 'perfil'] },
     admin: { nome: 'Administrador', quem: 'Administrador', org: 'Reforma 2027', nav: ['inicio', 'validacao', 'niveis', 'auditoria', 'conteudo', 'perfil'] }
   };
-  var ROTULO = { inicio: 'Início', conteudo: 'Conteúdo', validacao: 'Validação', niveis: 'Pontos e níveis', leads: 'Resgate de leads', horas: 'Horas complementares', auditoria: 'Auditoria', perfil: 'Meu perfil' };
+  var ROTULO = { inicio: 'Início', analises: 'Minhas análises', conteudo: 'Conteúdo', validacao: 'Validação', niveis: 'Pontos e níveis', leads: 'Resgate de leads', horas: 'Horas complementares', auditoria: 'Auditoria', perfil: 'Meu perfil' };
   var ETAPAS = ['Bots', 'Estudantes', 'IA aberta', 'Escritório'];
   var MEU_ESC = 'Canela Verde Contábil';
 
@@ -405,11 +405,23 @@ footer .wrap { padding-block: var(--s6); }
     { d: '18/11/2026 08:00', p: 'Bot', q: 'Bot Lucro Presumido', a: 'Criou a atualização inicial AT-0149 com fonte anexada.' },
     { d: '17/11/2026 16:48', p: 'Escritório', q: 'Canela Verde Contábil', a: 'Resgatou o lead L-018. −1 verificação.' }
   ];
+  // Painel do estudante: disponível -> (análise) -> aguardando resultado -> aprovada (vai para a instituição) ou recusada (com motivo)
+  var EST = [
+    { id: 'AT-0146', aba: 'Lucro Real', titulo: 'Transição dos benefícios fiscais de ICMS', resumo: 'Redução gradual dos benefícios de ICMS no mesmo ritmo da queda das alíquotas, de 2029 a 2032.', fonte: 'EC 132/2023', vig: '01/01/2029', st: 'disp' },
+    { id: 'AT-0147', aba: 'MEI', titulo: 'Devolução de tributos a famílias de baixa renda', resumo: 'Regras de devolução de parte da CBS e do IBS (cashback) a famílias inscritas no cadastro único.', fonte: 'LC 214/2025', vig: '01/01/2027', st: 'disp' },
+    { id: 'AT-0150', aba: 'Simples Nacional', titulo: 'Opção semestral pelo regime regular de IBS e CBS', resumo: 'A empresa do Simples escolhe, a cada semestre, se recolhe IBS e CBS dentro ou fora do DAS.', fonte: 'LC 214/2025', vig: '01/01/2027', st: 'disp' },
+    { id: 'AT-0144', aba: 'Risco', titulo: 'Imposto Seletivo: bens e serviços alcançados', fonte: 'LC 214/2025', st: 'agu', etapa: 'IA aberta conferindo', data: '19/11/2026' },
+    { id: 'AT-0142', aba: 'Oportunidade', titulo: 'Cesta básica nacional com alíquota zero', fonte: 'LC 214/2025', st: 'agu', etapa: 'Aguardando aval do escritório', data: '18/11/2026' },
+    { id: 'AT-0131', aba: 'Lucro Real', titulo: 'CBS substitui PIS e Cofins a partir de 2027', fonte: 'EC 132/2023; LC 214/2025', st: 'apr', data: '11/11/2026', por: 'Canela Verde Contábil', horas: 'Computada' },
+    { id: 'AT-0125', aba: 'Risco', titulo: 'Split payment separa o tributo no momento do pagamento', fonte: 'LC 214/2025', st: 'apr', data: '06/11/2026', por: 'Serra Azul Contadores', horas: 'Aguardando baixa da instituição' },
+    { id: 'AT-0109', aba: 'Lucro Presumido', titulo: 'Alíquota de referência em fase de teste', fonte: 'Notícia de portal', st: 'rec', data: '22/10/2026', por: 'IA aberta', motivo: 'Fonte não oficial', detalhe: 'A revisão aceitou uma notícia de portal como fonte. A informação precisa citar a lei, a norma ou o ato oficial.' }
+  ];
+  var MOTIVOS = ['Contradição com a fonte oficial', 'Informação desatualizada', 'Interpretação incorreta', 'Fonte não oficial', 'Erro de digitação'];
   function agora() { var d = new Date(), p = function (n) { return String(n).padStart(2, '0'); }; return p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()); }
   function log(p, q, a) { LOG.unshift({ d: agora(), p: p, q: q, a: a }); }
 
   /* ================= Estado e navegação ================= */
-  var S = { perfil: 'empresario', aba: 'Todas', busca: '', aviso: '', cad: { passo: 1, perfil: null, sel: {} } };
+  var S = { perfil: 'empresario', tabEst: 'disp', abrir: null, aba: 'Todas', busca: '', aviso: '', cad: { passo: 1, perfil: null, sel: {} } };
   var APP_VIEWS = Object.keys(ROTULO);
   function ir(h) { if (location.hash === '#' + h) route(); else location.hash = h; }
   function route() {
@@ -592,10 +604,10 @@ footer .wrap { padding-block: var(--s6); }
           kpis([['Aguardando seu aval', m.length, 'prazo de 5 dias úteis; em 48 horas vale mais'], ['Pontos', e.pts, 'nível ' + e.nivel + ', janela de 6 meses'], ['Verificações', saldo, 'saldo para resgatar leads']]) +
           '<div class="list">' + (m.length ? m.map(cardFila).join('') : '<p class="msg">Nenhuma atualização aguardando o seu aval. Quando chegar uma, você recebe aviso por e-mail e aqui.</p>') + '</div>';
       } else if (p === 'estudante') {
-        var r = pendentes(2);
-        h = cabeca('Sua caixa de tarefas', 'Olá, Camila.', 'Revise com cuidado: cada revisão conta para as suas horas complementares.', 'Dados de exemplo') +
-          kpis([['Para revisar', r.length, 'atualizações na etapa 2'], ['Revisões computadas', 14, '8 já baixadas pela instituição'], ['Vínculo', 'Confirmado', 'pela instituição de ensino']]) +
-          '<div class="list">' + (r.length ? r.map(cardFila).join('') : '<p class="msg">Nenhuma atualização para revisar agora.</p>') + '</div>';
+        var q = function (st) { return EST.filter(function (x) { return x.st === st; }).length; };
+        h = cabeca('Sua caixa de tarefas', 'Olá, Camila.', 'Revise com cuidado: cada análise aprovada vira hora complementar na sua instituição.', 'Dados de exemplo') +
+          kpis([['Disponíveis', q('disp'), 'atualizações esperando análise'], ['Aguardando resultado', q('agu'), 'na IA aberta ou no escritório'], ['Aprovadas', q('apr'), q('rec') + ' recusada' + (q('rec') === 1 ? '' : 's') + ', com motivo']]) +
+          '<p><a class="btn btn-primary" href="#analises">Abrir minhas análises</a></p>';
       } else if (p === 'instituicao') {
         var pend = ALUNOS.filter(function (a) { return a.vinc === 'Pendente'; }).length, ab = ALUNOS.reduce(function (s, a) { return s + (a.rev - a.baixa); }, 0);
         h = cabeca('Sua caixa de tarefas', 'Alunos da sua instituição', 'Você vê apenas os alunos com vínculo confirmado por você.', 'Dados de exemplo') +
@@ -622,6 +634,15 @@ footer .wrap { padding-block: var(--s6); }
         '<div class="stack" style="margin-bottom: var(--s4)"><input class="inp" id="busca" type="search" placeholder="Buscar no conteúdo" aria-label="Buscar no conteúdo" value="' + esc(S.busca) + '" style="max-width:360px">' +
         '<div class="chips" role="group" aria-label="Filtrar por aba">' + abas.map(function (a) { return '<button type="button" class="chip" data-act="aba" data-a="' + a + '" aria-pressed="' + (a === S.aba) + '">' + a + '</button>'; }).join('') + '</div></div>' +
         '<div class="list" id="pub-list">' + (l.length ? l.map(cardPub).join('') : '<p class="msg">Nada publicado com esse filtro. Troque a aba ou limpe a busca.</p>') + '</div>';
+    },
+
+    analises: function () {
+      var T = [['disp', 'Disponíveis para análise'], ['agu', 'Aguardando resultado'], ['fim', 'Concluídas']];
+      var cont = function (k) { return EST.filter(function (x) { return k === 'fim' ? (x.st === 'apr' || x.st === 'rec') : x.st === k; }).length; };
+      var l = EST.filter(function (x) { return S.tabEst === 'fim' ? (x.st === 'apr' || x.st === 'rec') : x.st === S.tabEst; });
+      return cabeca('Etapa 2 · Revisão', 'Minhas análises', 'Escolha uma atualização, confira com a fonte oficial e envie. Depois ela passa pela IA aberta e pelo escritório. Aprovada, vira hora complementar.', 'Dados de exemplo') +
+        '<div class="chips" role="tablist" aria-label="Situação das análises" style="margin-bottom: var(--s4)">' + T.map(function (t) { return '<button type="button" class="chip" role="tab" data-act="tab-est" data-t="' + t[0] + '" aria-pressed="' + (S.tabEst === t[0]) + '">' + t[1] + ' · ' + cont(t[0]) + '</button>'; }).join('') + '</div>' +
+        '<div class="list">' + (l.length ? l.map(cardEst).join('') : '<p class="msg">' + (S.tabEst === 'disp' ? 'Nenhuma atualização disponível agora. Você recebe um aviso quando chegar uma nova.' : 'Nada por aqui ainda.') + '</p>') + '</div>';
     },
 
     validacao: function () {
@@ -714,6 +735,34 @@ footer .wrap { padding-block: var(--s6); }
       '<div class="item-meta"><span>Fonte <b>' + esc(a.fonte) + '</b></span><span>Vigência <b class="num">' + a.vig + '</b></span>' + (a.etapa === 4 && a.esc ? '<span>Com <b>' + esc(a.esc) + '</b></span>' : '') + '</div>' +
       (bt ? '<div class="row">' + bt + '</div>' : '') + '</article>';
   }
+  function cardEst(x) {
+    var topo = '<div class="row between"><div class="row"><span class="tag num">' + x.id + '</span><span class="tag">' + x.aba + '</span></div>';
+    if (x.st === 'disp') {
+      var aberto = S.abrir === x.id;
+      return '<article class="card stack">' + topo + '</div><div class="stack-sm"><h2 class="h3">' + esc(x.titulo) + '</h2><p class="small">' + esc(x.resumo) + '</p></div>' +
+        '<div class="item-meta"><span>Fonte indicada pelo bot <b>' + esc(x.fonte) + '</b></span><span>Vigência <b class="num">' + x.vig + '</b></span></div>' +
+        (aberto ? '<form class="stack" data-est="' + x.id + '" novalidate style="border-top: 1px solid var(--line); padding-top: var(--s4)">' +
+          ['A fonte é oficial e o link abre o documento certo', 'O texto confere com o que a fonte diz', 'A data de vigência está correta'].map(function (c, i) { return '<label class="toggle" for="ck-' + x.id + '-' + i + '"><span>' + c + '</span><input type="checkbox" id="ck-' + x.id + '-' + i + '"></label>'; }).join('') +
+          '<div class="grid2"><div class="field"><label for="res-' + x.id + '">Resultado da sua análise</label><select id="res-' + x.id + '"><option value="ok">Confere: enviar para a IA aberta</option><option value="dev">Não confere: devolver ao bot</option></select></div>' +
+          '<div class="field"><label for="mot-' + x.id + '">Motivo, se devolver</label><select id="mot-' + x.id + '"><option value="">Escolha um motivo</option>' + MOTIVOS.map(function (m) { return '<option>' + m + '</option>'; }).join('') + '</select></div></div>' +
+          '<div class="field"><label for="obs-' + x.id + '">Observação (opcional)</label><input id="obs-' + x.id + '" type="text" placeholder="O que você conferiu ou encontrou"></div>' +
+          '<p class="err" id="err-' + x.id + '" hidden></p><div class="row"><button type="submit" class="btn btn-primary btn-sm">Enviar análise</button><button type="button" class="btn btn-sm" data-act="est-cancelar">Cancelar</button></div></form>'
+        : '<div class="row"><button type="button" class="btn btn-primary btn-sm" data-act="est-analisar" data-id="' + x.id + '">Fazer análise</button></div>') + '</article>';
+    }
+    if (x.st === 'agu') {
+      return '<article class="card stack">' + topo + '<span class="pill warn">' + x.etapa + '</span></div><h2 class="h3">' + esc(x.titulo) + '</h2>' +
+        '<div class="item-meta"><span>Sua análise <b class="num">' + x.data + '</b></span><span>Fonte <b>' + esc(x.fonte) + '</b></span></div>' +
+        '<div><button type="button" class="link small" data-act="est-simular" data-id="' + x.id + '">Demonstração: simular o resultado</button></div></article>';
+    }
+    if (x.st === 'apr') {
+      return '<article class="card stack">' + topo + '<span class="pill ok">Aprovada</span></div><h2 class="h3">' + esc(x.titulo) + '</h2>' +
+        '<div class="item-meta"><span>Aval de <b>' + esc(x.por) + '</b></span><span>Sua análise <b class="num">' + x.data + '</b></span></div>' +
+        '<p class="msg">Enviada à sua instituição para computar a hora complementar. Situação: <b>' + x.horas + '</b>.</p></article>';
+    }
+    return '<article class="card stack">' + topo + '<span class="pill bad">Recusada</span></div><h2 class="h3">' + esc(x.titulo) + '</h2>' +
+      '<div class="item-meta"><span>Recusada por <b>' + esc(x.por) + '</b></span><span>Sua análise <b class="num">' + x.data + '</b></span><span>Motivo <b>' + x.motivo + '</b></span></div>' +
+      '<p class="small">' + esc(x.detalhe) + '</p><p class="note">Análise recusada não conta hora. O registro é informativo, para você aprender com ele, e fica visível para a sua instituição.</p></article>';
+  }
   function acha(id) { return ATU.filter(function (a) { return a.id === id; })[0]; }
 
   /* ================= Ações ================= */
@@ -726,6 +775,15 @@ footer .wrap { padding-block: var(--s6); }
     if (act === 'cad-perfil') { S.cad = { passo: 2, perfil: b.dataset.p, sel: {} }; return renderCad(); }
     if (act === 'cad-volta') { S.cad.passo--; return renderCad(); }
     if (act === 'ab-rever') return rever();
+    if (act === 'tab-est') { S.tabEst = b.dataset.t; S.abrir = null; return refresh(); }
+    if (act === 'est-analisar') { S.abrir = b.dataset.id; return refresh(); }
+    if (act === 'est-cancelar') { S.abrir = null; return refresh(); }
+    if (act === 'est-simular') {
+      var y = EST.filter(function (z) { return z.id === b.dataset.id; })[0];
+      if (y.etapa === 'IA aberta conferindo') { y.etapa = 'Aguardando aval do escritório'; S.aviso = 'A IA aberta conferiu a sua análise de ' + y.id + '. Agora falta o aval do escritório.'; }
+      else { y.st = 'apr'; y.por = MEU_ESC; y.horas = 'Aguardando baixa da instituição'; ALUNOS[0].rev++; log('Escritório', MEU_ESC, 'Aprovou ' + y.id + '. A revisão de Camila Vieira foi enviada à instituição.'); S.aviso = y.id + ' aprovada. A sua hora foi enviada à instituição para baixa.'; S.tabEst = 'fim'; }
+      return refresh();
+    }
     if (act === 'cad-cancelar') { e.preventDefault(); S.cad = { passo: 1, perfil: null, sel: {} }; return ir('entrar'); }
     if (act === 'login-fechar') { $('login-form').reset(); $('lg-err').hidden = true; $('lg-msg').hidden = true; $('login-form').hidden = true; $('reopen-login').hidden = false; return; }
     if (act === 'cad-prox') { S.cad.passo++; return renderCad(); }
@@ -760,6 +818,16 @@ footer .wrap { padding-block: var(--s6); }
     $('pub-list').innerHTML = l.length ? l.map(cardPub).join('') : '<p class="msg">Nada publicado com esse filtro. Troque a aba ou limpe a busca.</p>';
   });
   document.addEventListener('submit', function (e) {
+    if (e.target.dataset && e.target.dataset.est) {
+      e.preventDefault();
+      var id = e.target.dataset.est, x = EST.filter(function (z) { return z.id === id; })[0], res = $('res-' + id).value, mot = $('mot-' + id).value, er = $('err-' + id);
+      var cks = [0, 1, 2].filter(function (i) { return $('ck-' + id + '-' + i).checked; }).length;
+      if (res === 'ok' && cks < 3) { er.textContent = 'Para enviar como "confere", marque os três itens do checklist.'; er.hidden = false; return; }
+      if (res === 'dev' && !mot) { er.textContent = 'Escolha o motivo da devolução.'; er.hidden = false; return; }
+      if (res === 'ok') { x.st = 'agu'; x.etapa = 'IA aberta conferindo'; x.data = agora().slice(0, 10); S.aviso = 'Análise de ' + id + ' enviada. Ela segue para a IA aberta e depois para o escritório.'; S.tabEst = 'agu'; log('Estudante', PERFIS.estudante.quem, 'Concluiu a análise de ' + id + '.'); }
+      else { EST = EST.filter(function (z) { return z.id !== id; }); S.aviso = id + ' devolvida ao bot. Motivo: ' + mot + '. A devolução fica registrada no log.'; log('Estudante', PERFIS.estudante.quem, 'Devolveu ' + id + ' ao bot. Motivo: ' + mot + '.'); }
+      S.abrir = null; return refresh();
+    }
     if (e.target.id !== 'cad-form') return;
     e.preventDefault();
     var a = $('cf-s1').value, b = $('cf-s2').value, er = $('cad-err');

@@ -2,6 +2,7 @@
 
 Registre aqui toda decisão dada no chat que ainda não está em `BRIEFING.md`. Formato: data — decisão.
 
+- 21/11/2026 — Cada perfil tem painel próprio. Estudante: abas "Disponíveis para análise", "Aguardando resultado" e "Concluídas". A análise tem checklist (fonte oficial, texto confere, vigência) e resultado (confere ou devolver ao bot com motivo). Concluída mostra Aprovada ou Recusada; recusada mostra motivo e quem recusou; aprovada vai para a instituição computar a hora ("aguardando baixa" ou "computada").
 - 21/11/2026 — O painel "O ciclo agora" (quantas atualizações em cada etapa) é visão administrativa: só Administrador e Supervisor CRC veem. Escritório e estudante veem apenas a própria fila.
 - 20/11/2026 — A abertura em texto (5 telas, cerca de 24 s) publicada por outra sessão foi substituída pela abertura em vídeo de até 9 s, que é o que o usuário pediu. Ficaram dela: "Rever a abertura" e a opção "Pular a abertura sempre" no perfil.
 - 19/11/2026 — Abertura: juntar os dois vídeos em um só (vídeo 1 = prédios, vídeo 2 = homem de costas), com no máximo 9 segundos no total. Botão "Pular intro" sempre visível. Botões padrão de fechar e cancelar no login, para quem desistir.
