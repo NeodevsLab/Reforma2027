@@ -106,7 +106,10 @@ button, input, select { font: inherit; color: inherit; }
 /* Palco da abertura: vídeo de fundo, escurecimento e cards de vidro preto */
 .stage { position: relative; isolation: isolate; overflow: hidden; background: var(--hero-bg); min-height: calc(100svh - 61px); display: flex; align-items: center; }
 .stage-media, .stage-fallback, .stage-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
-.stage-media { object-fit: cover; z-index: -3; }
+.stage-media { object-fit: cover; object-position: 50% 40%; z-index: -3; }
+/* Vídeo vertical: em tela larga ele fica inteiro no centro, sobre um fundo desfocado do próprio vídeo */
+.stage.tem-video .stage-fallback { background: url("assets/abertura-fundo.jpg") center / cover no-repeat, var(--hero-bg); }
+@media (min-aspect-ratio: 4/5) { .stage-media { object-fit: contain; } }
 .stage-fallback { z-index: -4; background:
   radial-gradient(55% 70% at 80% 25%, rgba(201, 169, 110, 0.18), transparent 60%),
   linear-gradient(90deg, var(--hero-line) 1px, transparent 1px) 0 0 / 96px 96px,
@@ -159,6 +162,7 @@ button, input, select { font: inherit; color: inherit; }
 @keyframes fade { from { transform: translateY(12px); opacity: 0; } }
 @media (max-width: 940px) {
   .stage { min-height: 0; }
+  .stage-media { height: calc(100svh - 61px); bottom: auto; }
   .intro-text { display: contents; }
   .intro-text > .overline { order: 1; } .intro-text > h1 { order: 2; } .intro > .login { order: 3; }
   .intro-text > .lead { order: 4; } .intro-text > div { order: 5; } .intro-text > .row { order: 6; }
@@ -481,6 +485,7 @@ footer .wrap { padding-block: var(--s6); }
   }
   vid.addEventListener('timeupdate', function () { if (vid.duration && vid.currentTime >= vid.duration - 4) revelar(false); });
   vid.addEventListener('ended', function () { revelar(false); });
+  vid.addEventListener('loadeddata', function () { stage.classList.add('tem-video'); });
   vid.addEventListener('error', function () { stage.classList.add('sem-video'); setTimeout(function () { revelar(false); }, 500); });
   $('skip-intro').addEventListener('click', function () { irAoFim(); revelar(true); });
   function rever() { if ((location.hash || '').replace('#', '') !== 'entrar') ir('entrar'); if (stage.classList.contains('sem-video')) return; tocar(); }
