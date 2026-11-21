@@ -232,6 +232,16 @@ details.who-did summary { cursor: pointer; font-size: 14px; line-height: 20px; f
 @media (max-width: 720px) { .two { grid-template-columns: minmax(0, 1fr); } }
 .toggle { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s3); align-items: center; padding: var(--s3) 0; border-top: 1px solid var(--line); font-size: 14px; line-height: 20px; }
 .toggle input { width: 18px; height: 18px; accent-color: var(--brand); }
+/* Pipeline ao vivo */
+.funil { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s3); margin-top: var(--s4); }
+.funil div { display: flex; flex-direction: column; gap: var(--s2); min-width: 0; }
+.funil .n { font-family: var(--font-display); font-weight: 600; font-size: 40px; line-height: 40px; }
+.funil .bar { height: 6px; border-radius: 3px; background: var(--surface-sunken); overflow: hidden; }
+.funil .bar i { display: block; height: 100%; background: var(--brand); }
+.funil .noar .bar i { background: var(--accent); }
+.funil .lbl { font-size: 13px; line-height: 18px; color: var(--ink-muted); }
+.funil .seta { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: var(--ink-muted); }
+@media (max-width: 720px) { .funil { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); } .funil .noar { grid-column: 1 / -1; } }
 /* Linha do tempo da transição */
 .tl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s4); margin-top: var(--s4); }
 .tl li { list-style: none; position: relative; padding-top: var(--s6); border-top: 1px solid var(--line-strong); display: flex; flex-direction: column; gap: var(--s1); min-width: 0; }
@@ -541,6 +551,14 @@ footer .wrap { padding-block: var(--s6); }
     S.aviso = '';
   }
 
+  function funil() {
+    var nomes = ['Bots', 'Estudantes', 'IA aberta', 'Escritório', 'Publicadas'], desc = ['sondando fontes oficiais', 'em revisão', 'em conferência', 'aguardando aval', 'com aval de escritório'];
+    var c = [0, 0, 0, 0, 0]; ATU.forEach(function (a) { c[a.etapa - 1]++; });
+    var max = Math.max.apply(null, c) || 1;
+    return '<div class="card" style="margin-bottom: var(--s6)"><div class="row between"><h2 class="h2">O ciclo agora</h2><span class="note">Nada vai ao ar sem passar pelas quatro etapas</span></div><div class="funil">' +
+      c.map(function (n, i) { return '<div class="' + (i === 4 ? 'noar' : '') + '"><span class="seta">' + (i < 4 ? 'Etapa ' + (i + 1) : 'No ar') + '</span><span class="n">' + n + '</span><div class="bar"><i style="width:' + (n / max * 100) + '%"></i></div><span class="h3" style="font-size:15px">' + nomes[i] + '</span><span class="lbl">' + desc[i] + '</span></div>'; }).join('') +
+      '</div></div>';
+  }
   function linhaDoTempo() {
     var M = [
       ['2026', 'Ano de teste', 'CBS de 0,9% e IBS de 0,1% destacados na nota, compensáveis com PIS e Cofins.'],
@@ -585,11 +603,11 @@ footer .wrap { padding-block: var(--s6); }
           '<p><a class="btn btn-primary" href="#horas">Abrir alunos e horas</a></p>';
       } else if (p === 'supervisor') {
         h = cabeca('Acompanhamento', 'Visão do conselho', 'Acesso somente de leitura. A bandeira amarela é a única marcação que o Supervisor faz, e ela fica no log.', 'Dados de exemplo') +
-          kpis([['Escritórios ativos', ESCRITORIOS.length, 'todos no Espírito Santo'], ['Publicadas no mês', ATU.filter(function (a) { return a.etapa === 5; }).length, 'com aval de escritório'], ['Bandeiras abertas', LOG.filter(function (l) { return l.flag; }).length, 'em revisão pelo Administrador']]) +
+          kpis([['Escritórios ativos', ESCRITORIOS.length, 'todos no Espírito Santo'], ['Publicadas no mês', ATU.filter(function (a) { return a.etapa === 5; }).length, 'com aval de escritório'], ['Bandeiras abertas', LOG.filter(function (l) { return l.flag; }).length, 'em revisão pelo Administrador']]) + funil() +
           '<div class="row"><a class="btn btn-primary" href="#niveis">Ver pontos e níveis</a><a class="btn" href="#auditoria">Abrir o log de auditoria</a></div>';
       } else {
         h = cabeca('Operação', 'Saúde do sistema', 'O Administrador mantém o app no ar. Ele não aprova atualizações, não altera pontos e não escolhe quem recebe indicação.', 'Dados de exemplo') +
-          kpis([['Cadastros a conferir', 3, 'aguardando validação de CRC e CNPJ'], ['Prazos vencendo', meus4().filter(function (a) { return a.rapido; }).length, 'atualizações com menos de 2 dias úteis'], ['Em andamento', ATU.filter(function (a) { return a.etapa < 5; }).length, 'atualizações nas quatro etapas']]) +
+          kpis([['Cadastros a conferir', 3, 'aguardando validação de CRC e CNPJ'], ['Prazos vencendo', meus4().filter(function (a) { return a.rapido; }).length, 'atualizações com menos de 2 dias úteis'], ['Em andamento', ATU.filter(function (a) { return a.etapa < 5; }).length, 'atualizações nas quatro etapas']]) + funil() +
           '<div class="card"><h2 class="h3" style="margin-bottom: var(--s2)">Cadastros aguardando validação</h2><div class="scroll-x"><table class="ledger"><thead><tr><th>Nome</th><th>Perfil</th><th>Conferir</th></tr></thead><tbody>' +
           '<tr><td>Jucutuquara Contábil</td><td>Escritório</td><td>Registro no CRC e CNPJ</td></tr><tr><td>Paulo Mendes</td><td>Contador autônomo</td><td>Registro profissional no CRC</td></tr><tr><td>Faculdade Capixaba (exemplo)</td><td>Instituição</td><td>CNPJ e e-mail oficial</td></tr>' +
           '</tbody></table></div></div>';
@@ -608,7 +626,7 @@ footer .wrap { padding-block: var(--s6); }
 
     validacao: function () {
       var l = ATU.filter(function (a) { return a.etapa < 5; }).sort(function (a, b) { return b.etapa - a.etapa; });
-      return cabeca('Ciclo de atualização', 'Atualizações em andamento', 'Nenhuma informação vai ao ar sem passar pelas quatro etapas, nesta ordem. Qualquer etapa pode devolver para a anterior, com justificativa.', 'Dados de exemplo') +
+      return cabeca('Ciclo de atualização', 'Atualizações em andamento', 'Nenhuma informação vai ao ar sem passar pelas quatro etapas, nesta ordem. Qualquer etapa pode devolver para a anterior, com justificativa.', 'Dados de exemplo') + funil() +
         '<div class="list">' + (l.length ? l.map(cardFila).join('') : '<p class="msg">Nenhuma atualização em andamento.</p>') + '</div>';
     },
 
