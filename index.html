@@ -122,6 +122,11 @@ button, input, select { font: inherit; color: inherit; }
 .stage.revealed .intro > * { opacity: 1; transform: none; }
 .stage.instant .stage-shade, .stage.instant .intro > * { transition: none; }
 .stage:not(.revealed) .intro { pointer-events: none; }
+.legendas { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; pointer-events: none; padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
+.legenda { grid-area: 1 / 1; max-width: 18ch; text-align: center; font-family: var(--font-display); font-weight: 500; font-size: clamp(34px, 6vw, 72px); line-height: 1.05; color: #fbf8f2; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7), 0 0 36px rgba(0, 0, 0, 0.65); padding: 0.5em 0.8em; background: radial-gradient(closest-side, rgba(5, 8, 14, 0.55), rgba(5, 8, 14, 0.25) 70%, transparent); opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); text-wrap: balance; }
+.legenda em { font-style: italic; color: #e8cc96; }
+.legenda.on { opacity: 1; transform: none; }
+.stage.revealed .legendas { display: none; }
 .skip { position: absolute; z-index: 3; top: 16px; right: max(16px, env(safe-area-inset-right, 0px)); padding: 8px 16px; border-radius: var(--r-md); border: 1px solid rgba(255, 255, 255, 0.35); background: rgba(8, 10, 14, 0.45); color: #f2efe8; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; backdrop-filter: blur(8px); }
 .skip:hover { background: rgba(8, 10, 14, 0.7); }
 .stage.revealed .skip { display: none; }
@@ -163,6 +168,7 @@ button, input, select { font: inherit; color: inherit; }
 @media (max-width: 940px) {
   .stage { min-height: 0; }
   .stage-media { height: calc(100svh - 61px); bottom: auto; }
+  .legendas { height: calc(100svh - 61px); bottom: auto; align-items: start; padding-top: 22svh; }
   .intro-text { display: contents; }
   .intro-text > .overline { order: 1; } .intro-text > h1 { order: 2; } .intro > .login { order: 3; }
   .intro-text > .lead { order: 4; } .intro-text > div { order: 5; } .intro-text > .row { order: 6; }
@@ -281,6 +287,11 @@ footer .wrap { padding-block: var(--s6); }
     <div class="stage-fallback" aria-hidden="true"></div>
     <video class="stage-media" id="intro-video" muted playsinline preload="auto" aria-hidden="true"></video>
     <div class="stage-shade" aria-hidden="true"></div>
+    <div class="legendas" id="legendas" aria-live="polite">
+      <p class="legenda">1º de janeiro de <em>2027</em>.</p>
+      <p class="legenda">A reforma tributária começa a valer.</p>
+      <p class="legenda">Você vai estar <em>preparado</em>?</p>
+    </div>
     <button class="skip" id="skip-intro" type="button">Pular intro</button>
     <div class="wrap stage-in">
   <div class="intro">
@@ -483,7 +494,14 @@ footer .wrap { padding-block: var(--s6); }
     var p = vid.play(); if (p && p.catch) p.catch(function () { revelar(false); });
     guarda = setTimeout(function () { revelar(false); }, 10000);
   }
-  vid.addEventListener('timeupdate', function () { if (vid.duration && vid.currentTime >= vid.duration - 4) revelar(false); });
+  var LEG = Array.prototype.slice.call(document.querySelectorAll('#legendas .legenda'));
+  vid.addEventListener('timeupdate', function () {
+    if (!vid.duration) return;
+    // cada frase fica pelo menos 1,5 s; se não couberem todas, entram as últimas (a mais forte fecha)
+    var fimFrases = Math.max(0.6, vid.duration - 4), n = Math.max(1, Math.min(LEG.length, Math.floor(fimFrases / 1.5))), usa = LEG.slice(LEG.length - n), fatia = fimFrases / n, t = vid.currentTime;
+    LEG.forEach(function (el) { var i = usa.indexOf(el), ini = i * fatia + 0.15, fim = (i + 1) * fatia - 0.15; el.classList.toggle('on', i >= 0 && t >= ini && t < fim); });
+    if (t >= vid.duration - 4) revelar(false);
+  });
   vid.addEventListener('ended', function () { revelar(false); });
   vid.addEventListener('loadeddata', function () { stage.classList.add('tem-video'); });
   vid.addEventListener('error', function () { stage.classList.add('sem-video'); setTimeout(function () { revelar(false); }, 500); });
