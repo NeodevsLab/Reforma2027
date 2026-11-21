@@ -225,6 +225,7 @@ details.who-did summary { cursor: pointer; font-size: 14px; line-height: 20px; f
 .ledger td + td, .ledger th + th { padding-left: var(--s4); }
 .ledger .r { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .scroll-x { overflow-x: auto; }
+.ledger .btn { white-space: nowrap; }
 @media (max-width: 560px) { .hide-sm { display: none; } .ledger td + td, .ledger th + th { padding-left: var(--s3); } .card { padding: var(--s4); } }
 .meter { height: 8px; border-radius: 4px; background: var(--surface-sunken); overflow: hidden; min-width: 80px; }
 .meter i { display: block; height: 100%; background: var(--brand); }
@@ -351,7 +352,7 @@ footer .wrap { padding-block: var(--s6); }
     empresario: { nome: 'Empresário', quem: 'Helena Barcellos', org: 'Barcellos Móveis Ltda. · Simples Nacional', nav: ['inicio', 'conteudo', 'niveis', 'perfil'] },
     escritorio: { nome: 'Escritório validador', quem: 'Rafael Pimentel', org: 'Canela Verde Contábil · Vitória', nav: ['inicio', 'aval', 'conteudo', 'niveis', 'leads', 'perfil'] },
     estudante: { nome: 'Estudante', quem: 'Camila Vieira', org: 'Ciências Contábeis · 5º período', nav: ['inicio', 'analises', 'conteudo', 'horas', 'perfil'] },
-    instituicao: { nome: 'Instituição de ensino', quem: 'Coordenação do curso', org: 'Instituição parceira (exemplo)', nav: ['inicio', 'horas', 'conteudo', 'perfil'] },
+    instituicao: { nome: 'Instituição de ensino', quem: 'Coordenação do curso', org: 'Instituição parceira (exemplo) · Cadastro IE-0001', nav: ['inicio', 'horas', 'conteudo', 'perfil'] },
     supervisor: { nome: 'Supervisor CRC', quem: 'Supervisor (exemplo)', org: 'Conselho Regional de Contabilidade', nav: ['inicio', 'niveis', 'auditoria', 'conteudo', 'perfil'] },
     admin: { nome: 'Administrador', quem: 'Administrador', org: 'Reforma 2027', nav: ['inicio', 'validacao', 'niveis', 'auditoria', 'conteudo', 'perfil'] }
   };
@@ -422,12 +423,21 @@ footer .wrap { padding-block: var(--s6); }
     { id: 'AT-0122', aba: 'Oportunidade', titulo: 'Profissões regulamentadas têm redução de 30% nas alíquotas', st: 'pub', data: '05/11/2026', pts: 1, tempo: 'em 3 dias úteis' },
     { id: 'AT-0112', aba: 'MEI', titulo: 'Limite de faturamento do MEI em 2027', st: 'dev', data: '28/10/2026', motivo: 'Informação desatualizada', obs: 'O limite citado era o de 2025. Devolvida para a revisão do estudante.' }
   ];
+  // Instituição: cada revisão aprovada de um aluno vira uma linha para dar baixa (1 revisão = 1 hora, valor de exemplo a definir com a instituição)
+  var BAIXAS = [
+    { k: 1, aluno: 'Camila Vieira', at: 'AT-0125', titulo: 'Split payment separa o tributo no momento do pagamento', apr: '07/11/2026', esc: 'Serra Azul Contadores', st: 'pend' },
+    { k: 2, aluno: 'Ana Luíza Rocha', at: 'AT-0122', titulo: 'Profissões regulamentadas têm redução de 30% nas alíquotas', apr: '05/11/2026', esc: 'Canela Verde Contábil', st: 'pend' },
+    { k: 3, aluno: 'Ana Luíza Rocha', at: 'AT-0115', titulo: 'ICMS e ISS começam a ser reduzidos em 2029', apr: '30/10/2026', esc: 'Penedo Contabilidade', st: 'pend' },
+    { k: 4, aluno: 'Camila Vieira', at: 'AT-0131', titulo: 'CBS substitui PIS e Cofins a partir de 2027', apr: '12/11/2026', esc: 'Canela Verde Contábil', st: 'feita', data: '14/11/2026' },
+    { k: 5, aluno: 'João Pedro Lima', at: 'AT-0127', titulo: 'Simples Nacional pode recolher IBS e CBS por fora', apr: '10/11/2026', esc: 'Penedo Contabilidade', st: 'feita', data: '13/11/2026' },
+    { k: 6, aluno: 'João Pedro Lima', at: 'AT-0118', titulo: 'MEI continua com recolhimento em valor fixo', apr: '03/11/2026', esc: 'Rio Doce Contabilidade', st: 'feita', data: '05/11/2026' }
+  ];
   var MOTIVOS = ['Contradição com a fonte oficial', 'Informação desatualizada', 'Interpretação incorreta', 'Fonte não oficial', 'Erro de digitação'];
   function agora() { var d = new Date(), p = function (n) { return String(n).padStart(2, '0'); }; return p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()); }
   function log(p, q, a) { LOG.unshift({ d: agora(), p: p, q: q, a: a }); }
 
   /* ================= Estado e navegação ================= */
-  var S = { perfil: 'empresario', tabEst: 'disp', tabEsc: 'agu', abrir: null, aba: 'Todas', busca: '', aviso: '', cad: { passo: 1, perfil: null, sel: {} } };
+  var S = { perfil: 'empresario', tabEst: 'disp', tabEsc: 'agu', tabIns: 'baixa', desfazer: null, abrir: null, aba: 'Todas', busca: '', aviso: '', cad: { passo: 1, perfil: null, sel: {} } };
   var APP_VIEWS = Object.keys(ROTULO);
   function ir(h) { if (location.hash === '#' + h) route(); else location.hash = h; }
   function route() {
@@ -615,9 +625,9 @@ footer .wrap { padding-block: var(--s6); }
           kpis([['Disponíveis', q('disp'), 'atualizações esperando análise'], ['Aguardando resultado', q('agu'), 'na IA aberta ou no escritório'], ['Aprovadas', q('apr'), q('rec') + ' recusada' + (q('rec') === 1 ? '' : 's') + ', com motivo']]) +
           '<p><a class="btn btn-primary" href="#analises">Abrir minhas análises</a></p>';
       } else if (p === 'instituicao') {
-        var pend = ALUNOS.filter(function (a) { return a.vinc === 'Pendente'; }).length, ab = ALUNOS.reduce(function (s, a) { return s + (a.rev - a.baixa); }, 0);
-        h = cabeca('Sua caixa de tarefas', 'Alunos da sua instituição', 'Você vê apenas os alunos com vínculo confirmado por você.', 'Dados de exemplo') +
-          kpis([['Vínculos a confirmar', pend, 'pedidos recebidos por e-mail'], ['Revisões sem baixa', ab, 'aguardando registro na matrícula'], ['Alunos ativos', ALUNOS.length - pend, 'com vínculo confirmado']]) +
+        var pend = ALUNOS.filter(function (a) { return a.vinc === 'Pendente'; }).length, ab = BAIXAS.filter(function (x) { return x.st === 'pend'; }).length;
+        h = cabeca('Sua caixa de tarefas', 'Alunos da sua instituição', 'Você vê apenas os alunos com vínculo confirmado por você, e só o log deles.', 'Dados de exemplo') +
+          kpis([['Horas a dar baixa', ab, 'revisões aprovadas por escritório'], ['Vínculos a confirmar', pend, 'pedidos recebidos por e-mail'], ['Alunos ativos', ALUNOS.length - pend, 'com vínculo confirmado']]) +
           '<p><a class="btn btn-primary" href="#horas">Abrir alunos e horas</a></p>';
       } else if (p === 'supervisor') {
         h = cabeca('Acompanhamento', 'Visão do conselho', 'Acesso somente de leitura. A bandeira amarela é a única marcação que o Supervisor faz, e ela fica no log.', 'Dados de exemplo') +
@@ -692,13 +702,33 @@ footer .wrap { padding-block: var(--s6); }
 
     horas: function () {
       if (S.perfil === 'instituicao') {
-        return cabeca('Alunos e horas', 'Horas complementares dos seus alunos', 'As horas contam por revisão feita, sem medir tempo. Quantas horas vale cada revisão é definido com a instituição.', 'Dados de exemplo') +
-          '<div class="card"><div class="scroll-x"><table class="ledger"><thead><tr><th>Aluno</th><th>Vínculo</th><th class="r">Revisões</th><th class="r">Com baixa</th><th></th></tr></thead><tbody>' +
-          ALUNOS.map(function (a, i) {
-            var ab = a.rev - a.baixa;
-            return '<tr><td><b>' + esc(a.nome) + '</b><div class="note num">Matrícula ' + a.mat + '</div></td><td><span class="pill ' + (a.vinc === 'Confirmado' ? 'ok' : 'warn') + '">' + a.vinc + '</span></td><td class="r">' + a.rev + '</td><td class="r">' + a.baixa + '</td><td>' +
-              (a.vinc === 'Pendente' ? '<button type="button" class="btn btn-sm" data-act="vinc" data-i="' + i + '">Confirmar vínculo</button>' : ab > 0 ? '<button type="button" class="btn btn-sm" data-act="baixa" data-i="' + i + '">Dar baixa em ' + ab + '</button>' : '<span class="note">Em dia</span>') + '</td></tr>';
-          }).join('') + '</tbody></table></div><p class="note" style="margin-top: var(--s3)">A baixa pode ser desfeita com justificativa. Você não vê alunos de outra instituição.</p></div>';
+        var nP = BAIXAS.filter(function (x) { return x.st === 'pend'; }).length, nF = BAIXAS.filter(function (x) { return x.st === 'feita'; }).length, nV = ALUNOS.filter(function (a) { return a.vinc === 'Pendente'; }).length;
+        var T = [['baixa', 'Horas a dar baixa', nP], ['feitas', 'Baixas registradas', nF], ['vinc', 'Vínculos a confirmar', nV], ['alunos', 'Alunos', ALUNOS.length - nV]];
+        var corpo = '';
+        if (S.tabIns === 'baixa' || S.tabIns === 'feitas') {
+          var l = BAIXAS.filter(function (x) { return x.st === (S.tabIns === 'baixa' ? 'pend' : 'feita'); });
+          corpo = l.length ? '<div class="card"><div class="scroll-x"><table class="ledger"><thead><tr><th>Aluno</th><th>Revisão aprovada</th><th class="hide-sm">Aval de</th><th class="r">' + (S.tabIns === 'baixa' ? 'Aprovada em' : 'Baixa em') + '</th><th></th></tr></thead><tbody>' +
+            l.map(function (x) {
+              var acao = S.tabIns === 'baixa' ? '<button type="button" class="btn btn-sm btn-primary" data-act="ins-baixa" data-k="' + x.k + '">Dar baixa</button>'
+                : (S.desfazer === x.k ? '<form class="stack-sm" data-desf="' + x.k + '" novalidate><input class="inp" id="jus-' + x.k + '" type="text" placeholder="Justificativa" aria-label="Justificativa para desfazer a baixa"><p class="err" id="jerr-' + x.k + '" hidden></p><div class="row"><button type="submit" class="btn btn-sm">Desfazer</button><button type="button" class="btn btn-sm" data-act="ins-desf-cancelar">Cancelar</button></div></form>'
+                : '<button type="button" class="btn btn-sm" data-act="ins-desf" data-k="' + x.k + '">Desfazer baixa</button>');
+              return '<tr><td><b>' + esc(x.aluno) + '</b></td><td><span class="num">' + x.at + '</span> · ' + esc(x.titulo) + '</td><td class="hide-sm">' + esc(x.esc) + '</td><td class="r">' + (S.tabIns === 'baixa' ? x.apr : x.data) + '</td><td>' + acao + '</td></tr>';
+            }).join('') + '</tbody></table></div>' + (S.tabIns === 'baixa' && l.length > 1 ? '<div style="margin-top: var(--s3)"><button type="button" class="btn btn-sm" data-act="ins-baixa-todas">Dar baixa nas ' + l.length + '</button></div>' : '') + '</div>'
+            : '<p class="msg">' + (S.tabIns === 'baixa' ? 'Nenhuma hora esperando baixa. Quando um escritório aprovar a revisão de um aluno seu, ela aparece aqui.' : 'Nenhuma baixa registrada ainda.') + '</p>';
+        } else if (S.tabIns === 'vinc') {
+          var pv = ALUNOS.map(function (a, i) { return [a, i]; }).filter(function (x) { return x[0].vinc === 'Pendente'; });
+          corpo = pv.length ? '<div class="list">' + pv.map(function (x) { return '<div class="card row between"><div class="stack-sm"><p class="h3">' + esc(x[0].nome) + '</p><p class="note num">Matrícula ' + x[0].mat + ' · pedido recebido pelo e-mail oficial</p></div><div class="row"><button type="button" class="btn btn-sm btn-primary" data-act="vinc" data-i="' + x[1] + '">Confirmar vínculo</button><button type="button" class="btn btn-sm" data-act="vinc-recusar" data-i="' + x[1] + '">Não é nosso aluno</button></div></div>'; }).join('') + '</div>'
+            : '<p class="msg">Nenhum pedido de vínculo pendente.</p>';
+        } else {
+          corpo = '<div class="card"><div class="scroll-x"><table class="ledger"><thead><tr><th>Aluno</th><th class="r">Aprovadas</th><th class="r">Com baixa</th><th class="r">Horas</th></tr></thead><tbody>' +
+            ALUNOS.filter(function (a) { return a.vinc === 'Confirmado'; }).map(function (a) {
+              var ap = BAIXAS.filter(function (x) { return x.aluno === a.nome; }), fe = ap.filter(function (x) { return x.st === 'feita'; }).length;
+              return '<tr><td><b>' + esc(a.nome) + '</b><div class="note num">Matrícula ' + a.mat + '</div></td><td class="r">' + ap.length + '</td><td class="r">' + fe + '</td><td class="r">' + fe + ' h</td></tr>';
+            }).join('') + '</tbody></table></div><p class="note" style="margin-top: var(--s3)">Valor de exemplo: 1 revisão aprovada = 1 hora. O valor real é definido com cada instituição.</p></div>';
+        }
+        return cabeca('Alunos e horas', 'Horas complementares dos seus alunos', 'Cada revisão aprovada por um escritório chega aqui. Você confere e dá a baixa na matrícula. A baixa pode ser desfeita, sempre com justificativa.', 'Dados de exemplo') +
+          '<div class="chips" role="tablist" aria-label="Seções da instituição" style="margin-bottom: var(--s4)">' + T.map(function (t) { return '<button type="button" class="chip" role="tab" data-act="tab-ins" data-t="' + t[0] + '" aria-pressed="' + (S.tabIns === t[0]) + '">' + t[1] + ' · ' + t[2] + '</button>'; }).join('') + '</div>' +
+          corpo + '<p class="note" style="margin-top: var(--s3)">Você não vê alunos de outra instituição nem o log geral do aplicativo.</p>';
       }
       var eu = ALUNOS[0];
       return cabeca('Horas complementares', 'Suas revisões e horas', 'Cada revisão concluída conta. Se uma informação que você revisou for confirmada como errada, o ponto daquela revisão pode ser perdido, e isso fica registrado.', 'Dados de exemplo') +
@@ -808,6 +838,16 @@ footer .wrap { padding-block: var(--s6); }
     if (act === 'cad-volta') { S.cad.passo--; return renderCad(); }
     if (act === 'ab-rever') return rever();
     if (act === 'tab-est') { S.tabEst = b.dataset.t; S.abrir = null; return refresh(); }
+    if (act === 'tab-ins') { S.tabIns = b.dataset.t; S.desfazer = null; return refresh(); }
+    if (act === 'ins-baixa' || act === 'ins-baixa-todas') {
+      var alvo = act === 'ins-baixa' ? BAIXAS.filter(function (x) { return x.k === +b.dataset.k; }) : BAIXAS.filter(function (x) { return x.st === 'pend'; });
+      alvo.forEach(function (x) { x.st = 'feita'; x.data = agora().slice(0, 10); EST.forEach(function (z) { if (x.aluno === PERFIS.estudante.quem && z.id === x.at) z.horas = 'Computada'; }); log('Instituição', P.quem, 'Deu baixa na hora de ' + x.aluno + ' pela revisão ' + x.at + '.'); });
+      S.aviso = alvo.length === 1 ? 'Baixa registrada para ' + alvo[0].aluno + '. O aluno já vê a hora como computada.' : 'Baixa registrada em ' + alvo.length + ' revisões.';
+      return refresh();
+    }
+    if (act === 'ins-desf') { S.desfazer = +b.dataset.k; return refresh(); }
+    if (act === 'ins-desf-cancelar') { S.desfazer = null; return refresh(); }
+    if (act === 'vinc-recusar') { var rc = ALUNOS[+b.dataset.i]; log('Instituição', P.quem, 'Informou que ' + rc.nome + ' não é aluno da instituição.'); ALUNOS.splice(+b.dataset.i, 1); S.aviso = 'Pedido recusado. O estudante é avisado para corrigir a instituição informada.'; return refresh(); }
     if (act === 'tab-esc') { S.tabEsc = b.dataset.t; S.abrir = null; return refresh(); }
     if (act === 'esc-abrir') { S.abrir = b.dataset.id; return refresh(); }
     if (act === 'est-analisar') { S.abrir = b.dataset.id; return refresh(); }
@@ -815,7 +855,7 @@ footer .wrap { padding-block: var(--s6); }
     if (act === 'est-simular') {
       var y = EST.filter(function (z) { return z.id === b.dataset.id; })[0];
       if (y.etapa === 'IA aberta conferindo') { y.etapa = 'Aguardando aval do escritório'; S.aviso = 'A IA aberta conferiu a sua análise de ' + y.id + '. Agora falta o aval do escritório.'; }
-      else { y.st = 'apr'; y.por = MEU_ESC; y.horas = 'Aguardando baixa da instituição'; ALUNOS[0].rev++; log('Escritório', MEU_ESC, 'Aprovou ' + y.id + '. A revisão de Camila Vieira foi enviada à instituição.'); S.aviso = y.id + ' aprovada. A sua hora foi enviada à instituição para baixa.'; S.tabEst = 'fim'; }
+      else { y.st = 'apr'; y.por = MEU_ESC; y.horas = 'Aguardando baixa da instituição'; ALUNOS[0].rev++; BAIXAS.unshift({ k: Date.now(), aluno: PERFIS.estudante.quem, at: y.id, titulo: y.titulo, apr: agora().slice(0, 10), esc: MEU_ESC, st: 'pend' }); log('Escritório', MEU_ESC, 'Aprovou ' + y.id + '. A revisão de Camila Vieira foi enviada à instituição.'); S.aviso = y.id + ' aprovada. A sua hora foi enviada à instituição para baixa.'; S.tabEst = 'fim'; }
       return refresh();
     }
     if (act === 'cad-cancelar') { e.preventDefault(); S.cad = { passo: 1, perfil: null, sel: {} }; return ir('entrar'); }
@@ -852,6 +892,14 @@ footer .wrap { padding-block: var(--s6); }
     $('pub-list').innerHTML = l.length ? l.map(cardPub).join('') : '<p class="msg">Nada publicado com esse filtro. Troque a aba ou limpe a busca.</p>';
   });
   document.addEventListener('submit', function (e) {
+    if (e.target.dataset && e.target.dataset.desf) {
+      e.preventDefault();
+      var k = +e.target.dataset.desf, j = $('jus-' + k).value.trim(), x = BAIXAS.filter(function (z) { return z.k === k; })[0];
+      if (j.length < 5) { $('jerr-' + k).textContent = 'Escreva a justificativa.'; $('jerr-' + k).hidden = false; return; }
+      x.st = 'pend'; delete x.data; EST.forEach(function (z) { if (x.aluno === PERFIS.estudante.quem && z.id === x.at) z.horas = 'Aguardando baixa da instituição'; });
+      log('Instituição', PERFIS.instituicao.quem, 'Desfez a baixa de ' + x.aluno + ' na revisão ' + x.at + '. Justificativa: ' + j);
+      S.desfazer = null; S.aviso = 'Baixa desfeita. A justificativa fica registrada no log.'; return refresh();
+    }
     if (e.target.dataset && e.target.dataset.aval) {
       e.preventDefault();
       var aid = e.target.dataset.aval, at = acha(aid), dec = $('dec-' + aid).value, fon = $('fon-' + aid).value.trim(), dm = $('dmot-' + aid).value, der = $('derr-' + aid);
